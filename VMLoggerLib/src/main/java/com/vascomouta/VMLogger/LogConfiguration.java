@@ -1,8 +1,17 @@
 package com.vascomouta.VMLogger;
 
+
 /**
- * Created by Asma on 16/05/17.
+ * Created by Sourabh Kapoor  on 16/05/17.
  */
 
-public class LogConfiguration {
+public interface LogConfiguration {
+
+
+    public void addChildren(LogConfiguration childConfiguration);
+
+    public LogConfiguration getChildren();
+
+    public String getFullName();
+
 }

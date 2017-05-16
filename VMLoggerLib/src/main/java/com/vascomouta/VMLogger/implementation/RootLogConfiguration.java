@@ -1,8 +1,10 @@
-package com.vascomouta.VMLogger;
+package com.vascomouta.VMLogger.implementation;
 
 /**
- * Created by Asma on 16/05/17.
+ * Created by Sourabh Kapoor  on 16/05/17.
  */
 
-public class RootLogConfiguration {
+public class RootLogConfiguration extends BaseLogConfiguration {
+
+
 }
