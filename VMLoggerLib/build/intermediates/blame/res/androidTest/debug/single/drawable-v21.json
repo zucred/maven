@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/androidTest/debug/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/drawable-v21/abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/androidTest/debug/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/drawable-v21/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/androidTest/debug/drawable-v21/abc_edit_text_material.xml",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/drawable-v21/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/androidTest/debug/drawable-v21/notification_action_background.xml",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/drawable-v21/notification_action_background.xml"
+    }
+]

@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/debug/layout-v21/notification_action.xml",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/debug/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/debug/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/debug/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/layout-v21/notification_action_tombstone.xml"
+    }
+]
