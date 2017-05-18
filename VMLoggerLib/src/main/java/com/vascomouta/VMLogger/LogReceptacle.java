@@ -15,7 +15,7 @@ public class LogReceptacle {
     public  void log(LogEntry logEntry) {
         int appendersCount = 0;
         LogConfiguration logger = logEntry.logger;
-        boolean synchronous = logger.synchronousMode();
+        boolean synchronous = logger.synchronousMode;
 
         //print messgae through appender
         System.out.print(logEntry.callingFileLine);

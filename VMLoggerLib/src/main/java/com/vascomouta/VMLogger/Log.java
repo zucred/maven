@@ -1,10 +1,14 @@
 package com.vascomouta.VMLogger;
 
+import com.vascomouta.VMLogger.constant.LogAppenderConstant;
+import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
 import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
 
-import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -48,23 +52,108 @@ public class Log extends RootLogConfiguration {
 
     }
 
-    public void enable(){
+    public void enable(HashMap<Object, Object> values){
+        LogLevel rootLevel;
+        if(BuildConfig.DEBUG){
+            rootLevel = LogLevel.DEBUG;
+        }else{
+            rootLevel = LogLevel.INFO;
+        }
+        boolean rootSynchronous = false;
+        HashMap<String, LogAppender> appenders = new HashMap<>();
+        ArrayList<LogAppender> rootAppenders = new ArrayList<>();
+        HashMap<String, HashMap<String, Object>> rootChildren = new HashMap<>();
+        ArrayList<HashMap<String, Object>> appenderConfig = (ArrayList<HashMap<String,Object>>) values.get(Appenders);
+        for(HashMap<String, Object> appender : appenderConfig) {
+            String className = (String) appender.get(LogAppenderConstant.Class);
+            try {
+                Class<?> c = Class.forName(className);
+                Constructor<?> cons = c.getConstructor(String.class);
+                LogAppender logAppender = (LogAppender) cons.newInstance();
+                if (logAppender != null) {
+                    LogAppender appender1 = logAppender.init(appender);
+                    appenders.put(appender1.name, appender1);
+                }
+            } catch (ClassNotFoundException ex) {
+
+            } catch (IllegalAccessException exception) {
+
+            } catch (NoSuchMethodException ex1) {
+
+            } catch (InvocationTargetException ex2) {
+
+            } catch (InstantiationException ex3) {
+
+            }
+        }
+
+
+        //Root Appenders
+        ArrayList<String> rootAppenderConfig = (ArrayList<String>) values.get(LoggerAppenders);
+        if (rootAppenderConfig != null) {
+            for (String rootAppender : rootAppenderConfig) {
+                if (appenders.get(rootAppender) != null) {
+                    rootAppenders.add(appenders.get(rootAppender));
+                }
+            }
+        }else if(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER) != null){
+            rootAppenders.add(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER));
+        }
+
+         if(values.containsKey(LoggerLevel)) {
+             String rootLogLevel = (String)values.get(LoggerLevel);
+             rootLevel =  LogLevel.getLogLevel(rootLogLevel);
+         }
+         if(values.containsKey(LoggerSynchronous)) {
+            rootSynchronous = (boolean) values.get(LoggerSynchronous);
+         }
+         if(values.containsKey(LoggerConfig)) {
+             rootChildren = (HashMap<String, HashMap<String, Object>>) values.get(LoggerConfig);
+         }
+        RootLogConfiguration root = new RootLogConfiguration(rootLevel, rootAppenders, synchronousMode);
+        Iterator it = rootChildren.entrySet().iterator();
+        while (it.hasNext()){
+            Map.Entry child = (Map.Entry)it.next();
+            HashMap<String , Object> configuration = (HashMap<String, Object>) child.getValue();
+            if(configuration != null) {
+                LogConfiguration currentChild = root.getChildren((String) child.getKey(), this);
+                if (currentChild != null && currentChild.parent != null) {
+                    LogConfiguration newChild = new Log(currentChild.identifier, parent, appenders, configuration);
+                    if (newChild != null) {
+                        parent.addChildren(newChild, true);
+                    }
+                } else {
+                    //   Log.warning("Trying to configure ROOT looger in logger childreen configuration. Reserved word, children ignored")
+                }
+            }else {
+                //Log.error("Log configuration for \(logName) is not valid. Dictionary<String, Any> is required")
+            }
+            }
+        enable(root, rootLevel);
+        verbose("Log Configuration:\n" + values.toString());
 
     }
 
-    public void enable(LogLevel logLevel, boolean sychrounousMode){
 
+
+    public static void enable( boolean sychrounousMode){
+        LogLevel assignedLevel = LogLevel.INFO;
+        ArrayList<LogAppender> appenders = new ArrayList<>();
+        appenders.add(new ConsoleLogAppender());
+        RootLogConfiguration root = new RootLogConfiguration(RootLogConfiguration.ROOT_IDENTIFIER, assignedLevel, null, appenders, sychrounousMode, false);
+        enable(root, LogLevel.INFO);
     }
 
-    public void enable(LogConfiguration logConfiguration, LogLevel minimumSeverity){
-
+    public static void enable(RootLogConfiguration root, LogLevel minimumSeverity){
+        Log.start(root,  new LogReceptacle(),   minimumSeverity);
     }
 
     private  static void  start(RootLogConfiguration root, LogReceptacle logReceptacle ) {
-        start(root, new HashMap<>(), logReceptacle, LogLevel.INFO);
+        start(root, logReceptacle, LogLevel.INFO);
     }
 
-    private static void start(RootLogConfiguration root, HashMap<String, LogAppender> appenders, LogReceptacle logReceptacle, LogLevel minimumSeverity) {
+    private static void start(RootLogConfiguration root, LogReceptacle logReceptacle, LogLevel minimumSeverity) {
+        HashMap<String, LogAppender> appenders = new HashMap<>();
         start(root, appenders,createLogChannelWithSeverity(LogLevel.EVENT, logReceptacle, minimumSeverity),
                 createLogChannelWithSeverity(LogLevel.SEVERE, logReceptacle, minimumSeverity),
                 createLogChannelWithSeverity(LogLevel.ERROR, logReceptacle, minimumSeverity),
@@ -97,13 +186,18 @@ public class Log extends RootLogConfiguration {
         return null;
     }
 
-
-    public void init(String identifier, LogConfiguration parent, Map<String, LogAppender> allAppenders, HashMap<String, Object> configuration) {
+    public Log(){
 
     }
 
-    public void init(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
+    public Log(String identifier, LogConfiguration parent, Map<String, LogAppender> allAppenders, HashMap<String, Object> configuration) {
+            super(identifier, (LogLevel) configuration.get(LogConfigConstant.Level), null, (ArrayList<LogAppender>)configuration.get(LogConfigConstant.Appenders),
+                    (boolean)configuration.get(LogConfigConstant.Synchronous), (boolean)configuration.get(LogConfigConstant.Additivity));
+    }
+
+    public  Log(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
                      boolean synchronousMode, boolean additivity){
+        super(identifier, assignedLevel, parent, logAppender, synchronousMode, additivity);
 
     }
 
@@ -155,8 +249,11 @@ public class Log extends RootLogConfiguration {
         return logChannel;
        }
 
-    public LogConfiguration  getLogger(String identifier){
-        return mLogInstance.getChildren(identifier, this);
+    public<T extends LogConfiguration> T  getLogger(String identifier, T type){
+        if(mLogInstance == null){
+            getInstance();
+        }
+        return mLogInstance.getChildren(identifier, type);
     }
 
 }

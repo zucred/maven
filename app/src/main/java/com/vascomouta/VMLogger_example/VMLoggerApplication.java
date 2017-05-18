@@ -9,6 +9,8 @@ import android.app.Application;
 public class VMLoggerApplication extends Application {
 
 
+    public AppLogger applogger;
+
     private static VMLoggerApplication mInstance;
 
     public VMLoggerApplication() {
@@ -25,5 +27,8 @@ public class VMLoggerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AppLogger.enable(true);
+        applogger = new AppLogger().getLogger(VMLoggerApplication.class.getCanonicalName());
+        applogger.verbose("Asma");
     }
 }

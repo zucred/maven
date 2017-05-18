@@ -7,33 +7,33 @@ import java.util.ArrayList;
  * Created by Sourabh Kapoor  on 16/05/17.
  */
 
-public interface LogConfiguration {
+public abstract class LogConfiguration {
 
 
-    String getIdentifier();
+    public String identifier;
 
-    boolean isAdditivity();
+    public boolean additivity;
 
-    LogLevel getAssignedLogLevel();
+    public LogLevel assignedLogLevel;
 
-    LogLevel getEffectiveLogLevel();
+    public LogLevel effectiveLogLevel;
 
-    ArrayList<LogAppender> getAppender();
+    public ArrayList<LogAppender> appenders;
 
-    boolean synchronousMode();
+    public boolean synchronousMode;
 
-    LogConfiguration parent();
+    public LogConfiguration parent;
 
-    LogConfiguration children();
+    public ArrayList<LogConfiguration> children;
 
-    void addChildren(LogConfiguration childConfiguration, boolean copyGrandChildren);
+    public abstract void addChildren(LogConfiguration childConfiguration, boolean copyGrandChildren);
 
-    ArrayList<LogConfiguration> getChildren();
+    public abstract LogConfiguration getChildren(String name);
 
-    String getFullName();
+    public abstract String fullName();
 
-    void setParent(LogConfiguration parent);
+    public abstract void setParent(LogConfiguration parent);
 
-    String details();
+    public abstract String details();
 
 }

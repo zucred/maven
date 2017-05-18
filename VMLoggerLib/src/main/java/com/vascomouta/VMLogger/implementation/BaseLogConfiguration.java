@@ -14,35 +14,25 @@ import java.util.Set;
  * Created by Sourabh Kapoor  on 16/05/17.
  */
 
-public class BaseLogConfiguration implements LogConfiguration {
+public class BaseLogConfiguration extends LogConfiguration {
 
+    private HashMap<String, LogConfiguration> childMap = new HashMap<>();
 
-    public  String identifier;
-    public boolean additivity;
-    public LogLevel assignedLevel;
-    public LogLevel effectiveLevel;
-    public ArrayList<LogAppender> logAppender;
-    public  boolean synchronousMode;
-    public LogConfiguration parent;
-    public ArrayList<LogConfiguration> children ;
-
-    private HashMap<String, LogConfiguration> childMap;
-
-    public BaseLogConfiguration(String identifier,LogConfiguration parent , ArrayList<LogAppender> appenders,boolean synchronousMode, boolean additivity) {
-        BaseLogConfiguration(identifier, null, parent, appenders, synchronousMode, additivity);
+    public BaseLogConfiguration(String identifier, LogConfiguration parent , ArrayList<LogAppender> appenders, boolean synchronousMode, boolean additivity) {
+        this(identifier, null, parent, appenders, synchronousMode);
     }
 
 
     public BaseLogConfiguration(String identifier, LogLevel assignedLevel,LogConfiguration parent, ArrayList<LogAppender> appenders,
-                                boolean synchronousMode, boolean additivity)
+                                boolean synchronousMode)
     {
         this.identifier = identifier;
-        this.additivity = additivity;
-        this.assignedLevel = assignedLevel;
-        this.logAppender = appenders;
+        this.additivity = true;
+        this.assignedLogLevel = assignedLevel;
+        this.appenders = appenders;
         this.synchronousMode = synchronousMode;
         this.parent = parent;
-        this.effectiveLevel = parent != null ? parent.getEffectiveLogLevel() : LogLevel.INFO;
+        this.effectiveLogLevel = parent != null ? parent.effectiveLogLevel : LogLevel.INFO;
     }
 
     public void setChildren(){
@@ -62,15 +52,16 @@ public class BaseLogConfiguration implements LogConfiguration {
     @Override
     public void addChildren(LogConfiguration childConfiguration, boolean copyGrandChildren) {
         childConfiguration.setParent(this);
-        childMap.put(childConfiguration.getIdentifier(), childConfiguration);
-        LogConfiguration oldConfiguration = childMap.get(childConfiguration.getIdentifier());
+        childMap.put(childConfiguration.identifier, childConfiguration);
+        LogConfiguration oldConfiguration = childMap.get(childConfiguration.identifier);
         if(oldConfiguration != null && copyGrandChildren){
-             for(LogConfiguration grandChildren : oldConfiguration.getChildren()){
+             for(LogConfiguration grandChildren : oldConfiguration.children){
                 childConfiguration.addChildren(grandChildren, copyGrandChildren);
              }
         }
     }
 
+    @Override
     public LogConfiguration getChildren(String name) {
         return childMap.get(name);
     }
@@ -81,37 +72,23 @@ public class BaseLogConfiguration implements LogConfiguration {
     }
 
     @Override
-    public ArrayList<LogConfiguration> getChildren() {
-        return children;
+    public String fullName() {
+        return "Log";
     }
 
-    public String fullName(){
-       // fatalError("Needs to be redifined");
-    }
-
-    public String details(){
+    @Override
+    public String details() {
         String details = "\n";
-        LogLevel assgined = assignedLevel;
+        LogLevel assgined = assignedLogLevel;
         if(assgined != null) {
-            details = details + assgined.description() + " - " + effectiveLevel.description() + "-"
-                    + getFullName();
+            details = details + assgined.description() + " - " + effectiveLogLevel.description() + "-"
+                    + fullName();
         }else{
-            details = details + "null - " + effectiveLevel.description() + " - " + getFullName();
+            details = details + "null - " + effectiveLogLevel.description() + " - " + fullName();
         }
        /* for (_, child) in self.childrenDic {
             details += child.details()
         }*/
         return details;
-    }
-
-
-    @Override
-    public LogConfiguration parent() {
-        return null;
-    }
-
-    @Override
-    public String details() {
-        return null;
     }
 }

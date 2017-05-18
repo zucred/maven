@@ -24,6 +24,7 @@ public enum LogLevel {
         this.value = value;
     }
 
+
     String getLevel(){
       return level;
     }
@@ -96,5 +97,26 @@ public enum LogLevel {
                 return EVENT.getLevel();
         }
         return OFF.getLevel();
+    }
+
+    public static LogLevel getLogLevel(String level){
+        if(level.equals(ALL.getLevel())){
+            return ALL;
+        }else if(level.equals(VERBOSE.getLevel())){
+            return VERBOSE;
+        }else if(level.equals(DEBUG.getLevel())){
+            return DEBUG;
+        }else if(level.equals(INFO.getLevel())){
+            return  INFO;
+        }else if(level.equals(WARNING.getLevel())){
+            return WARNING;
+        }else if(level.equals(ERROR.getLevel())){
+            return ERROR;
+        }else if(level.equals(SEVERE.getLevel())){
+            return SEVERE;
+        }else if(level.equals(EVENT.getLevel())){
+            return EVENT;
+        }
+        return OFF;
     }
 }
