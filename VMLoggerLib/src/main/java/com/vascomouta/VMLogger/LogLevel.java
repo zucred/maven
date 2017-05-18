@@ -75,4 +75,26 @@ public enum LogLevel {
         }
         return OFF.getValue();
     }
+
+    public String description() {
+        switch (this) {
+            case ALL:
+                return ALL.getLevel();
+            case VERBOSE:
+                return VERBOSE.getLevel();
+            case DEBUG:
+                return DEBUG.getLevel();
+            case INFO:
+                return INFO.getLevel();
+            case WARNING:
+                return WARNING.getLevel();
+            case ERROR:
+                return ERROR.getLevel();
+            case SEVERE:
+                return SEVERE.getLevel();
+            case EVENT:
+                return EVENT.getLevel();
+        }
+        return OFF.getLevel();
+    }
 }

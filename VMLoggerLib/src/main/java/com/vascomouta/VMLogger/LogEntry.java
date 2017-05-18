@@ -12,7 +12,7 @@ public class LogEntry {
     public LogConfiguration logger;
 
     public enum Payload{
-
+        TRACE, MESSAGE, VALUE;
     }
 
     /** The payload of the log entry. */
@@ -41,6 +41,9 @@ public class LogEntry {
     /** Dictionary to store miscellaneous data about the log, can be used by formatters and filters etc. Please prefix any keys to help avoid collissions. */
     public Map<String, Object> userInfo;
 
+    public String message;
+    public Object value;
+
     /**
      `LogEntry` initializer.
 
@@ -63,8 +66,8 @@ public class LogEntry {
      :param:     timestamp The time at which the log entry was created. Defaults
      to the current time if not specified.
      */
-    public void init(LogConfiguration logger, Payload payload, LogLevel logLevel, Map<String, Object> userInfo,String callingFunction,
-                String callingFilePath,  int callingFileLine, int callingThreadID, Date timestamp) {
+    public LogEntry(LogConfiguration logger, Payload payload, LogLevel logLevel, Map<String, Object> userInfo,
+                String callingFilePath,String callingFunction,  int callingFileLine, int callingThreadID, Date timestamp, String message , Object value) {
         this.logger = logger;
         this.payload = payload;
         this.logLevel = logLevel;
@@ -74,6 +77,7 @@ public class LogEntry {
         this.callingThreadID = callingThreadID;
         this.timestamp = timestamp;
         this.userInfo = userInfo;
+        this.message = message;
     }
 
 

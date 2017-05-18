@@ -13,6 +13,7 @@
         android:value="25.3.1" />
 
     <application
+        android:name="com.vascomouta.VMLogger_example.VMLoggerApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

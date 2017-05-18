@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:2:1-21:12
+ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:2:1-22:12
 	package
 		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:3:5-46
 		INJECTED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml
@@ -14,7 +14,9 @@ ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/Android
 		INJECTED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml
 application
-ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:5:5-19:19
+ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:5:5-20:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.1] /Users/craterzone/.android/build-cache/acd715221c45123d52d79dc8c1ad8cc8f8f02a23/output/AndroidManifest.xml:9:5-20
+MERGED from [VMLogger:VMLoggerLib:unspecified] /Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/bundles/default/AndroidManifest.xml:11:5-15:19
 MERGED from [com.android.support:appcompat-v7:25.3.1] /Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-v4:25.3.1] /Users/craterzone/.android/build-cache/862cd78df1dcdffd7a788e33849b801fbd5adb15/output/AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-fragment:25.3.1] /Users/craterzone/.android/build-cache/284ac91a245219db85178c7aa9dcdd410def42bb/output/AndroidManifest.xml:29:5-20
@@ -24,7 +26,6 @@ MERGED from [com.android.support:support-core-utils:25.3.1] /Users/craterzone/.a
 MERGED from [com.android.support:animated-vector-drawable:25.3.1] /Users/craterzone/.android/build-cache/8d0094144aa7b54b983002bc873f9be1766a944e/output/AndroidManifest.xml:26:5-20
 MERGED from [com.android.support:support-vector-drawable:25.3.1] /Users/craterzone/.android/build-cache/97881fb1da998cd50851518a53c820a613d81347/output/AndroidManifest.xml:26:5-20
 MERGED from [com.android.support:support-compat:25.3.1] /Users/craterzone/.android/build-cache/8c9a4d06e10801152e4d5055860dea45be066ffb/output/AndroidManifest.xml:29:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.1] /Users/craterzone/.android/build-cache/acd715221c45123d52d79dc8c1ad8cc8f8f02a23/output/AndroidManifest.xml:9:5-20
 	android:label
 		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:8:9-41
 	android:supportsRtl
@@ -36,23 +37,27 @@ MERGED from [com.android.support.constraint:constraint-layout:1.0.1] /Users/crat
 	android:icon
 		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:7:9-43
 	android:theme
-		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:11:9-40
+		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:12:9-40
+	android:name
+		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:11:9-44
 activity#com.vascomouta.VMLogger_example.MainActivity
-ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:12:9-18:20
+ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:13:9-19:20
 	android:name
-		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:12:19-47
+		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:13:19-47
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:13:13-17:29
+ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:14:13-18:29
 action#android.intent.action.MAIN
-ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:14:17-69
+ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:15:17-69
 	android:name
-		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:14:25-66
+		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:15:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:16:17-77
+ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:17:17-77
 	android:name
-		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:16:27-74
+		ADDED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml:17:27-74
 uses-sdk
 INJECTED from /Users/craterzone/Asma/project/VMLogger/VMLogger/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support.constraint:constraint-layout:1.0.1] /Users/craterzone/.android/build-cache/acd715221c45123d52d79dc8c1ad8cc8f8f02a23/output/AndroidManifest.xml:5:5-7:41
+MERGED from [VMLogger:VMLoggerLib:unspecified] /Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/bundles/default/AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:appcompat-v7:25.3.1] /Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/AndroidManifest.xml:21:5-23:78
 MERGED from [com.android.support:support-v4:25.3.1] /Users/craterzone/.android/build-cache/862cd78df1dcdffd7a788e33849b801fbd5adb15/output/AndroidManifest.xml:21:5-23:54
 MERGED from [com.android.support:support-fragment:25.3.1] /Users/craterzone/.android/build-cache/284ac91a245219db85178c7aa9dcdd410def42bb/output/AndroidManifest.xml:21:5-23:60
@@ -62,7 +67,6 @@ MERGED from [com.android.support:support-core-utils:25.3.1] /Users/craterzone/.a
 MERGED from [com.android.support:animated-vector-drawable:25.3.1] /Users/craterzone/.android/build-cache/8d0094144aa7b54b983002bc873f9be1766a944e/output/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-vector-drawable:25.3.1] /Users/craterzone/.android/build-cache/97881fb1da998cd50851518a53c820a613d81347/output/AndroidManifest.xml:20:5-43
 MERGED from [com.android.support:support-compat:25.3.1] /Users/craterzone/.android/build-cache/8c9a4d06e10801152e4d5055860dea45be066ffb/output/AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support.constraint:constraint-layout:1.0.1] /Users/craterzone/.android/build-cache/acd715221c45123d52d79dc8c1ad8cc8f8f02a23/output/AndroidManifest.xml:5:5-7:41
 	tools:overrideLibrary
 		ADDED from [com.android.support:appcompat-v7:25.3.1] /Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/AndroidManifest.xml:23:9-75
 	android:targetSdkVersion

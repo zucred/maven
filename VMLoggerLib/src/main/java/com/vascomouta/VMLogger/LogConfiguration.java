@@ -1,6 +1,8 @@
 package com.vascomouta.VMLogger;
 
 
+import java.util.ArrayList;
+
 /**
  * Created by Sourabh Kapoor  on 16/05/17.
  */
@@ -8,10 +10,30 @@ package com.vascomouta.VMLogger;
 public interface LogConfiguration {
 
 
-    public void addChildren(LogConfiguration childConfiguration);
+    String getIdentifier();
 
-    public LogConfiguration getChildren();
+    boolean isAdditivity();
 
-    public String getFullName();
+    LogLevel getAssignedLogLevel();
+
+    LogLevel getEffectiveLogLevel();
+
+    ArrayList<LogAppender> getAppender();
+
+    boolean synchronousMode();
+
+    LogConfiguration parent();
+
+    LogConfiguration children();
+
+    void addChildren(LogConfiguration childConfiguration, boolean copyGrandChildren);
+
+    ArrayList<LogConfiguration> getChildren();
+
+    String getFullName();
+
+    void setParent(LogConfiguration parent);
+
+    String details();
 
 }
