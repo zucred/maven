@@ -35,6 +35,11 @@ public class BaseLogConfiguration extends LogConfiguration {
         this.effectiveLogLevel = parent != null ? parent.effectiveLogLevel : LogLevel.INFO;
     }
 
+    public BaseLogConfiguration init(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
+                                     boolean synchronousMode){
+        return  new BaseLogConfiguration(identifier, assignedLevel, parent, logAppender, synchronousMode);
+    }
+
     public void setChildren(){
         children = new ArrayList<>();
         Iterator it = childMap.entrySet().iterator();

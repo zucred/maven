@@ -1,6 +1,7 @@
 package com.vascomouta.VMLogger;
 
 import com.vascomouta.VMLogger.constant.LogAppenderConstant;
+import com.vascomouta.VMLogger.constant.LogConfigConstant;
 import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
 import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
 
@@ -93,7 +94,8 @@ public class Log extends RootLogConfiguration {
         if (rootAppenderConfig != null) {
             for (String rootAppender : rootAppenderConfig) {
                 if (appenders.get(rootAppender) != null) {
-                    rootAppenders.add(appenders.get(rootAppender));
+                   // rootAppenders.add(appenders.get(rootAppender));
+                    rootAppenders.add(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER));
                 }
             }
         }else if(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER) != null){
@@ -160,7 +162,7 @@ public class Log extends RootLogConfiguration {
                 createLogChannelWithSeverity(LogLevel.WARNING, logReceptacle, minimumSeverity),
                 createLogChannelWithSeverity(LogLevel.INFO, logReceptacle, minimumSeverity),
                 createLogChannelWithSeverity(LogLevel.DEBUG, logReceptacle, minimumSeverity),
-                createLogChannelWithSeverity(LogLevel.VERBOSE, logReceptacle, minimumSeverity));
+                createLogChannelWithSeverity(LogLevel.INFO, logReceptacle, minimumSeverity));
     }
 
 
@@ -196,9 +198,14 @@ public class Log extends RootLogConfiguration {
     }
 
     public  Log(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
-                     boolean synchronousMode, boolean additivity){
+                     boolean synchronousMode, boolean additivity) {
         super(identifier, assignedLevel, parent, logAppender, synchronousMode, additivity);
 
+    }
+
+    public Log init(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
+                    boolean synchronousMode){
+        return  new Log(identifier, assignedLevel, parent, logAppender, synchronousMode, true);
     }
 
     public void verbose(String message){
@@ -249,11 +256,11 @@ public class Log extends RootLogConfiguration {
         return logChannel;
        }
 
-    public<T extends LogConfiguration> T  getLogger(String identifier, T type){
+    public<T extends LogConfiguration > T getLogger(String identifier, T type){
         if(mLogInstance == null){
             getInstance();
         }
-        return mLogInstance.getChildren(identifier, type);
+        return (T)mLogInstance.getChildren(identifier, this);
     }
 
 }

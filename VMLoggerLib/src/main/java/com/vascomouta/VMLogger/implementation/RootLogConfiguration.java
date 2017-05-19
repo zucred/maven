@@ -1,5 +1,6 @@
 package com.vascomouta.VMLogger.implementation;
 
+import com.vascomouta.VMLogger.Log;
 import com.vascomouta.VMLogger.LogAppender;
 import com.vascomouta.VMLogger.LogConfiguration;
 import com.vascomouta.VMLogger.LogLevel;
@@ -30,6 +31,11 @@ public class RootLogConfiguration extends BaseLogConfiguration {
         super(identifier, assignedLevel, parent, appenders, synchronousMode);
     }
 
+    public RootLogConfiguration init(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
+                    boolean synchronousMode){
+        return  new RootLogConfiguration(identifier, assignedLevel, parent, logAppender, synchronousMode, true);
+    }
+
     private boolean isRootLogger() {
         // only the root logger has a null parent
         return parent == null;
@@ -53,30 +59,34 @@ public class RootLogConfiguration extends BaseLogConfiguration {
         return name;
     }
 
-    public<T extends LogConfiguration>  T getChildren(String identifier, T type) {
+    public LogConfiguration getChildren(String identifier, BaseLogConfiguration type) {
         String name = identifier;
         LogConfiguration parent = this;
         while (true) {
             if (parent.getChildren(name) != null) {
-                return (T)parent.getChildren(name);
+                return parent.getChildren(name);
             } else {
                 String tree = null;
                 String[] range = name.split(Pattern.quote(RootLogConfiguration.DOT));
                 if(range != null){
                     /*tree = name.substring(range[0]);
                     name = name.substring(range[1]);*/
-                    tree = range[0];
-                    name = range[1];
+                    tree = range[range.length-1];
+                    if(range.length == 1){
+                        name = range[range.length-1];
+                    }else {
+                        name = range[range.length -2];
+                    }
                     if(parent.getChildren(name) != null){
                         parent = parent.getChildren(name);
                         name = tree != null ? tree : name;
                         continue;
                     }
                }
-              LogConfiguration child = new BaseLogConfiguration(name, null, parent, new ArrayList<>(), synchronousMode);
+              LogConfiguration child = type.init(name, null, parent, new ArrayList<>(), synchronousMode);
                 parent.addChildren(child, false);
                 if(tree != null){
-                    return (T)child;
+                    return child;
                 }
                 parent = child;
                 name = tree;

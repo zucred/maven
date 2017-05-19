@@ -29,6 +29,6 @@ public class VMLoggerApplication extends Application {
         super.onCreate();
         AppLogger.enable(true);
         applogger = new AppLogger().getLogger(VMLoggerApplication.class.getCanonicalName());
-        applogger.verbose("Asma");
+        applogger.verbose("Message from Application class");
     }
 }

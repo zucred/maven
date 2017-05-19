@@ -1,28 +1,28 @@
 package com.vascomouta.VMLogger.implementation.appender;
 
-import com.vascomouta.VMLogger.LogAppender;
-import com.vascomouta.VMLogger.LogEntry;
 
-import java.util.HashMap;
-import java.util.concurrent.ThreadPoolExecutor;
+import com.vascomouta.VMLogger.LogEntry;
+import com.vascomouta.VMLogger.implementation.BaseLogAppender;
+
 
 /**
- * Created by Asma on 18/05/17.
+ * Created by Sourabh kapoor on 18/05/17.
  */
 
-public class ConsoleLogAppender extends LogAppender {
+public class ConsoleLogAppender extends BaseLogAppender {
 
 
     public static String CONSOLE_IDENTIFIER = "console";
 
 
-    @Override
-    public void recordFormatterMessage(String message, LogEntry logEntry, ThreadPoolExecutor executor, boolean sychronousMode) {
-
+    public ConsoleLogAppender() {
+       // self.init(name: ConsoleLogAppender.CONSOLE_IDENTIFIER)
     }
 
+
     @Override
-    public LogAppender init(HashMap<String, Object> configuration) {
-        return null;
+    public void recordFormatterMessage(String message, LogEntry logEntry, boolean sychronousMode) {
+        System.out.println(message);
     }
+
 }

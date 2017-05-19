@@ -1,5 +1,7 @@
 package com.vascomouta.VMLogger;
 
+import com.vascomouta.VMLogger.enums.Payload;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -39,14 +41,14 @@ public class LogChannel {
     public void trace(LogConfiguration logger, String fileName, String methodName, int lineNumber) {
         int threadID = 0;
         //pthread_threadid_np(nil, &threadID)
-        LogEntry logEntry = new LogEntry(logger, LogEntry.Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), "", null);
+        LogEntry logEntry = new LogEntry(logger, Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), "", null);
         receptacle.log(logEntry);
     }
 
     public void message(LogConfiguration logger, String message, String fileName, String methodName, int lineNumber) {
         int threadID = 0;
         //pthread_threadid_np(nil, &threadID)
-        LogEntry logEntry = new LogEntry(logger, LogEntry.Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), message, null);
+        LogEntry logEntry = new LogEntry(logger, Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), message, null);
         receptacle.log(logEntry);
     }
 
@@ -54,7 +56,7 @@ public class LogChannel {
     {
         int threadID = 0;
         //pthread_threadid_np(nil, &threadID)
-        LogEntry logEntry = new LogEntry(logger, LogEntry.Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), "", value);
+        LogEntry logEntry = new LogEntry(logger, Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), "", value);
         receptacle.log(logEntry);
     }
 

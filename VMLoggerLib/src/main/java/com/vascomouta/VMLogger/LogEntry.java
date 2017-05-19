@@ -1,5 +1,7 @@
 package com.vascomouta.VMLogger;
 
+import com.vascomouta.VMLogger.enums.Payload;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -10,10 +12,6 @@ import java.util.Map;
 public class LogEntry {
 
     public LogConfiguration logger;
-
-    public enum Payload{
-        TRACE, MESSAGE, VALUE;
-    }
 
     /** The payload of the log entry. */
     public Payload payload;

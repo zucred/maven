@@ -11,11 +11,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 public abstract class LogAppender {
 
     public String name;
-    public LogFormatter formatters;
+    public ArrayList<LogFormatter> formatters;
     public ArrayList<LogFilter> filters;
     public ThreadPoolExecutor threadPool;
 
-    public abstract void recordFormatterMessage(String message, LogEntry logEntry, ThreadPoolExecutor executor, boolean sychronousMode);
+    public abstract void recordFormatterMessage(String message, LogEntry logEntry/*, ThreadPoolExecutor executor */, boolean sychronousMode);
 
     public abstract LogAppender init(HashMap<String,Object> configuration);
 

@@ -1,8 +1,12 @@
 package com.vascomouta.VMLogger;
 
+import android.util.*;
+
+import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
 import com.vascomouta.VMLogger.utils.BackgroundExecutor;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by Sourabh Kapoor on 16/05/17.
@@ -17,17 +21,38 @@ public class LogReceptacle {
         LogConfiguration logger = logEntry.logger;
         boolean synchronous = logger.synchronousMode;
 
-        //print messgae through appender
-        System.out.print(logEntry.callingFileLine);
-
+        //TODO add in queue
+        LogConfiguration config;
+        do {
+            config = logger;
+            if ((logEntry.logLevel.getValue() >= config.effectiveLogLevel.getValue()) || (config.effectiveLogLevel.getValue() == LogLevel.OFF.getValue()
+                    && config.identifier != logEntry.logger.identifier)) {
+                for (LogAppender appender : config.appenders) {
+                    if (logEntry(logEntry, appender.filters)) {
+                        //TODO log message into queue
+                        String formatted = BaseLogFormatter.stringRepresentationForPayload(logEntry);
+                        //   for(BaseLogFormatter formatter : appender.formatters){
+                        //     formatted.fo
+                        appender.recordFormatterMessage(formatted, logEntry, synchronous);
+                        appendersCount = appendersCount + 1;
+                    }
+                    logger = config.parent;
+                }
+            } else if (!config.identifier.equals(logEntry.logger.identifier)) {
+                logger = config.parent;
+            } else {
+                logger = null;
+            }
+        }while (config.additivity && logger != null) ;
     }
 
-        private boolean logEntry(LogEntry entry, ArrayList<LogFilter> passesFilters ) {
-            for(LogFilter filter : passesFilters) {
-            /*if (!filter.shouldRecordLogEntry(entry) {
+
+    private boolean logEntry(LogEntry entry, ArrayList<LogFilter> passesFilters ) {
+           /* for(LogFilter filter : passesFilters) {
+            *//*if (!filter.shouldRecordLogEntry(entry) {
                 return false
-            }*/
-           }
+            }*//*
+           }*/
             return true;
         }
 
