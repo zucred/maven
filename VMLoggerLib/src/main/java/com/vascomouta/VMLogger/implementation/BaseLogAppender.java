@@ -60,19 +60,21 @@ public  class BaseLogAppender extends LogAppender {
 
     @Override
     public LogAppender init(HashMap<String, Object> configuration) {
-        BaseLogAppender config = (BaseLogAppender) configuration.get(name);
+        LogAppender config = configuration(configuration);
         if(config != null){
             return new BaseLogAppender(config.name, config.formatters, config.filters);
         }
         return null;
     }
 
-    public BaseLogAppender  configuration(Dictionary<String, Object> configuration,String name ,ArrayList<LogFormatter> formatters,  ArrayList<LogFilter> filters) {
-         name = (String)configuration.get(LogAppenderConstant.Name);
+    public LogAppender configuration(HashMap<String, Object> configuration) {
+        String name;
+        ArrayList<LogFormatter> formatters;
+        ArrayList<LogFilter> filters;
+        name = (String)configuration.get(LogAppenderConstant.Name);
         if(name != null) {
             BaseLogAppender returnConfir = new BaseLogAppender();
             returnConfir.name = name;
-
             returnConfir.formatters = new ArrayList<>();
 
             HashMap<String, Object> encodersConfig = (HashMap<String, Object>) configuration.get(LogAppenderConstant.Encoder);

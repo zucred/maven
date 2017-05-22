@@ -50,7 +50,7 @@ public class RootLogConfiguration extends BaseLogConfiguration {
 
     public String fullName() {
         String name;
-        if (parent.identifier != RootLogConfiguration.ROOT_IDENTIFIER) {
+        if (parent != null && parent.identifier != RootLogConfiguration.ROOT_IDENTIFIER) {
             LogConfiguration parent = this.parent;
             name = parent.fullName() + RootLogConfiguration.DOT + this.identifier;
         } else {

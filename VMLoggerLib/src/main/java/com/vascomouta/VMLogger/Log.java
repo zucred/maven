@@ -257,9 +257,6 @@ public class Log extends RootLogConfiguration {
        }
 
     public<T extends LogConfiguration > T getLogger(String identifier, T type){
-        if(mLogInstance == null){
-            getInstance();
-        }
         return (T)mLogInstance.getChildren(identifier, this);
     }
 

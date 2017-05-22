@@ -3,6 +3,8 @@ package com.vascomouta.VMLogger;
 import android.util.*;
 
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
+import com.vascomouta.VMLogger.implementation.filter.LogLevelFilter;
+import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.utils.BackgroundExecutor;
 
 import java.util.ArrayList;
@@ -28,12 +30,24 @@ public class LogReceptacle {
             if ((logEntry.logLevel.getValue() >= config.effectiveLogLevel.getValue()) || (config.effectiveLogLevel.getValue() == LogLevel.OFF.getValue()
                     && config.identifier != logEntry.logger.identifier)) {
                 for (LogAppender appender : config.appenders) {
-                    if (logEntry(logEntry, appender.filters)) {
+                    ArrayList<LogFilter> filters = new ArrayList<>();
+                    filters.add(new LogLevelFilter(LogLevel.INFO));
+                    ArrayList<LogFormatter> formatters = new ArrayList<>();
+                    formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
+
+                  //  if (logEntry(logEntry, appender.filters)) {
+                    if (logEntry(logEntry, filters)) {
                         //TODO log message into queue
                         String formatted = BaseLogFormatter.stringRepresentationForPayload(logEntry);
+                        String formattedMessage = formatted;
+                       // for (LogFormatter formatter :  appender.formatters) {
+                        for(LogFormatter formatter : formatters){
+                             formattedMessage =  formatter.formatLogEntry(logEntry, formatted);
+                        }
+
                         //   for(BaseLogFormatter formatter : appender.formatters){
                         //     formatted.fo
-                        appender.recordFormatterMessage(formatted, logEntry, synchronous);
+                        appender.recordFormatterMessage(formattedMessage, logEntry, synchronous);
                         appendersCount = appendersCount + 1;
                     }
                     logger = config.parent;
@@ -48,11 +62,11 @@ public class LogReceptacle {
 
 
     private boolean logEntry(LogEntry entry, ArrayList<LogFilter> passesFilters ) {
-           /* for(LogFilter filter : passesFilters) {
-            *//*if (!filter.shouldRecordLogEntry(entry) {
-                return false
-            }*//*
-           }*/
+            for(LogFilter filter : passesFilters) {
+                if (!filter.shouldRecordLogEntry(entry)) {
+                    return false;
+                }
+           }
             return true;
         }
 

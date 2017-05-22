@@ -11,8 +11,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 public abstract class LogAppender {
 
     public String name;
-    public ArrayList<LogFormatter> formatters;
-    public ArrayList<LogFilter> filters;
+    public ArrayList<LogFormatter> formatters = new ArrayList<>();
+    public ArrayList<LogFilter> filters = new ArrayList<>();
     public ThreadPoolExecutor threadPool;
 
     public abstract void recordFormatterMessage(String message, LogEntry logEntry/*, ThreadPoolExecutor executor */, boolean sychronousMode);

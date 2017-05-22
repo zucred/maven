@@ -69,7 +69,7 @@ public class DefaultLogFormatter extends BaseLogFormatter {
 
         if(showLogLevel) {
             String severity = stringRepresentationOfSeverity(entry.logLevel);
-            extendedDetails += severity;
+            extendedDetails += " "  + severity;
         }
 
         if(showLogIdentifier) {
@@ -82,14 +82,14 @@ public class DefaultLogFormatter extends BaseLogFormatter {
 
         if (showFileName){
             String fileName= entry.callingFilePath != null ? entry.callingFilePath : "(unknown)";
-            String caller = "[" + fileName + (showLineNumber ? entry.callingFileLine : "") + "] ";
+            String caller = "[" + fileName + (showLineNumber ? ": " + entry.callingFileLine : " ") + "] ";
             extendedDetails += caller;
         } else if (showLineNumber) {
             extendedDetails += "[" + entry.callingFileLine + "] ";
         }
 
         if(showFunctionName) {
-            extendedDetails += entry.callingFunction;
+            extendedDetails += entry.callingFunction + " ";
         }
 
         if (showThreadID) {

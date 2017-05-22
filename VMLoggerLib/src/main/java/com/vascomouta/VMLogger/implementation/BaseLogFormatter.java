@@ -116,7 +116,7 @@ public class BaseLogFormatter implements LogFormatter {
                 //String representation for value
                 return entry.callingFunction;
         }
-        return entry.callingFilePath + " " + entry.callingFunction + " " + entry.message;
+        return  entry.message;
     }
 
 
@@ -249,7 +249,7 @@ public class BaseLogFormatter implements LogFormatter {
 
 
     /**
-     Returns a string representation of an `NSDate` timestamp.
+     Returns a string representation of an `` timestamp.
 
      This implementation is used by the `DefaultLogFormatter` for creating
      string representations of a `LogEntry`'s `timestamp` property.
@@ -259,6 +259,9 @@ public class BaseLogFormatter implements LogFormatter {
      :returns:   The string representation of `timestamp`.
      */
     public String stringRepresentationOfTimestamp(Date timestamp) {
+        if(dateFormate == null){
+            dateFormate = timeStampFormatter();
+        }
         return dateFormate.format(timestamp);
     }
 
