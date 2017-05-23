@@ -37,6 +37,7 @@ public class Log extends RootLogConfiguration {
     private static LogChannel mDebugChannel;
     private static LogChannel mVerboseChannel;
 
+
     public static RootLogConfiguration getInstance(){
         if(mLogInstance == null){
            start(new RootLogConfiguration(), new LogReceptacle());
@@ -58,7 +59,7 @@ public class Log extends RootLogConfiguration {
         if(BuildConfig.DEBUG){
             rootLevel = LogLevel.DEBUG;
         }else{
-            rootLevel = LogLevel.INFO;
+            rootLevel = LogLevel.VERBOSE;
         }
         boolean rootSynchronous = false;
         HashMap<String, LogAppender> appenders = new HashMap<>();
@@ -139,11 +140,11 @@ public class Log extends RootLogConfiguration {
 
 
     public static void enable( boolean sychrounousMode){
-        LogLevel assignedLevel = LogLevel.INFO;
+        LogLevel assignedLevel = LogLevel.VERBOSE;
         ArrayList<LogAppender> appenders = new ArrayList<>();
         appenders.add(new ConsoleLogAppender());
         RootLogConfiguration root = new RootLogConfiguration(RootLogConfiguration.ROOT_IDENTIFIER, assignedLevel, null, appenders, sychrounousMode, false);
-        enable(root, LogLevel.INFO);
+        enable(root, LogLevel.VERBOSE);
     }
 
     public static void enable(RootLogConfiguration root, LogLevel minimumSeverity){
@@ -151,7 +152,7 @@ public class Log extends RootLogConfiguration {
     }
 
     private  static void  start(RootLogConfiguration root, LogReceptacle logReceptacle ) {
-        start(root, logReceptacle, LogLevel.INFO);
+        start(root, logReceptacle, LogLevel.VERBOSE);
     }
 
     private static void start(RootLogConfiguration root, LogReceptacle logReceptacle, LogLevel minimumSeverity) {
@@ -162,7 +163,7 @@ public class Log extends RootLogConfiguration {
                 createLogChannelWithSeverity(LogLevel.WARNING, logReceptacle, minimumSeverity),
                 createLogChannelWithSeverity(LogLevel.INFO, logReceptacle, minimumSeverity),
                 createLogChannelWithSeverity(LogLevel.DEBUG, logReceptacle, minimumSeverity),
-                createLogChannelWithSeverity(LogLevel.INFO, logReceptacle, minimumSeverity));
+                createLogChannelWithSeverity(LogLevel.VERBOSE, logReceptacle, minimumSeverity));
     }
 
 
@@ -213,13 +214,174 @@ public class Log extends RootLogConfiguration {
         verbose(message, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
     }
 
-    private void verbose(String message , String fileName, String methodName, int lineNumber){
-        message(mLogInstance, LogLevel.VERBOSE,message, fileName, methodName, lineNumber);
+    public void verbose(){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        verbose(stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
     }
 
+    public void verbose(Object value){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        verbose(value,stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void debug(String message){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        debug(message, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void debug(){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        debug(stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void debug(Object value){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        debug(value,stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void info(String message){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        info(message, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void info(){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        info(stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void info(Object value){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        info(value, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void warning(String message){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        warning(message, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void warning(){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        warning(stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void warning(Object value){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        warning(value, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void error(String message){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        error(message, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void error(){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        error(stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void error(Object value){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        error(value, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void severe(String message){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        severe(message, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void severe(){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        severe(stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void severe(Object value){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        severe(value, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    public void event(Object value){
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+        event(value, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
+    }
+
+    private void verbose(String message , String fileName, String methodName, int lineNumber){
+        message(mLogInstance, LogLevel.VERBOSE, message, fileName, methodName, lineNumber);
+    }
+
+    private void verbose( String fileName, String methodName, int lineNumber){
+        trace(mLogInstance, LogLevel.VERBOSE, fileName, methodName, lineNumber);
+    }
+
+    private void verbose(Object value , String fileName, String methodName, int lineNumber){
+        value(mLogInstance, LogLevel.VERBOSE, value, fileName, methodName, lineNumber);
+    }
+
+    private void debug(String message, String fileName, String methodName, int lineNumber){
+        message(mLogInstance, LogLevel.DEBUG, message, fileName, methodName, lineNumber);
+    }
+
+    private void debug(String fileName, String methodName, int lineNumber){
+        trace(mLogInstance, LogLevel.DEBUG, fileName, methodName, lineNumber);
+    }
+
+    private void debug(Object value, String fileName, String methodName, int lineNumber){
+        value(mLogInstance, LogLevel.DEBUG, value, fileName, methodName, lineNumber);
+    }
+
+    private void info(String message, String fileName, String methodName, int lineNumber){
+        message(mLogInstance, LogLevel.INFO, message, fileName, methodName, lineNumber);
+    }
+
+    private void info(String fileName , String methodName , int lineNumber){
+        trace(mLogInstance, LogLevel.INFO, fileName, methodName, lineNumber);
+    }
+
+    private  void info(Object value,String fileName,  String methodName,int lineNumber){
+        value(mLogInstance, LogLevel.INFO, value, fileName, methodName, lineNumber);
+    }
+
+    private void warning(String message, String fileName, String methodName,int lineNumber ){
+        message(mLogInstance, LogLevel.WARNING, message, fileName, methodName, lineNumber);
+    }
+
+    private void warning(String fileName, String methodName,int lineNumber){
+        trace(mLogInstance, LogLevel.WARNING, fileName, methodName, lineNumber);
+    }
+
+    private void warning(Object value, String fileName, String methodName,int lineNumber){
+        value(mLogInstance, LogLevel.WARNING, value, fileName, methodName, lineNumber);
+    }
+
+    private void error(String message, String fileName, String methodName,int lineNumber ){
+        message(mLogInstance, LogLevel.ERROR, message, fileName, methodName, lineNumber);
+    }
+
+    private void error(String fileName, String methodName,int lineNumber){
+        trace(mLogInstance, LogLevel.ERROR, fileName, methodName, lineNumber);
+    }
+
+    private void error(Object value, String fileName, String methodName,int lineNumber){
+        value(mLogInstance, LogLevel.ERROR, value, fileName, methodName, lineNumber);
+    }
+
+    private void severe(String message, String fileName, String methodName,int lineNumber ){
+        message(mLogInstance, LogLevel.SEVERE, message, fileName, methodName, lineNumber);
+    }
+
+    private void severe(String fileName, String methodName,int lineNumber){
+        trace(mLogInstance, LogLevel.SEVERE, fileName, methodName, lineNumber);
+    }
+
+    private void severe(Object value, String fileName, String methodName,int lineNumber){
+        value(mLogInstance, LogLevel.SEVERE, value, fileName, methodName, lineNumber);
+    }
+
+    private void event(Object value, String fileName, String methodName,int lineNumber){
+        value(mLogInstance, LogLevel.EVENT, value, fileName, methodName, lineNumber);
+    }
 
     private void trace(LogConfiguration logger, LogLevel severity , String fileName, String methodName, int lineNumber){
-
+        channelForSeverity(severity).trace(logger,fileName, methodName,lineNumber);
     }
 
 
@@ -228,36 +390,30 @@ public class Log extends RootLogConfiguration {
     }
 
 
-    private void value(LogConfiguration logger, LogLevel severity, Object value, String fileName, String methodName, int lineNumber)
-    {
-
+    private void value(LogConfiguration logger, LogLevel severity, Object value, String fileName, String methodName, int lineNumber) {
+        channelForSeverity(severity).value(logger, value, fileName, methodName, lineNumber);
     }
 
-
-
     private LogChannel channelForSeverity(LogLevel severity) {
-        LogChannel logChannel = mVerboseChannel;
         switch (severity) {
             case DEBUG:
-                logChannel = mDebugChannel;
-                break;
+                return mDebugChannel;
             case INFO:
-                logChannel = mInfoChannel;
+                return mInfoChannel;
             case WARNING:
-                logChannel = mWarningChannel;
+                return mWarningChannel;
             case ERROR:
-                logChannel = mErrorChannel;
+                return mErrorChannel;
             case SEVERE:
-                logChannel = mSevereChannel;
+                return mSevereChannel;
             case EVENT:
-                logChannel = mEventChannel;
-                break;
+                return mEventChannel;
         }
-        return logChannel;
+        return mVerboseChannel;
        }
 
-    public<T extends LogConfiguration > T getLogger(String identifier, T type){
-        return (T)mLogInstance.getChildren(identifier, this);
+    public LogConfiguration getLogger(String identifier){
+         return getInstance().getChildren(identifier, this);
     }
 
 }

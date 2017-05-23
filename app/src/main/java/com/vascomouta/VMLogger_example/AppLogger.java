@@ -1,6 +1,7 @@
 package com.vascomouta.VMLogger_example;
 
 import com.vascomouta.VMLogger.Log;
+import com.vascomouta.VMLogger.LogConfiguration;
 
 
 /**
@@ -9,20 +10,10 @@ import com.vascomouta.VMLogger.Log;
 
 public class AppLogger extends Log {
 
-    Log logger;
-
-     public  AppLogger(){
-
-     }
-
-    public AppLogger(Log log){
-       this.logger = log;
-    }
 
     public AppLogger getLogger(String identifier){
-        return new AppLogger(super.getLogger(identifier, this));
+         super.getLogger(identifier);
+        return this;
     }
-
-
 
 }

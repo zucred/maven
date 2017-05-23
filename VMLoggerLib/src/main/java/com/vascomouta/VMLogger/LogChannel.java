@@ -48,15 +48,15 @@ public class LogChannel {
     public void message(LogConfiguration logger, String message, String fileName, String methodName, int lineNumber) {
         int threadID = 0;
         //pthread_threadid_np(nil, &threadID)
-        LogEntry logEntry = new LogEntry(logger, Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), message, null);
+        LogEntry logEntry = new LogEntry(logger, Payload.MESSAGE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), message, null);
         receptacle.log(logEntry);
     }
 
-    public void value(LogConfiguration logger, String value, String fileName, String methodName, int lineNumber)
+    public void value(LogConfiguration logger, Object value, String fileName, String methodName, int lineNumber)
     {
         int threadID = 0;
         //pthread_threadid_np(nil, &threadID)
-        LogEntry logEntry = new LogEntry(logger, Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), "", value);
+        LogEntry logEntry = new LogEntry(logger, Payload.VALUE , severity,new HashMap<>(), fileName, methodName, lineNumber, threadID, new Date(), "", value);
         receptacle.log(logEntry);
     }
 

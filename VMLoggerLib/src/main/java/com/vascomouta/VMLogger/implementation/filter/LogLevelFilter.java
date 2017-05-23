@@ -17,6 +17,8 @@ public class LogLevelFilter implements LogFilter {
     /** Returns the `LogSeverity` associated with the receiver. */
     public LogLevel severity;
 
+    public LogLevelFilter(){}
+
     /**
      Initializes a new `LogSeverityFilter` instance.
      :param:     severity Specifies the `LogSeverity` that the filter will

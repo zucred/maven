@@ -2,6 +2,8 @@ package com.vascomouta.VMLogger.implementation;
 
 import android.os.Build;
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFormatter;
@@ -113,10 +115,9 @@ public class BaseLogFormatter implements LogFormatter {
             case MESSAGE:
                 return entry.message;
             case VALUE:
-                //String representation for value
-                return entry.callingFunction;
+                return stringRepresentationForValuePayload(entry.value);
         }
-        return  entry.message;
+        return  "";
     }
 
 
@@ -132,14 +133,11 @@ public class BaseLogFormatter implements LogFormatter {
      the return value of `stringRepresentationForValue(Any)` is
      returned.
      */
-    public static String stringRepresentationForValue(Object object){
-        String value = stringRepresentationForValue(object);
+    public static String stringRepresentationForValuePayload(@Nullable Object value){
             if(value != null){
-                stringRepresentationForValue(value);
-            }else{
-                return "(null)";
+               return stringRepresentationForValue(value);
             }
-        return value;
+                return "(null)";
     }
 
     public static String stringRepresentationForExec()
@@ -174,12 +172,9 @@ public class BaseLogFormatter implements LogFormatter {
 
          :returns:   A string representation of `value`.
          */
-       /* public static String stringRepresentationForValue(Object object){
-
-           return "value";
-
-         }*/
-
+        public static String stringRepresentationForValue(@NonNull Object value){
+           return "< " + value.toString() + " >";
+       }
 
     /**
      Returns a string representation of a given `LogSeverity` value.
@@ -193,13 +188,13 @@ public class BaseLogFormatter implements LogFormatter {
 
      :returns:   A string representation of the `severity` value.
      */
-    private  static String stringRepresentation(String string, int lenght, boolean right) {
-        if(lenght > 0) {
+    private  static String stringRepresentation(String string, int length, boolean right) {
+        if(length > 0) {
             String str = string;
             String[] characters = str.split(" ");
-            if(characters.length < lenght)
+            if(characters.length < length)
             {
-                while(characters.length < lenght) {
+                while(characters.length < length) {
                     if(right == true) {
                         str = str + " ";
                     } else {

@@ -4,6 +4,8 @@ import android.util.*;
 
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
 import com.vascomouta.VMLogger.implementation.filter.LogLevelFilter;
+import com.vascomouta.VMLogger.implementation.filter.MaximumLogLevelFilter;
+import com.vascomouta.VMLogger.implementation.filter.MinimumLogLevelFilter;
 import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.utils.BackgroundExecutor;
 
@@ -31,7 +33,9 @@ public class LogReceptacle {
                     && config.identifier != logEntry.logger.identifier)) {
                 for (LogAppender appender : config.appenders) {
                     ArrayList<LogFilter> filters = new ArrayList<>();
-                    filters.add(new LogLevelFilter(LogLevel.INFO));
+                    filters.add(new MinimumLogLevelFilter(LogLevel.VERBOSE));
+                    /*filters.add(new LogLevelFilter(LogLevel.DEBUG));
+                    filters.add(new LogLevelFilter(LogLevel.INFO));*/
                     ArrayList<LogFormatter> formatters = new ArrayList<>();
                     formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
 
@@ -50,13 +54,14 @@ public class LogReceptacle {
                         appender.recordFormatterMessage(formattedMessage, logEntry, synchronous);
                         appendersCount = appendersCount + 1;
                     }
-                    logger = config.parent;
                 }
+                logger = config.parent;
             } else if (!config.identifier.equals(logEntry.logger.identifier)) {
                 logger = config.parent;
             } else {
                 logger = null;
             }
+
         }while (config.additivity && logger != null) ;
     }
 

@@ -76,6 +76,7 @@ public class LogEntry {
         this.timestamp = timestamp;
         this.userInfo = userInfo;
         this.message = message;
+        this.value = value;
     }
 
 

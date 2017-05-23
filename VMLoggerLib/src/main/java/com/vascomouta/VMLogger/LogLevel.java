@@ -55,7 +55,7 @@ public enum LogLevel {
         return OFF.getLevel();
     }
 
-    public int getLogLevelValue(LogLevel level){
+    public static int getLogLevelValue(LogLevel level){
         switch (level){
             case ALL:
                 return ALL.getValue();

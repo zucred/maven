@@ -1,6 +1,5 @@
 package com.vascomouta.VMLogger.implementation;
 
-import com.vascomouta.VMLogger.Log;
 import com.vascomouta.VMLogger.LogAppender;
 import com.vascomouta.VMLogger.LogConfiguration;
 import com.vascomouta.VMLogger.LogLevel;

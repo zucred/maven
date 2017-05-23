@@ -32,7 +32,7 @@ public class BaseLogConfiguration extends LogConfiguration {
         this.appenders = appenders;
         this.synchronousMode = synchronousMode;
         this.parent = parent;
-        this.effectiveLogLevel = parent != null ? parent.effectiveLogLevel : LogLevel.INFO;
+        this.effectiveLogLevel = parent != null ? parent.effectiveLogLevel : LogLevel.VERBOSE;
     }
 
     public BaseLogConfiguration init(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
@@ -84,9 +84,9 @@ public class BaseLogConfiguration extends LogConfiguration {
     @Override
     public String details() {
         String details = "\n";
-        LogLevel assgined = assignedLogLevel;
-        if(assgined != null) {
-            details = details + assgined.description() + " - " + effectiveLogLevel.description() + "-"
+        LogLevel assigned = assignedLogLevel;
+        if(assigned != null) {
+            details = details + assigned.description() + " - " + effectiveLogLevel.description() + "-"
                     + fullName();
         }else{
             details = details + "null - " + effectiveLogLevel.description() + " - " + fullName();
