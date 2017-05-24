@@ -39,11 +39,12 @@ public class LogReceptacle {
                     && config.identifier != logEntry.logger.identifier)) {
                 for (LogAppender appender : config.appenders) {
                     ArrayList<LogFilter> filters = new ArrayList<>();
-                    ArrayList<String> types = new ArrayList<>();
+                    filters.add(new MinimumLogLevelFilter(LogLevel.VERBOSE));
+                    /*
+                     ArrayList<String> types = new ArrayList<>();
                     types.add("Map");
                     filters.add(new ValueTypeFilter(types));
-                    /*
-                     filters.add(new MinimumLogLevelFilter(LogLevel.VERBOSE));
+
                     Set<String> fileSet = new HashSet<>();
                     fileSet.add("MainActivity.java");
                     filters.add(new FileNameFilter(fileSet, false, false));

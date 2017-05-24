@@ -305,79 +305,75 @@ public class Log extends RootLogConfiguration {
     }
 
     private void verbose(String message , String fileName, String methodName, int lineNumber){
-        if(this instanceof Log) {
-            message(mLogInstance, LogLevel.VERBOSE, message, fileName, methodName, lineNumber);
-        }else{
-            message(this, LogLevel.VERBOSE, message, fileName, methodName, lineNumber);
-        }
+        message(this, LogLevel.VERBOSE, message, fileName, methodName, lineNumber);
     }
 
     private void verbose( String fileName, String methodName, int lineNumber){
-        trace(mLogInstance, LogLevel.VERBOSE, fileName, methodName, lineNumber);
+        trace(this, LogLevel.VERBOSE, fileName, methodName, lineNumber);
     }
 
     private void verbose(Object value , String fileName, String methodName, int lineNumber){
-        value(mLogInstance, LogLevel.VERBOSE, value, fileName, methodName, lineNumber);
+        value(this, LogLevel.VERBOSE, value, fileName, methodName, lineNumber);
     }
 
     private void debug(String message, String fileName, String methodName, int lineNumber){
-        message(mLogInstance, LogLevel.DEBUG, message, fileName, methodName, lineNumber);
+        message(this, LogLevel.DEBUG, message, fileName, methodName, lineNumber);
     }
 
     private void debug(String fileName, String methodName, int lineNumber){
-        trace(mLogInstance, LogLevel.DEBUG, fileName, methodName, lineNumber);
+        trace(this, LogLevel.DEBUG, fileName, methodName, lineNumber);
     }
 
     private void debug(Object value, String fileName, String methodName, int lineNumber){
-        value(mLogInstance, LogLevel.DEBUG, value, fileName, methodName, lineNumber);
+        value(this, LogLevel.DEBUG, value, fileName, methodName, lineNumber);
     }
 
     private void info(String message, String fileName, String methodName, int lineNumber){
-        message(mLogInstance, LogLevel.INFO, message, fileName, methodName, lineNumber);
+        message(this, LogLevel.INFO, message, fileName, methodName, lineNumber);
     }
 
     private void info(String fileName , String methodName , int lineNumber){
-        trace(mLogInstance, LogLevel.INFO, fileName, methodName, lineNumber);
+        trace(this, LogLevel.INFO, fileName, methodName, lineNumber);
     }
 
     private  void info(Object value,String fileName,  String methodName,int lineNumber){
-        value(mLogInstance, LogLevel.INFO, value, fileName, methodName, lineNumber);
+        value(this, LogLevel.INFO, value, fileName, methodName, lineNumber);
     }
 
     private void warning(String message, String fileName, String methodName,int lineNumber ){
-        message(mLogInstance, LogLevel.WARNING, message, fileName, methodName, lineNumber);
+        message(this, LogLevel.WARNING, message, fileName, methodName, lineNumber);
     }
 
     private void warning(String fileName, String methodName,int lineNumber){
-        trace(mLogInstance, LogLevel.WARNING, fileName, methodName, lineNumber);
+        trace(this, LogLevel.WARNING, fileName, methodName, lineNumber);
     }
 
     private void warning(Object value, String fileName, String methodName,int lineNumber){
-        value(mLogInstance, LogLevel.WARNING, value, fileName, methodName, lineNumber);
+        value(this, LogLevel.WARNING, value, fileName, methodName, lineNumber);
     }
 
     private void error(String message, String fileName, String methodName,int lineNumber ){
-        message(mLogInstance, LogLevel.ERROR, message, fileName, methodName, lineNumber);
+        message(this, LogLevel.ERROR, message, fileName, methodName, lineNumber);
     }
 
     private void error(String fileName, String methodName,int lineNumber){
-        trace(mLogInstance, LogLevel.ERROR, fileName, methodName, lineNumber);
+        trace(this, LogLevel.ERROR, fileName, methodName, lineNumber);
     }
 
     private void error(Object value, String fileName, String methodName,int lineNumber){
-        value(mLogInstance, LogLevel.ERROR, value, fileName, methodName, lineNumber);
+        value(this, LogLevel.ERROR, value, fileName, methodName, lineNumber);
     }
 
     private void severe(String message, String fileName, String methodName,int lineNumber ){
-        message(mLogInstance, LogLevel.SEVERE, message, fileName, methodName, lineNumber);
+        message(this, LogLevel.SEVERE, message, fileName, methodName, lineNumber);
     }
 
     private void severe(String fileName, String methodName,int lineNumber){
-        trace(mLogInstance, LogLevel.SEVERE, fileName, methodName, lineNumber);
+        trace(this, LogLevel.SEVERE, fileName, methodName, lineNumber);
     }
 
     private void severe(Object value, String fileName, String methodName,int lineNumber){
-        value(mLogInstance, LogLevel.SEVERE, value, fileName, methodName, lineNumber);
+        value(this, LogLevel.SEVERE, value, fileName, methodName, lineNumber);
     }
 
     private void event(Object value, String fileName, String methodName,int lineNumber){

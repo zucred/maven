@@ -10,19 +10,9 @@ import com.vascomouta.VMLogger.Log;
 public class AppLogger extends Log {
 
 
-    private Log log;
-
-    public AppLogger(String identifier){
-        super();
-        this.log = getLogger(identifier);
-    }
-
     public Log getLogger(String identifier){
-        return  super.getLogger(identifier);
+        return super.getLogger(identifier);
     }
 
-    public Log getLogger(){
-        return log;
-    }
 
 }

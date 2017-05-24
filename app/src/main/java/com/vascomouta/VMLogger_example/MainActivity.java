@@ -11,7 +11,8 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    Log logger = new AppLogger(MainActivity.class.getCanonicalName()).getLogger();
+    Log logger = new AppLogger().getLogger(MainActivity.class.getCanonicalName());
+    Log logger2 = new AppLogger().getLogger("com.vascomouta.VMLogger_example.MainActivity.GrandChildren");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,13 @@ public class MainActivity extends AppCompatActivity {
                 map.put("item1", new User("Test", "value"));
                 map.put("item2", new User("Test2", "value2"));
                 logger.info(map);
-             //   logger.info("Info message ");
-               // logger.debug("debug message");
-               // logger.warning("warning message");
-               // logger.error("Error message");
-               // logger.severe("severe message");
-              //  logger.event();
+                logger.info("Info message ");
+                logger.debug("debug message");
+                logger.warning("warning message");
+                logger.error("Error message");
+                logger.severe("severe message");
+                logger.event();
+                logger2.verbose("Grand Child relationship");
             }
         });
 

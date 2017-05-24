@@ -2,6 +2,8 @@ package com.vascomouta.VMLogger_example;
 
 import android.app.Application;
 
+import com.vascomouta.VMLogger.Log;
+
 /**
  * Created by Sourabh Kapoor on 17/05/17.
  */
@@ -9,7 +11,7 @@ import android.app.Application;
 public class VMLoggerApplication extends Application {
 
 
-    public AppLogger applogger;
+    public Log applogger;
 
     private static VMLoggerApplication mInstance;
 
@@ -28,7 +30,7 @@ public class VMLoggerApplication extends Application {
     public void onCreate() {
         super.onCreate();
         AppLogger.enable(true);
-        applogger = new AppLogger(VMLoggerApplication.class.getCanonicalName());
+        applogger = new AppLogger().getLogger(VMLoggerApplication.class.getCanonicalName());
         applogger.verbose("Message from Application class");
     }
 }

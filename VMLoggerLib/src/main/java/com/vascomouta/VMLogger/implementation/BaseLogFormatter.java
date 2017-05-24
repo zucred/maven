@@ -9,6 +9,7 @@ import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFormatter;
 import com.vascomouta.VMLogger.LogLevel;
 import com.vascomouta.VMLogger.enums.Payload;
+import com.vascomouta.VMLogger.utils.ObjectType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -173,11 +174,7 @@ public class BaseLogFormatter implements LogFormatter {
          :returns:   A string representation of `value`.
          */
         public static String stringRepresentationForValue(@NonNull Object value){
-            String type = "Class";
-
-            if(value.getClass().isArray()) {
-               type = "Array";
-            }
+            String type = ObjectType.getType(value);
            return "<" + type + " : " + value.toString() + " >";
        }
 
