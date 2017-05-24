@@ -36,7 +36,7 @@ public  class BaseLogAppender extends LogAppender {
 
     /** The GCD queue that should be used for logging actions related to
      the receiver. */
-    public ThreadPoolExecutor queue;
+    public Thread dispatchQueue;
 
     public BaseLogAppender(){
 
@@ -49,12 +49,12 @@ public  class BaseLogAppender extends LogAppender {
 
      :param:     formatters The `LogFormatter`s to use for the recorder.
      */
-    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, ArrayList<LogFilter> filters)
+    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, Thread dispatchQueue, ArrayList<LogFilter> filters)
     {
         this.name = name;
         this.formatters = formatters;
         formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
-        //this.queue =
+        this.dispatchQueue = dispatchQueue;
         this.filters = filters;
     }
 
@@ -62,7 +62,7 @@ public  class BaseLogAppender extends LogAppender {
     public LogAppender init(HashMap<String, Object> configuration) {
         LogAppender config = configuration(configuration);
         if(config != null){
-            return new BaseLogAppender(config.name, config.formatters, config.filters);
+            return new BaseLogAppender(config.name, config.formatters, config.dispatchQueue, config.filters);
         }
         return null;
     }
@@ -167,7 +167,7 @@ public  class BaseLogAppender extends LogAppender {
      production code.
      */
     @Override
-    public void recordFormatterMessage(String message, LogEntry logEntry, boolean sychronousMode) {
+    public void recordFormatterMessage(String message, LogEntry logEntry, Thread dispatchQueue, boolean sychronousMode) {
         //precondition(false, "Must override this")
     }
 

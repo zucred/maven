@@ -4,11 +4,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.vascomouta.VMLogger.Log;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    AppLogger logger = VMLoggerApplication.getInstance().applogger.getLogger(MainActivity.class.getCanonicalName());
+    Log logger = new AppLogger(MainActivity.class.getCanonicalName()).getLogger();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<User> users = new ArrayList<>();
                 users.add(new User("Test", "value"));
                 users.add(new User("Test2", "value1"));
-                logger.info(users);
+                HashMap<String, User> map = new HashMap<>();
+                map.put("item1", new User("Test", "value"));
+                map.put("item2", new User("Test2", "value2"));
+                logger.info(map);
              //   logger.info("Info message ");
                // logger.debug("debug message");
                // logger.warning("warning message");

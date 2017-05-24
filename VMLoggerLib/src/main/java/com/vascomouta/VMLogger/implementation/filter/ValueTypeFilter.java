@@ -1,0 +1,51 @@
+package com.vascomouta.VMLogger.implementation.filter;
+
+import com.vascomouta.VMLogger.LogEntry;
+import com.vascomouta.VMLogger.LogFilter;
+import com.vascomouta.VMLogger.utils.ObjectType;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ * A `LogFilter` implementation that filters out any `LogEntry` with a
+ `LogSeverity` less than a specified value.
+ */
+public class ValueTypeFilter implements LogFilter {
+
+    /**
+     * Returns the `LogSeverity` associated with the receiver.
+     */
+    public ArrayList<String> type;
+
+
+    /**
+    Initializes a new `LogSeverityFilter` instance.
+    :param:     severity Specifies the `LogSeverity` that the filter will
+    use to determine whether a given `LogEntry` should be
+    recorded. Only those log entries with a severity equal to
+     or more severe than this value will pass through the filter.
+    */
+    public ValueTypeFilter(ArrayList<String> types){
+        this.type = types;
+    }
+
+
+    @Override
+    public LogFilter init(HashMap<String, Object> configuration) {
+        return null;
+    }
+
+    @Override
+    public boolean shouldRecordLogEntry(LogEntry logEntry) {
+        switch (logEntry.payload){
+            case VALUE:
+                if(logEntry.value != null){
+                    String objectType = ObjectType.getType(logEntry.value);
+                    return type.contains(objectType) ? true :  false;
+                }
+            default:
+                return false;
+        }
+    }
+}

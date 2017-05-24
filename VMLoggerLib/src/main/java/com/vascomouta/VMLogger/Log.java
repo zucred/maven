@@ -305,7 +305,11 @@ public class Log extends RootLogConfiguration {
     }
 
     private void verbose(String message , String fileName, String methodName, int lineNumber){
-        message(mLogInstance, LogLevel.VERBOSE, message, fileName, methodName, lineNumber);
+        if(this instanceof Log) {
+            message(mLogInstance, LogLevel.VERBOSE, message, fileName, methodName, lineNumber);
+        }else{
+            message(this, LogLevel.VERBOSE, message, fileName, methodName, lineNumber);
+        }
     }
 
     private void verbose( String fileName, String methodName, int lineNumber){
@@ -412,8 +416,8 @@ public class Log extends RootLogConfiguration {
         return mVerboseChannel;
        }
 
-    public LogConfiguration getLogger(String identifier){
-         return getInstance().getChildren(identifier, this);
+    public Log getLogger(String identifier){
+         return (Log)getInstance().getChildren(identifier, this);
     }
 
 }

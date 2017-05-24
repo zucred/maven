@@ -173,7 +173,12 @@ public class BaseLogFormatter implements LogFormatter {
          :returns:   A string representation of `value`.
          */
         public static String stringRepresentationForValue(@NonNull Object value){
-           return "< " + value.toString() + " >";
+            String type = "Class";
+
+            if(value.getClass().isArray()) {
+               type = "Array";
+            }
+           return "<" + type + " : " + value.toString() + " >";
        }
 
     /**

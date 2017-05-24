@@ -28,7 +28,7 @@ public class VMLoggerApplication extends Application {
     public void onCreate() {
         super.onCreate();
         AppLogger.enable(true);
-        applogger = new AppLogger().getLogger(VMLoggerApplication.class.getCanonicalName());
+        applogger = new AppLogger(VMLoggerApplication.class.getCanonicalName());
         applogger.verbose("Message from Application class");
     }
 }

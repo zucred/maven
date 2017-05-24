@@ -3,13 +3,18 @@ package com.vascomouta.VMLogger;
 import android.util.*;
 
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
+import com.vascomouta.VMLogger.implementation.filter.FileNameFilter;
 import com.vascomouta.VMLogger.implementation.filter.LogLevelFilter;
 import com.vascomouta.VMLogger.implementation.filter.MaximumLogLevelFilter;
 import com.vascomouta.VMLogger.implementation.filter.MinimumLogLevelFilter;
+import com.vascomouta.VMLogger.implementation.filter.ValueTypeFilter;
+import com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter;
 import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.utils.BackgroundExecutor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -26,6 +31,7 @@ public class LogReceptacle {
         boolean synchronous = logger.synchronousMode;
 
         //TODO add in queue
+
         LogConfiguration config;
         do {
             config = logger;
@@ -33,11 +39,19 @@ public class LogReceptacle {
                     && config.identifier != logEntry.logger.identifier)) {
                 for (LogAppender appender : config.appenders) {
                     ArrayList<LogFilter> filters = new ArrayList<>();
-                    filters.add(new MinimumLogLevelFilter(LogLevel.VERBOSE));
-                    /*filters.add(new LogLevelFilter(LogLevel.DEBUG));
+                    ArrayList<String> types = new ArrayList<>();
+                    types.add("Map");
+                    filters.add(new ValueTypeFilter(types));
+                    /*
+                     filters.add(new MinimumLogLevelFilter(LogLevel.VERBOSE));
+                    Set<String> fileSet = new HashSet<>();
+                    fileSet.add("MainActivity.java");
+                    filters.add(new FileNameFilter(fileSet, false, false));
+                    filters.add(new LogLevelFilter(LogLevel.DEBUG));
                     filters.add(new LogLevelFilter(LogLevel.INFO));*/
                     ArrayList<LogFormatter> formatters = new ArrayList<>();
                     formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
+                    formatters.add(new Base64LogFormatter());
 
                   //  if (logEntry(logEntry, appender.filters)) {
                     if (logEntry(logEntry, filters)) {
@@ -47,11 +61,12 @@ public class LogReceptacle {
                        // for (LogFormatter formatter :  appender.formatters) {
                         for(LogFormatter formatter : formatters){
                              formattedMessage =  formatter.formatLogEntry(logEntry, formatted);
+                             appender.recordFormatterMessage(formattedMessage, logEntry, new Thread(), synchronous);
                         }
 
                         //   for(BaseLogFormatter formatter : appender.formatters){
                         //     formatted.fo
-                        appender.recordFormatterMessage(formattedMessage, logEntry, synchronous);
+                     //   appender.recordFormatterMessage(formattedMessage, logEntry, synchronous);
                         appendersCount = appendersCount + 1;
                     }
                 }

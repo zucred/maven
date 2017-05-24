@@ -21,8 +21,15 @@ public class ConsoleLogAppender extends BaseLogAppender {
 
 
     @Override
-    public void recordFormatterMessage(String message, LogEntry logEntry, boolean sychronousMode) {
-        System.out.println(message);
+    public void recordFormatterMessage(String message, LogEntry logEntry, Thread thread, boolean sychronousMode) {
+        //execute this code in thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(message);
+            }
+        }).start();
+
     }
 
 }
