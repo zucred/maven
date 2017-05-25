@@ -2031,6 +2031,7 @@ containing a value of this type.
         public static int abc_shareactionprovider_share_with_application=0x7f050011;
         public static int abc_toolbar_collapse_description=0x7f050012;
         public static int app_name=0x7f050021;
+        public static int file_line_formatter=0x7f050022;
         public static int search_menu_title=0x7f050013;
         public static int status_bar_notification_info_overflow=0x7f050014;
     }

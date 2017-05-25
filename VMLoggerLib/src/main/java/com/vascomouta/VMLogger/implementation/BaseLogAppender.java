@@ -8,37 +8,24 @@ import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogFilterConstant;
 import com.vascomouta.VMLogger.constant.LogFormatterConstant;
 import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
+import com.vascomouta.VMLogger.utils.DispatchQueue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.concurrent.ThreadPoolExecutor;
 
-/**
- * Created by Sourabh Kapoor on 16/05/17.
- */
 
 public  class BaseLogAppender extends LogAppender {
 
 
-    /** The name of the `LogRecorder`, which is constructed automatically
-     based on the `filePath`. */
-    public String name;
 
-    /** The `LogFormatter`s that will be used to format messages for
-     the `LogEntry`s to be logged. */
-    public ArrayList<LogFormatter> formatters;
+    protected BaseLogAppender(){
 
-    /** The list of `LogFilter`s to be used for filtering log messages. */
-    public ArrayList<LogFilter> filters;
+    }
 
-    /** The GCD queue that should be used for logging actions related to
-     the receiver. */
-    public Thread dispatchQueue;
-
-    public BaseLogAppender(){
+    protected BaseLogAppender(String name){
+      this.name = name;
 
     }
 
@@ -49,7 +36,7 @@ public  class BaseLogAppender extends LogAppender {
 
      :param:     formatters The `LogFormatter`s to use for the recorder.
      */
-    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, Thread dispatchQueue, ArrayList<LogFilter> filters)
+    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, DispatchQueue dispatchQueue, ArrayList<LogFilter> filters)
     {
         this.name = name;
         this.formatters = formatters;
@@ -67,15 +54,16 @@ public  class BaseLogAppender extends LogAppender {
         return null;
     }
 
+    //TODO check method on custom  configurations
     public LogAppender configuration(HashMap<String, Object> configuration) {
         String name;
         ArrayList<LogFormatter> formatters;
         ArrayList<LogFilter> filters;
         name = (String)configuration.get(LogAppenderConstant.Name);
         if(name != null) {
-            BaseLogAppender returnConfir = new BaseLogAppender();
-            returnConfir.name = name;
-            returnConfir.formatters = new ArrayList<>();
+            BaseLogAppender returnConfig = new BaseLogAppender();
+            returnConfig.name = name;
+            returnConfig.formatters = new ArrayList<>();
 
             HashMap<String, Object> encodersConfig = (HashMap<String, Object>) configuration.get(LogAppenderConstant.Encoder);
             //ArrayList<String> patternsConfig = ArrayList<String> configuration.get(LogAppenderConstant.P)
@@ -91,21 +79,21 @@ public  class BaseLogAppender extends LogAppender {
                         LogFormatter formatter = (LogFormatter) cons.newInstance();
                         if (formatter != null) {
                             formatter.init(formatterConfig);
-                            returnConfir.formatters.add(formatter);
+                            returnConfig.formatters.add(formatter);
                         }
-                    } catch (ClassNotFoundException ex) {
+                    } catch (ClassNotFoundException ex1){
 
-                    } catch (IllegalAccessException exception) {
+                    } catch(IllegalAccessException ex2 ){
 
-                    } catch (NoSuchMethodException ex1) {
+                    }catch( InvocationTargetException ex3) {
 
-                    } catch (InvocationTargetException ex2) {
+                    } catch (NoSuchMethodException ex4) {
 
-                    } catch (InstantiationException ex3) {
+                    } catch (InstantiationException ex5) {
 
                     }
                 } else {
-                    returnConfir.formatters.add(new DefaultLogFormatter());
+                    returnConfig.formatters.add(new DefaultLogFormatter());
                 }
 
                 //Appender filter
@@ -119,19 +107,19 @@ public  class BaseLogAppender extends LogAppender {
                                 Constructor<?> cons = c.getConstructor(String.class);
                                 LogFilter filter = (LogFilter) cons.newInstance();
                                 if (filter != null) {
-                                    //TODO initilize filter
+                                    //TODO initialize formatter
                                     // formatter.init(formatterConfig);
-                                    returnConfir.filters.add(filter);
+                                    returnConfig.filters.add(filter);
                                 }
-                            } catch (ClassNotFoundException ex) {
+                            } catch (ClassNotFoundException ex1){
 
-                            } catch (IllegalAccessException exception) {
+                            }catch (IllegalAccessException ex2){
 
-                            } catch (NoSuchMethodException ex1) {
+                            }catch(InvocationTargetException ex3) {
 
-                            } catch (InvocationTargetException ex2) {
+                            } catch (NoSuchMethodException ex4) {
 
-                            } catch (InstantiationException ex3) {
+                            } catch (InstantiationException ex5) {
 
                             }
                         }
@@ -139,7 +127,7 @@ public  class BaseLogAppender extends LogAppender {
                 }
 
             }
-            return returnConfir;
+            return returnConfig;
         }
        return null;
     }
@@ -167,7 +155,8 @@ public  class BaseLogAppender extends LogAppender {
      production code.
      */
     @Override
-    public void recordFormatterMessage(String message, LogEntry logEntry, Thread dispatchQueue, boolean sychronousMode) {
+    public void recordFormatterMessage(String message, LogEntry logEntry, DispatchQueue dispatchQueue, boolean synchronousMode) {
+       //TODO
         //precondition(false, "Must override this")
     }
 

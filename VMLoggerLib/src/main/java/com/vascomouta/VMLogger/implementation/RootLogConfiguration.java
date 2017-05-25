@@ -8,9 +8,6 @@ import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-/**
- * Created by Sourabh Kapoor  on 16/05/17.
- */
 
 public class RootLogConfiguration extends BaseLogConfiguration {
 
@@ -49,7 +46,7 @@ public class RootLogConfiguration extends BaseLogConfiguration {
 
     public String fullName() {
         String name;
-        if (parent != null && parent.identifier != RootLogConfiguration.ROOT_IDENTIFIER) {
+        if (parent != null && !parent.identifier.equals(RootLogConfiguration.ROOT_IDENTIFIER)) {
             LogConfiguration parent = this.parent;
             name = parent.fullName() + RootLogConfiguration.DOT + this.identifier;
         } else {
@@ -65,7 +62,7 @@ public class RootLogConfiguration extends BaseLogConfiguration {
             if (parent.getChildren(name) != null) {
                 return parent.getChildren(name);
             } else {
-                String tree = null;
+                String tree;
                 if(name.contains(Pattern.quote(RootLogConfiguration.DOT))) {
                     tree = name.substring(name.indexOf(Pattern.quote(RootLogConfiguration.DOT) + 1, name.length() - 1));
                     name = name.substring(0, name.indexOf(Pattern.quote(RootLogConfiguration.DOT)) - 1);

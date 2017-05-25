@@ -8,28 +8,23 @@ import android.support.annotation.Nullable;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFormatter;
 import com.vascomouta.VMLogger.LogLevel;
-import com.vascomouta.VMLogger.enums.Payload;
 import com.vascomouta.VMLogger.utils.ObjectType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by Sourabh Kapoor on 16/05/17.
- */
 
 public class BaseLogFormatter implements LogFormatter {
 
 
-    public DateFormat dateFormate;
-    public int severityTagLength;
-    public int identityTagLength;
+    private DateFormat dateFormate;
+    private int severityTagLength;
+    private int identityTagLength;
 
-    public BaseLogFormatter(){
+    protected BaseLogFormatter(){
 
     }
 
@@ -45,9 +40,8 @@ public class BaseLogFormatter implements LogFormatter {
     }
 
     private DateFormat timeStampFormatter(){
-        //toto apply DateFormatter
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS zzz" , Locale.US);
-        return dateFormat;
+        //ToDo apply DateFormatter
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS zzz" , Locale.US);
     }
 
 
@@ -141,6 +135,7 @@ public class BaseLogFormatter implements LogFormatter {
                 return "(null)";
     }
 
+    //TODO
     public static String stringRepresentationForExec()
     {
         //closure()
@@ -154,7 +149,7 @@ public class BaseLogFormatter implements LogFormatter {
              return  "[main] ";
         }else {
             String threadName =  Thread.currentThread().getName();
-            if(threadName != "") {
+            if(!threadName.equals("")) {
                 return "[" + threadName + "] ";
             }else {
                 return "[" + String.format("%p", Thread.currentThread() + "] ");
@@ -197,13 +192,14 @@ public class BaseLogFormatter implements LogFormatter {
             if(characters.length < length)
             {
                 while(characters.length < length) {
-                    if(right == true) {
+                    if(right) {
                         str = str + " ";
                     } else {
                         str = " " + str;
                     }
                 }
             } else {
+                //TODO
                // int index = characters[string.startIndex, offsetBy: lenght)];
                // str = string.substring(index , );
             }

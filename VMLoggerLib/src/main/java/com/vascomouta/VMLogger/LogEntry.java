@@ -5,9 +5,6 @@ import com.vascomouta.VMLogger.enums.Payload;
 import java.util.Date;
 import java.util.Map;
 
-/**
- * Created by Sourabh Kapoor on 16/05/17.
- */
 
 public class LogEntry {
 

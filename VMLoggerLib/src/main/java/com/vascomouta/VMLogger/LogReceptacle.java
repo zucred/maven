@@ -1,84 +1,83 @@
 package com.vascomouta.VMLogger;
 
-import android.util.*;
-
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
-import com.vascomouta.VMLogger.implementation.filter.FileNameFilter;
-import com.vascomouta.VMLogger.implementation.filter.LogLevelFilter;
-import com.vascomouta.VMLogger.implementation.filter.MaximumLogLevelFilter;
 import com.vascomouta.VMLogger.implementation.filter.MinimumLogLevelFilter;
-import com.vascomouta.VMLogger.implementation.filter.ValueTypeFilter;
 import com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter;
 import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
-import com.vascomouta.VMLogger.utils.BackgroundExecutor;
+import com.vascomouta.VMLogger.utils.DispatchQueue;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ThreadPoolExecutor;
 
-/**
- * Created by Sourabh Kapoor on 16/05/17.
- */
 
 public class LogReceptacle {
 
 
+    private DispatchQueue mQueue;
 
     public  void log(LogEntry logEntry) {
-        int appendersCount = 0;
-        LogConfiguration logger = logEntry.logger;
-        boolean synchronous = logger.synchronousMode;
+        boolean synchronous = logEntry.logger.synchronousMode;
+        dispatcherForQueue(getQueue(), synchronous, new Runnable() {
+            @Override
+            public void run() {
+                int appenderCount = 0;
+                LogConfiguration logger = logEntry.logger;
+                LogConfiguration config;
+                do {
+                    config = logger;
+                    if ((logEntry.logLevel.getValue() >= config.effectiveLogLevel.getValue()) || (config.effectiveLogLevel.getValue() == LogLevel.OFF.getValue()
+                            && !config.identifier.equals(logEntry.logger.identifier))) {
+                        for (LogAppender appender : config.appenders) {
+                            ArrayList<LogFilter> filters = new ArrayList<>();
+                            filters.add(new MinimumLogLevelFilter(LogLevel.VERBOSE));
+                            ArrayList<LogFormatter> formatters = new ArrayList<>();
+                            formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
+                            formatters.add(new Base64LogFormatter());
+                             /* ArrayList<String> types = new ArrayList<>();
+                                types.add("Map");
+                                filters.add(new ValueTypeFilter(types));
 
-        //TODO add in queue
+                                Set<String> fileSet = new HashSet<>();
+                                fileSet.add("MainActivity.java");
+                                filters.add(new FileNameFilter(fileSet, false, false));
+                                filters.add(new LogLevelFilter(LogLevel.DEBUG));
+                                filters.add(new LogLevelFilter(LogLevel.INFO));*/
+                                //TODO need to call dynamic filter
+                            //  if (logEntry(logEntry, appender.filters)) {
+                                if (logEntry(logEntry, filters)) {
+                                    //TODO log message into queue
+                                    //TODO need to call dynamic formatter
+                                    String formatted = BaseLogFormatter.stringRepresentationForPayload(logEntry);
+                                    String formattedMessage = formatted;
+                                    // for (LogFormatter formatter :  appender.formatters) {
+                                    for(LogFormatter formatter : formatters){
+                                        formattedMessage =  formatter.formatLogEntry(logEntry, formatted);
+                                        appender.recordFormatterMessage(formattedMessage, logEntry, appender.dispatchQueue, synchronous);
+                                    }
 
-        LogConfiguration config;
-        do {
-            config = logger;
-            if ((logEntry.logLevel.getValue() >= config.effectiveLogLevel.getValue()) || (config.effectiveLogLevel.getValue() == LogLevel.OFF.getValue()
-                    && config.identifier != logEntry.logger.identifier)) {
-                for (LogAppender appender : config.appenders) {
-                    ArrayList<LogFilter> filters = new ArrayList<>();
-                    filters.add(new MinimumLogLevelFilter(LogLevel.VERBOSE));
-                    /*
-                     ArrayList<String> types = new ArrayList<>();
-                    types.add("Map");
-                    filters.add(new ValueTypeFilter(types));
-
-                    Set<String> fileSet = new HashSet<>();
-                    fileSet.add("MainActivity.java");
-                    filters.add(new FileNameFilter(fileSet, false, false));
-                    filters.add(new LogLevelFilter(LogLevel.DEBUG));
-                    filters.add(new LogLevelFilter(LogLevel.INFO));*/
-                    ArrayList<LogFormatter> formatters = new ArrayList<>();
-                    formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
-                    formatters.add(new Base64LogFormatter());
-
-                  //  if (logEntry(logEntry, appender.filters)) {
-                    if (logEntry(logEntry, filters)) {
-                        //TODO log message into queue
-                        String formatted = BaseLogFormatter.stringRepresentationForPayload(logEntry);
-                        String formattedMessage = formatted;
-                       // for (LogFormatter formatter :  appender.formatters) {
-                        for(LogFormatter formatter : formatters){
-                             formattedMessage =  formatter.formatLogEntry(logEntry, formatted);
-                             appender.recordFormatterMessage(formattedMessage, logEntry, new Thread(), synchronous);
+                                    //   for(BaseLogFormatter formatter : appender.formatters){
+                                    //     formatted.fo
+                                    //   appender.recordFormatterMessage(formattedMessage, logEntry, synchronous);
+                                    appenderCount++;
+                                }
                         }
-
-                        //   for(BaseLogFormatter formatter : appender.formatters){
-                        //     formatted.fo
-                     //   appender.recordFormatterMessage(formattedMessage, logEntry, synchronous);
-                        appendersCount = appendersCount + 1;
+                        logger = config.parent;
+                    } else if (!config.identifier.equals(logEntry.logger.identifier)) {
+                        logger = config.parent;
+                    } else {
+                        logger = null;
                     }
-                }
-                logger = config.parent;
-            } else if (!config.identifier.equals(logEntry.logger.identifier)) {
-                logger = config.parent;
-            } else {
-                logger = null;
-            }
 
-        }while (config.additivity && logger != null) ;
+                }while (config.additivity && logger != null) ;
+            }
+        });
+
+    }
+
+    private DispatchQueue getQueue(){
+        if(mQueue == null){
+            mQueue = new DispatchQueue();
+        }
+        return mQueue;
     }
 
 
@@ -91,12 +90,12 @@ public class LogReceptacle {
             return true;
         }
 
-    private  void dispatcherForQueue( boolean  synchronous , Thread thread) {
-        if(synchronous) {
-             BackgroundExecutor.getInstance().execute(thread);
-        } else {
-            BackgroundExecutor.getInstance().execute(thread);
-        }
+    private  void dispatcherForQueue(DispatchQueue dispatchQueue,  boolean  synchronous , Runnable thread) {
+            if (synchronous) {
+                dispatchQueue.sync(thread);
+            } else {
+                dispatchQueue.async(thread);
+            }
     }
 
 

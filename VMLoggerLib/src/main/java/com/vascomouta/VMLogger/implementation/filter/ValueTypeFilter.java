@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 /**
  * A `LogFilter` implementation that filters out any `LogEntry` with a
- `LogSeverity` less than a specified value.
+ *`LogSeverity` less than a specified value.
  */
 public class ValueTypeFilter implements LogFilter {
 
@@ -20,12 +20,12 @@ public class ValueTypeFilter implements LogFilter {
 
 
     /**
-    Initializes a new `LogSeverityFilter` instance.
-    :param:     severity Specifies the `LogSeverity` that the filter will
-    use to determine whether a given `LogEntry` should be
-    recorded. Only those log entries with a severity equal to
-     or more severe than this value will pass through the filter.
-    */
+     * Initializes a new `LogSeverityFilter` instance.
+     * @param types severity Specifies the `LogSeverity` that the filter will
+     * use to determine whether a given `LogEntry` should be
+     * recorded. Only those log entries with a severity equal to
+     * or more severe than this value will pass through the filter.
+     */
     public ValueTypeFilter(ArrayList<String> types){
         this.type = types;
     }
@@ -42,7 +42,7 @@ public class ValueTypeFilter implements LogFilter {
             case VALUE:
                 if(logEntry.value != null){
                     String objectType = ObjectType.getType(logEntry.value);
-                    return type.contains(objectType) ? true :  false;
+                    return type.contains(objectType);
                 }
             default:
                 return false;

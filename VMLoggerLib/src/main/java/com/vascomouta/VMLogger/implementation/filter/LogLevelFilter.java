@@ -7,24 +7,24 @@ import com.vascomouta.VMLogger.constant.LogLevelFilterConstant;
 
 import java.util.HashMap;
 
-/**
- * Created by Sourabh Kapoor on 22/05/17.
- */
 
 public class LogLevelFilter implements LogFilter {
 
 
-    /** Returns the `LogSeverity` associated with the receiver. */
+    /**
+     * Returns the `LogSeverity` associated with the receiver.
+     */
     public LogLevel severity;
 
     public LogLevelFilter(){}
 
+
     /**
-     Initializes a new `LogSeverityFilter` instance.
-     :param:     severity Specifies the `LogSeverity` that the filter will
-     use to determine whether a given `LogEntry` should be
-     recorded. Only those log entries with a severity equal to
-     or more severe than this value will pass through the filter.
+     * Initializes a new `LogSeverityFilter` instance.
+     * @param severity severity Specifies the `LogSeverity` that the filter will
+     * use to determine whether a given `LogEntry` should be
+     * recorded. Only those log entries with a severity equal to
+     * or more severe than this value will pass through the filter.
      */
     public LogLevelFilter(LogLevel severity)
     {

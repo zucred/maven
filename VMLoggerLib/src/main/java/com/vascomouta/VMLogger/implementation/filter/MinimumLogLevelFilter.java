@@ -3,9 +3,6 @@ package com.vascomouta.VMLogger.implementation.filter;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogLevel;
 
-/**
- * Created by Sourabh Kapoor on 23/05/17.
- */
 
 public class MinimumLogLevelFilter extends LogLevelFilter{
 

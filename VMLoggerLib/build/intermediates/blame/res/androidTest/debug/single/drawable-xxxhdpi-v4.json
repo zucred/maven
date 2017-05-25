@@ -12,12 +12,12 @@
         "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/drawable-xxxhdpi-v4/abc_btn_check_to_on_mtrl_015.png"
     },
     {
-        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/abc_scrubber_control_to_pressed_mtrl_000.png",
-        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/drawable-xxxhdpi-v4/abc_scrubber_control_to_pressed_mtrl_000.png"
-    },
-    {
         "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/abc_btn_switch_to_on_mtrl_00001.9.png",
         "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/drawable-xxxhdpi-v4/abc_btn_switch_to_on_mtrl_00001.9.png"
+    },
+    {
+        "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/abc_scrubber_control_to_pressed_mtrl_000.png",
+        "source": "/Users/craterzone/.android/build-cache/18a575e4ec2d39062acca31ebf1d79126f7ec293/output/res/drawable-xxxhdpi-v4/abc_scrubber_control_to_pressed_mtrl_000.png"
     },
     {
         "merged": "/Users/craterzone/Asma/project/VMLogger/VMLogger/VMLoggerLib/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/abc_ic_menu_copy_mtrl_am_alpha.png",

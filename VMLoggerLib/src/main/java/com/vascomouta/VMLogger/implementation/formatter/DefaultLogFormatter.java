@@ -1,15 +1,10 @@
 package com.vascomouta.VMLogger.implementation.formatter;
 
 import com.vascomouta.VMLogger.LogEntry;
-import com.vascomouta.VMLogger.LogFormatter;
-import com.vascomouta.VMLogger.LogLevel;
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
 
 import java.util.Map;
 
-/**
- * Created by Sourabh Kapoor on 19/05/17.
- */
 
 public class DefaultLogFormatter extends BaseLogFormatter {
 
@@ -56,6 +51,7 @@ public class DefaultLogFormatter extends BaseLogFormatter {
 
     @Override
     public void init(Map<String, Object> configuration) {
+        //TODO
        // fatalError("init(configuration:) has not been implemented");
     }
 

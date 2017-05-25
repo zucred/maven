@@ -10,9 +10,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by Sourabh Kapoor  on 16/05/17.
- */
 
 public class BaseLogConfiguration extends LogConfiguration {
 
@@ -45,9 +42,8 @@ public class BaseLogConfiguration extends LogConfiguration {
         Iterator it = childMap.entrySet().iterator();
         while (it.hasNext()){
             Set childEntrySet = childMap.entrySet();
-            Iterator childIterator = childEntrySet.iterator();
-            while(childIterator.hasNext()){
-                Map.Entry childMe = (Map.Entry)childIterator.next();
+            for (Object aChildEntrySet : childEntrySet) {
+                Map.Entry childMe = (Map.Entry) aChildEntrySet;
                 children.add((LogConfiguration) childMe.getValue());
             }
         }

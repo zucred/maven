@@ -3,10 +3,6 @@ package com.vascomouta.VMLogger.utils;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * Created by Sourabh kapoor on 24/05/17.
- */
-
 public class ObjectType {
 
     public static String getType(Object object){
