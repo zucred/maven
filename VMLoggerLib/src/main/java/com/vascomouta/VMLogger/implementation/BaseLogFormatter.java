@@ -170,7 +170,11 @@ public class BaseLogFormatter implements LogFormatter {
          */
         public static String stringRepresentationForValue(@NonNull Object value){
             String type = ObjectType.getType(value);
-           return "<" + type + " : " + value.toString() + " >";
+            String desc= value.toString();
+            if(value.toString() instanceof  Object){
+                desc = "(no description)";
+            }
+           return "<" + type + " : " + desc + " >";
        }
 
     /**

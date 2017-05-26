@@ -62,12 +62,10 @@ public class RootLogConfiguration extends BaseLogConfiguration {
             if (parent.getChildren(name) != null) {
                 return parent.getChildren(name);
             } else {
-                String tree;
-                if(name.contains(Pattern.quote(RootLogConfiguration.DOT))) {
-                    tree = name.substring(name.indexOf(Pattern.quote(RootLogConfiguration.DOT) + 1, name.length() - 1));
-                    name = name.substring(0, name.indexOf(Pattern.quote(RootLogConfiguration.DOT)) - 1);
-                } else {
-                    tree = name;
+                String tree = null;
+                if(name.contains(RootLogConfiguration.DOT)) {
+                    tree = name.substring(name.indexOf(RootLogConfiguration.DOT) + 1, name.length());
+                    name = name.substring(0, name.indexOf(RootLogConfiguration.DOT));
                 }
 
                 if(parent.getChildren(name) != null){
@@ -78,7 +76,7 @@ public class RootLogConfiguration extends BaseLogConfiguration {
 
               LogConfiguration child = type.init(name, null, parent, new ArrayList<>(), synchronousMode);
                 parent.addChildren(child, false);
-                if(tree != null){
+                if(tree == null){
                     return child;
                 }
                 parent = child;

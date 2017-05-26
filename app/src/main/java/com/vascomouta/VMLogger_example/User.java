@@ -1,8 +1,5 @@
 package com.vascomouta.VMLogger_example;
 
-/**
- * Created by Asma on 23/05/17.
- */
 
 public class User {
 

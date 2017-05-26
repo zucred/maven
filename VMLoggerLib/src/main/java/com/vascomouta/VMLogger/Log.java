@@ -1,5 +1,7 @@
 package com.vascomouta.VMLogger;
 
+import android.content.Context;
+
 import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogConfigConstant;
 import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
@@ -45,7 +47,14 @@ public class Log extends RootLogConfiguration {
     }
 
 
-    public void enableFromMainBundleFile(){
+    public void enableFromMainBundleFile(Context context){
+
+       /* context.getResources().getXml(R.xml.vmlogger_info);
+        boolean isFileExist = true;
+        if(isFileExist){
+
+        }*/
+
 
     }
 
@@ -55,7 +64,7 @@ public class Log extends RootLogConfiguration {
         if(BuildConfig.DEBUG){
             rootLevel = LogLevel.DEBUG;
         }else{
-            rootLevel = LogLevel.VERBOSE;
+            rootLevel = LogLevel.INFO;
         }
         boolean rootSynchronous = false;
         HashMap<String, LogAppender> appenders = new HashMap<>();

@@ -18,25 +18,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.print_log).setOnClickListener(v -> {
-            logger.verbose("print Console Message");
-            logger.info();
-            ArrayList<User> users = new ArrayList<>();
-            users.add(new User("Test", "value"));
-            users.add(new User("Test2", "value1"));
-            HashMap<String, User> map = new HashMap<>();
-            map.put("item1", new User("Test", "value"));
-            map.put("item2", new User("Test2", "value2"));
-            logger.info(map);
-            logger.info("Info message ");
-            logger.debug("debug message");
-            logger.warning("warning message");
-            logger.error("Error message");
-            logger.severe("severe message");
-            logger.event(new User("Asma", "Khan"));
-            logger2.verbose("Grand Child relationship");
+        findViewById(R.id.print_log).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logger.verbose("print Console Message");
+                logger.info();
+                ArrayList<User> users = new ArrayList<>();
+                users.add(new User("Test", "value"));
+                users.add(new User("Test2", "value1"));
+                HashMap<String, User> map = new HashMap<>();
+                map.put("item1", new User("Test", "value"));
+                map.put("item2", new User("Test2", "value2"));
+                logger.info(map);
+                logger.info("Info message ");
+                logger.debug("debug message");
+                logger.warning("warning message");
+                logger.error("Error message");
+                logger.severe("severe message");
+                logger.event(new User("testEvent", "test"));
+                logger2.verbose("Grand Child relationship");
 
-            AppLogger.printVerbose("Static call");
+                AppLogger.printVerbose("Static call");
+            }
         });
 
     }
