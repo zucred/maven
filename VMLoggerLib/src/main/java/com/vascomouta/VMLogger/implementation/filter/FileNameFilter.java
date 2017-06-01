@@ -38,7 +38,7 @@ public class FileNameFilter implements LogFilter {
     /**
      *
      * @param fileName Name of the file to match against.
-     * @return true:     FileName added. false:    FileName already added.
+     * @return true: FileName added. false:    FileName already added.
      */
     public boolean add(String fileName){
         String fn;

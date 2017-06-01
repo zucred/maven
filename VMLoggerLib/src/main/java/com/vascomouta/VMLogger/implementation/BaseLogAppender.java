@@ -1,5 +1,6 @@
 package com.vascomouta.VMLogger.implementation;
 
+import com.vascomouta.VMLogger.Log;
 import com.vascomouta.VMLogger.LogAppender;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFilter;
@@ -8,6 +9,7 @@ import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogFilterConstant;
 import com.vascomouta.VMLogger.constant.LogFormatterConstant;
 import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
+import com.vascomouta.VMLogger.implementation.formatter.PatternLogFormatter;
 import com.vascomouta.VMLogger.utils.DispatchQueue;
 
 import java.lang.reflect.Constructor;
@@ -17,7 +19,6 @@ import java.util.HashMap;
 
 
 public  class BaseLogAppender extends LogAppender {
-
 
 
     protected BaseLogAppender(){
@@ -30,19 +31,25 @@ public  class BaseLogAppender extends LogAppender {
     }
 
     /**
-     Initialize a new `LogRecorderBase` instance to use the given parameters.
-
-     :param:     name The name of the log recorder, which must be unique.
-
-     :param:     formatters The `LogFormatter`s to use for the recorder.
+     * Initialize a new `LogRecorderBase` instance to use the given parameters.
+     * @param name The name of the log recorder, which must be unique.
+     * @param formatters formatters The `LogFormatter`s to use for the recorder.
      */
-    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, DispatchQueue dispatchQueue, ArrayList<LogFilter> filters)
-    {
+    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, ArrayList<LogFilter> filters){
         this.name = name;
         this.formatters = formatters;
         formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
-        this.dispatchQueue = dispatchQueue;
+        this.dispatchQueue = new DispatchQueue();
         this.filters = filters;
+    }
+
+
+    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, DispatchQueue dispatchQueue, ArrayList<LogFilter> filters) {
+        this.name = name;
+        this.formatters = formatters;
+        formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
+        this.dispatchQueue = new DispatchQueue();
+        this.filters = new ArrayList<>();
     }
 
     @Override
@@ -66,70 +73,67 @@ public  class BaseLogAppender extends LogAppender {
             returnConfig.formatters = new ArrayList<>();
 
             HashMap<String, Object> encodersConfig = (HashMap<String, Object>) configuration.get(LogAppenderConstant.Encoder);
-            //ArrayList<String> patternsConfig = ArrayList<String> configuration.get(LogAppenderConstant.P)
-            //TODO PatternLogFormatter
-
-            ArrayList<HashMap<String, Object>> customFormatterConfig = (ArrayList<HashMap<String, Object>>) encodersConfig.get(LogAppenderConstant.Formatters);
-            for (HashMap<String, Object> formatterConfig : customFormatterConfig) {
-                String className = (String) formatterConfig.get(LogFormatterConstant.class);
-                if (className != null) {
-                    try {
-                        Class<?> c = Class.forName(className);
-                        Constructor<?> cons = c.getConstructor(String.class);
-                        LogFormatter formatter = (LogFormatter) cons.newInstance();
-                        if (formatter != null) {
-                            formatter.init(formatterConfig);
-                            returnConfig.formatters.add(formatter);
+            if (encodersConfig != null) {
+                //TODO chnage to PatternLogFormatterConstants.Pattern
+                ArrayList<String> patternConfig = (ArrayList<String>) encodersConfig.get(LogAppenderConstant.Encoder);
+                if (patternConfig != null) {
+                    for (String pattern : patternConfig) {
+                        if (pattern.isEmpty()) {
+                            returnConfig.formatters.add(new PatternLogFormatter());
+                        } else {
+                            returnConfig.formatters.add(new PatternLogFormatter(pattern));
                         }
-                    } catch (ClassNotFoundException ex1){
-
-                    } catch(IllegalAccessException ex2 ){
-
-                    }catch( InvocationTargetException ex3) {
-
-                    } catch (NoSuchMethodException ex4) {
-
-                    } catch (InstantiationException ex5) {
-
                     }
-                } else {
-                    returnConfig.formatters.add(new DefaultLogFormatter());
                 }
 
-                //Appender filter
-                ArrayList<HashMap<String, Object>> filtersConfig = (ArrayList<HashMap<String, Object>>) configuration.get(LogAppenderConstant.Filters);
-                if (filtersConfig != null) {
-                    for (HashMap<String, Object> filterConfig : filtersConfig) {
-                        String filterClassName = (String) filterConfig.get(LogFilterConstant.class);
-                        if (filterClassName != null) {
+                ArrayList<HashMap<String, Object>> customFormatterConfig = (ArrayList<HashMap<String, Object>>) encodersConfig.get(LogAppenderConstant.Formatters);
+                if (customFormatterConfig != null) {
+                    for (HashMap<String, Object> formatterConfig : customFormatterConfig) {
+                        String className = (String) formatterConfig.get(LogFormatterConstant.class);
+                        if (className != null) {
                             try {
                                 Class<?> c = Class.forName(className);
                                 Constructor<?> cons = c.getConstructor(String.class);
-                                LogFilter filter = (LogFilter) cons.newInstance();
-                                if (filter != null) {
-                                    //TODO initialize formatter
-                                    // formatter.init(formatterConfig);
-                                    returnConfig.filters.add(filter);
+                                LogFormatter formatter = (LogFormatter) cons.newInstance();
+                                if (formatter != null) {
+                                    formatter.init(formatterConfig);
+                                    returnConfig.formatters.add(formatter);
                                 }
-                            } catch (ClassNotFoundException ex1){
-
-                            }catch (IllegalAccessException ex2){
-
-                            }catch(InvocationTargetException ex3) {
-
-                            } catch (NoSuchMethodException ex4) {
-
-                            } catch (InstantiationException ex5) {
-
+                            } catch (Exception ex) {
+                                Log.printError("Error on get formatter name from custom configurations" + ex.getMessage());
                             }
                         }
                     }
                 }
-
+            } else {
+                returnConfig.formatters.add(new DefaultLogFormatter());
             }
+
+            //Appender filter
+            ArrayList<HashMap<String, Object>> filtersConfig = (ArrayList<HashMap<String, Object>>) configuration.get(LogAppenderConstant.Filters);
+            if (filtersConfig != null) {
+                for (HashMap<String, Object> filterConfig : filtersConfig) {
+                    String filterClassName = (String) filterConfig.get(LogFilterConstant.class);
+                    if (filterClassName != null) {
+                        try {
+                            Class<?> c = Class.forName(filterClassName);
+                            Constructor<?> cons = c.getConstructor(String.class);
+                            LogFilter filter = (LogFilter) cons.newInstance();
+                            if (filter != null) {
+                                //TODO initialize formatter
+                                // formatter.init(formatterConfig);
+                                returnConfig.filters.add(filter);
+                            }
+                        } catch (Exception ex) {
+                            Log.printError("Error on get filter name from custom configurations" + ex.getMessage());
+                        }
+                    }
+                }
+            }
+
             return returnConfig;
         }
-       return null;
+        return null;
     }
 
 

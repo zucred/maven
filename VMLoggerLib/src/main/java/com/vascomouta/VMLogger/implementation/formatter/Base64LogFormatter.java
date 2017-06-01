@@ -6,10 +6,6 @@ import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-/**
- * Created by Sourabh kapoor on 24/05/17.
- */
-
 public class Base64LogFormatter extends BaseLogFormatter {
 
     private final static String UTF_8 = "UTF-8";

@@ -1,6 +1,7 @@
 package com.vascomouta.VMLogger;
 
 
+import java.util.ArrayList;
 
 public enum LogLevel {
 
@@ -116,5 +117,17 @@ public enum LogLevel {
             return EVENT;
         }
         return OFF;
+    }
+
+    public static ArrayList<LogLevel> getAllLevel(){
+        ArrayList<LogLevel> logLevels = new ArrayList<>();
+        logLevels.add(LogLevel.VERBOSE);
+        logLevels.add(LogLevel.DEBUG);
+        logLevels.add(LogLevel.INFO);
+        logLevels.add(LogLevel.WARNING);
+        logLevels.add(LogLevel.ERROR);
+        logLevels.add(LogLevel.SEVERE);
+        logLevels.add(LogLevel.EVENT);
+        return logLevels;
     }
 }

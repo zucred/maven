@@ -192,10 +192,8 @@ public class BaseLogFormatter implements LogFormatter {
     private  static String stringRepresentation(String string, int length, boolean right) {
         if(length > 0) {
             String str = string;
-            String[] characters = str.split(" ");
-            if(characters.length < length)
-            {
-                while(characters.length < length) {
+            if(str.length() < length) {
+                while(str.length() < length) {
                     if(right) {
                         str = str + " ";
                     } else {
@@ -203,10 +201,10 @@ public class BaseLogFormatter implements LogFormatter {
                     }
                 }
             } else {
-                //TODO
-               // int index = characters[string.startIndex, offsetBy: lenght)];
-               // str = string.substring(index , );
+                int index = str.indexOf(0, length);
+                str = string.substring(index);
             }
+            return str;
         }
         return string;
     }

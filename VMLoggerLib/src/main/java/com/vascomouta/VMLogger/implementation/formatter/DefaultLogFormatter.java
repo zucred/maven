@@ -1,5 +1,6 @@
 package com.vascomouta.VMLogger.implementation.formatter;
 
+import com.vascomouta.VMLogger.Log;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
 
@@ -24,14 +25,18 @@ public class DefaultLogFormatter extends BaseLogFormatter {
 
     }
 
+
     /**
-     Initializes the DefaultLogFormatter using the given settings.
-
-     :param:     includeTimestamp If `true`, the log entry timestamp will be
-     included in the formatted message.
-
-     :param:     includeThreadID If `true`, an identifier for the calling thread
-     will be included in the formatted message.
+     * Initializes the DefaultLogFormatter using the given settings.
+     * @param showThreadID
+     * @param showLogIdentifier
+     * @param showLogLevel
+     * @param showDate
+     * @param showMessage
+     * @param showThreadName
+     * @param showFunctionName
+     * @param showFileName
+     * @param showLineNumber
      */
     public DefaultLogFormatter(boolean showThreadID, boolean showLogIdentifier, boolean showLogLevel,
                                boolean showDate, boolean showMessage, boolean showThreadName,
@@ -51,8 +56,7 @@ public class DefaultLogFormatter extends BaseLogFormatter {
 
     @Override
     public void init(Map<String, Object> configuration) {
-        //TODO
-       // fatalError("init(configuration:) has not been implemented");
+        Log.printError("init(configuration:) has not been implemented");
     }
 
     @Override

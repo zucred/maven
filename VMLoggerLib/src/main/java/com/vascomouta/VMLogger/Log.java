@@ -8,7 +8,6 @@ import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
 import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,19 +41,24 @@ public class Log extends RootLogConfiguration {
         return mLogInstance;
     }
 
-    public void enableFromFile(){
-
+    public HashMap<Object, Object> enableFromFile(Context context){
+         return enableFromMainBundleFile(context);
     }
 
 
-    public void enableFromMainBundleFile(Context context){
-
-       /* context.getResources().getXml(R.xml.vmlogger_info);
+    public HashMap<Object, Object> enableFromMainBundleFile(Context context){
+        context.getResources().getXml(R.xml.vmlogger_info);
         boolean isFileExist = true;
-        if(isFileExist){
-
-        }*/
-
+        if(isFileExist) {
+            if (BuildConfig.DEBUG) {
+                enable(LogLevel.DEBUG, false);
+            } else {
+                enable(LogLevel.VERBOSE, false);
+            }
+        }else {
+            error("Log configuration file not found: " + "fileName");
+        }
+        return null;
 
     }
 
@@ -121,7 +125,7 @@ public class Log extends RootLogConfiguration {
                         parent.addChildren(newChild, true);
                     }
                 } else {
-                    printWarning("Trying to configure ROOT looger in logger childreen configuration. Reserved word, children ignored");
+                    printWarning("Trying to configure ROOT logger in logger children configuration. Reserved word, children ignored");
                 }
             } else {
                 printError("Log configuration for (logName) is not valid. Dictionary<String, Any> is required");
@@ -132,8 +136,7 @@ public class Log extends RootLogConfiguration {
 
     }
 
-    public static void enable( boolean sychrounousMode){
-        LogLevel assignedLevel = LogLevel.VERBOSE;
+    public static void enable(LogLevel assignedLevel,  boolean sychrounousMode){
         ArrayList<LogAppender> appenders = new ArrayList<>();
         appenders.add(new ConsoleLogAppender());
         RootLogConfiguration root = new RootLogConfiguration(RootLogConfiguration.ROOT_IDENTIFIER, assignedLevel, null, appenders, sychrounousMode, false);
