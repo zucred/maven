@@ -43,7 +43,7 @@ public class FileLogAppender extends BaseLogAppender {
      * @param formatters formatters The `LogFormatter`s to use for the recorder.
      */
     public FileLogAppender(String filePath, ArrayList<LogFormatter> formatters){
-        new FileLogAppender(filePath, filePath, formatters, new ArrayList<>());
+        new FileLogAppender(filePath, filePath, formatters, new ArrayList<LogFilter>());
     }
 
     public FileLogAppender(String name, String filePath, ArrayList<LogFormatter> formatters, ArrayList<LogFilter> filters){

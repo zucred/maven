@@ -16,7 +16,7 @@ public class RootLogConfiguration extends BaseLogConfiguration {
     public static String DOT = ".";
 
     public RootLogConfiguration() {
-        super(RootLogConfiguration.ROOT_IDENTIFIER, LogLevel.INFO, null, new ArrayList<>(), false);
+        super(RootLogConfiguration.ROOT_IDENTIFIER, LogLevel.INFO, null, new ArrayList<LogAppender>(), false);
     }
 
     public RootLogConfiguration(LogLevel assignedLevel, ArrayList<LogAppender> appenders, boolean synchronousMode) {

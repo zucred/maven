@@ -1,12 +1,18 @@
 package com.vascomouta.VMLogger;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogConfigConstant;
 import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
 import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
-
+import com.vascomouta.VMLogger.utils.XMLParser;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,12 +21,12 @@ import java.util.Map;
 
 public class Log extends RootLogConfiguration {
 
-    private String LoggerInfoFile = "VMLogger-Info";
-    private String LoggerConfig  = "LOGGER_CONFIG";
-    private String LoggerAppenders = "LOGGER_APPENDERS";
-    private String LoggerLevel = "LOGGER_LEVEL";
-    private String LoggerSynchronous = "LOGGER_SYNCHRONOUS";
-    private String Appenders = "APPENDERS";
+    private static String LoggerInfoFile = "VMLogger-Info";
+    private static String LoggerConfig  = "LOGGER_CONFIG";
+    private static String LoggerAppenders = "LOGGER_APPENDERS";
+    private static String LoggerLevel = "LOGGER_LEVEL";
+    private static String LoggerSynchronous = "LOGGER_SYNCHRONOUS";
+    private static String Appenders = "APPENDERS";
 
     private static RootLogConfiguration mLogInstance;
     private static HashMap<String, LogAppender> mAppenders;
@@ -41,29 +47,82 @@ public class Log extends RootLogConfiguration {
         return mLogInstance;
     }
 
-    public HashMap<Object, Object> enableFromFile(Context context){
-         return enableFromMainBundleFile(context);
+    /**
+     *
+     * @param context
+     * @param fileName
+     * @return
+     */
+    public static HashMap<Object, Object> enableFromFile(Context context, String fileName){
+        if(fileName == null){
+            fileName = Log.LoggerInfoFile;
+        }
+        File directory = Environment.getExternalStorageDirectory();
+        if(directory != null){
+            String filePath = directory.getPath().concat(fileName);
+            File file = new File(filePath);
+            if(filePath != null && file.exists()){
+               HashMap<Object, Object> configuration = readConfigurationFromFile(filePath);
+                if(configuration != null){
+                    return configuration;
+                }
+            }
+        }
+
+        return enableFromMainBundleFile(context);
     }
 
 
-    public HashMap<Object, Object> enableFromMainBundleFile(Context context){
-        context.getResources().getXml(R.xml.vmlogger_info);
-        boolean isFileExist = true;
-        if(isFileExist) {
-            if (BuildConfig.DEBUG) {
-                enable(LogLevel.DEBUG, false);
-            } else {
-                enable(LogLevel.VERBOSE, false);
-            }
+    /**
+     *
+     * @param context
+     * @return
+     */
+    public static HashMap<Object, Object> enableFromMainBundleFile(Context context){
+        HashMap<Object, Object> config = XMLParser.readConfigurationFromXml(context);
+       if(config != null){
+          enable(config);
+        if (BuildConfig.DEBUG) {
+            enable(LogLevel.DEBUG, false);
+        } else {
+            enable(LogLevel.VERBOSE, false);
+        }
         }else {
-            error("Log configuration file not found: " + "fileName");
+            printError("Log configuration file not found: " + "fileName");
+        }
+        return config;
+
+    }
+
+    /**
+     *
+     * @param filePath
+     * @return
+     */
+    private static HashMap<Object, Object> readConfigurationFromFile(String filePath){
+        try {
+            HashMap<Object, Object> map = new HashMap<>();
+            BufferedReader in = new BufferedReader(new FileReader(filePath));
+            String line = "";
+            while ((line = in.readLine()) != null) {
+                String parts[] = line.split("\t");
+                map.put(parts[0], parts[1]);
+            }
+            in.close();
+            return map;
+        }catch (FileNotFoundException ex){
+            printError("Configurations file not exist");
+        }catch (IOException e){
+            printError("Error on read data from file");
         }
         return null;
-
     }
 
+
+
+
     //TODO check code on custom configurations
-    public void enable(HashMap<Object, Object> values){
+    private static void enable(HashMap<Object, Object> values){
         LogLevel rootLevel;
         if(BuildConfig.DEBUG){
             rootLevel = LogLevel.DEBUG;
@@ -118,7 +177,7 @@ public class Log extends RootLogConfiguration {
             Map.Entry child = (Map.Entry) o;
             HashMap<String, Object> configuration = (HashMap<String, Object>) child.getValue();
             if (configuration != null) {
-                LogConfiguration currentChild = root.getChildren((String) child.getKey(), this);
+                LogConfiguration currentChild = root.getChildren((String) child.getKey(), getInstance());
                 if (currentChild != null && currentChild.parent != null) {
                     LogConfiguration newChild = new Log(currentChild.identifier, parent, appenders, configuration);
                     if (newChild != null) {
@@ -128,14 +187,19 @@ public class Log extends RootLogConfiguration {
                     printWarning("Trying to configure ROOT logger in logger children configuration. Reserved word, children ignored");
                 }
             } else {
-                printError("Log configuration for (logName) is not valid. Dictionary<String, Any> is required");
+                printError("Log configuration for (logName) is not valid. HashMap<String, Object> is required");
             }
         }
         enable(root, rootLevel);
-        verbose("Log Configuration:\n" + values.toString());
+        printVerbose("Log Configuration:\n" + values.toString());
 
     }
 
+    /**
+     *
+     * @param assignedLevel
+     * @param sychrounousMode
+     */
     public static void enable(LogLevel assignedLevel,  boolean sychrounousMode){
         ArrayList<LogAppender> appenders = new ArrayList<>();
         appenders.add(new ConsoleLogAppender());

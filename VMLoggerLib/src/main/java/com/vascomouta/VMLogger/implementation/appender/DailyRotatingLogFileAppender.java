@@ -54,7 +54,7 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
     }
 
     public DailyRotatingLogFileAppender(int daysToKeep, String directoryPath, ArrayList<LogFormatter> formatters) {
-        super("DailyRotatingLogFileRecorder/directoryPath", formatters);
+       // super("DailyRotatingLogFileRecorder/directoryPath", formatters);
         this.daysToKeep = daysToKeep;
         this.directoryPath = directoryPath;
         try {

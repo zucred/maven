@@ -5,7 +5,6 @@ import com.vascomouta.VMLogger.constant.PatternLogFormatterConstants;
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
 
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PatternLogFormatter  extends BaseLogFormatter{
@@ -14,7 +13,7 @@ public class PatternLogFormatter  extends BaseLogFormatter{
 
     public static String lengthPattern = "([-]?\\d{1,2}[.][-]?\\d{1,2}|[.][-]?\\d{1,2}|[-]?\\d{1,2})";
 
-    public static String MD = "%" + lengthPattern + "?" + "(X)";
+    public static String MDC = "%" + lengthPattern + "?" + "(X)";
     public static String identifier = "%" + lengthPattern + "?" + "(logger|lo|c)";
     public static String level = "%" + lengthPattern + "?" + "(level|le|p)";
     public static String date = "%" + lengthPattern + "?" + "(date|d)";
@@ -30,10 +29,31 @@ public class PatternLogFormatter  extends BaseLogFormatter{
 
     public static String grouping = "%" + lengthPattern + "[(].{1,}[)]";
 
-    private static String[] patterns = {identifier,level,date,message,thread,caller,function,file,line,lineSeparator};
+    private static String[] patterns = {MDC,identifier,level,date,message,thread,caller,function,file,line,lineSeparator};
     //private static let patterns: [String] = [date]
 
-    private String pattern;
+    String pattern;
+
+    /**
+     * Patterns
+     * c -> Logger Pattern
+     * C -> CLass Name Pattern
+     * d -> DatePattern
+     * F -> FileLocation
+     * l -> FullLocation
+     * L -> lineLocation
+     * m -> Message
+     * n -> LineSeparator
+     * M -> MethodLocation
+     * p -> LevelPattern
+     * r -> RelativeTime Pattern
+     * t -> Thread Pattern
+     * x -> NDC  Pattern
+     * X -> Properties Pattern
+     * sn -> SequenceNumber
+     * throwable -> ThrowableInformation
+     * i -> IntegerPattern
+     */
 
 
     public PatternLogFormatter(){
@@ -41,14 +61,7 @@ public class PatternLogFormatter  extends BaseLogFormatter{
     }
 
     /**
-     *  /**
-     Initializes the DefaultLogFormatter using the given settings.
-
-     :param:     includeTimestamp If `true`, the log entry timestamp will be
-     included in the formatted message.
-
-     :param:     includeThreadID If `true`, an identifier for the calling thread
-     wil
+     *Initializes the DefaultLogFormatter using the given settings.
      * @param pattern
      */
     public PatternLogFormatter(String pattern){
@@ -73,10 +86,10 @@ public class PatternLogFormatter  extends BaseLogFormatter{
      */
     @Override
     public String formatLogEntry(LogEntry logEntry, String message) {
-        return super.formatLogEntry(logEntry, message);
+        super.formatLogEntry(logEntry, message);
         String resultString = pattern;
         Pattern regex = Pattern.compile(PatternLogFormatter.grouping);
-        if (regex != null) {
+        /*if (regex != null) {
             Matcher matcher = regex.matcher(resultString);
             String content = resultString.substring(matcher.start());
             String[] range = content.split("(");
@@ -84,8 +97,8 @@ public class PatternLogFormatter  extends BaseLogFormatter{
             String subPattern = content.substring(replacementTange);
             subPattern = patternReplacement(logEntry, message, subPattern);
             subPattern = formatSpecifiers(content, subPattern);
-            resultString = resultString.replaceAll(matcher.start(), subPattern);
-        }
+           // resultString = resultString.replaceAll(matcher.start(), subPattern);
+        }*/
         return  patternReplacement(logEntry, message, resultString);
 
     }
@@ -95,20 +108,21 @@ public class PatternLogFormatter  extends BaseLogFormatter{
     public String formatSpecifiers(String expression, String replacement) {
         String newReplacement = replacement;
         Pattern regex = Pattern.compile(PatternLogFormatter.lengthPattern);
-        if (regex != null) {
+        /*if (regex != null) {
             Matcher matches = regex.matches(expression, replacement);
             if(matches.groupCount() > 0) {
                 int min;
                 int max;
                 String specifier = expression.substring(matches[0].range)
                 String[] values = specifier.components(separatedBy: ".")
-            }
+            }*/
+        return null;
     }
 
 
     public String patternReplacement(LogEntry entry, String message, String pattern){
         int offset = 0;
-        int[] orderMatches = [:]
+       /* i orderMatches = [:]
         String details = pattern;
         for(String pat : PatternLogFormatter.patterns) {
             Pattern regex = Pattern.compile(pat);
@@ -118,7 +132,8 @@ public class PatternLogFormatter  extends BaseLogFormatter{
                 orderMatches[match.range.location] = match
             }
             }
-        }
+        }*/
+       return null;
 
     }
 

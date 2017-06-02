@@ -16,9 +16,9 @@ public abstract class LogConfiguration {
 
     public ArrayList<LogAppender> appenders;
 
-    public boolean synchronousMode;
+    public static boolean synchronousMode;
 
-    public LogConfiguration parent;
+    public static LogConfiguration parent;
 
     public ArrayList<LogConfiguration> children;
 
