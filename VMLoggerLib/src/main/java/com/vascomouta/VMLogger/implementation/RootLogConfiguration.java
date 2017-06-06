@@ -6,7 +6,6 @@ import com.vascomouta.VMLogger.LogLevel;
 import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 
 public class RootLogConfiguration extends BaseLogConfiguration {
@@ -60,7 +59,10 @@ public class RootLogConfiguration extends BaseLogConfiguration {
         LogConfiguration parent = this;
         while (true) {
             if (parent.getChildren(name) != null) {
-                return parent.getChildren(name);
+                //return parent.getChildren(name);
+                RootLogConfiguration child = (RootLogConfiguration) parent.getChildren(name);
+                return type.init(child.identifier, child.assignedLogLevel, child.parent, child.appenders, child.synchronousMode);
+               // return type;
             } else {
                 String tree = null;
                 if(name.contains(RootLogConfiguration.DOT)) {
@@ -74,7 +76,7 @@ public class RootLogConfiguration extends BaseLogConfiguration {
                     continue;
                 }
 
-              LogConfiguration child = type.init(name, null, parent, new ArrayList<>(), synchronousMode);
+               LogConfiguration child = type.init(name, null, parent, new ArrayList<>(), synchronousMode);
                 parent.addChildren(child, false);
                 if(tree == null){
                     return child;

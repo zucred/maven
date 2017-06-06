@@ -8,12 +8,12 @@ import com.vascomouta.VMLogger.LogFormatter;
 import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogFilterConstant;
 import com.vascomouta.VMLogger.constant.LogFormatterConstant;
+import com.vascomouta.VMLogger.constant.PatternLogFormatterConstants;
 import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.implementation.formatter.PatternLogFormatter;
 import com.vascomouta.VMLogger.utils.DispatchQueue;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,7 +38,6 @@ public  class BaseLogAppender extends LogAppender {
     public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, ArrayList<LogFilter> filters){
         this.name = name;
         this.formatters = formatters;
-        formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
         this.dispatchQueue = new DispatchQueue();
         this.filters = filters;
     }
@@ -47,7 +46,6 @@ public  class BaseLogAppender extends LogAppender {
     public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, DispatchQueue dispatchQueue, ArrayList<LogFilter> filters) {
         this.name = name;
         this.formatters = formatters;
-        formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
         this.dispatchQueue = new DispatchQueue();
         this.filters = new ArrayList<>();
     }
@@ -56,17 +54,23 @@ public  class BaseLogAppender extends LogAppender {
     public LogAppender init(HashMap<String, Object> configuration) {
         LogAppender config = configuration(configuration);
         if(config != null){
-            return new BaseLogAppender(config.name, config.formatters, config.dispatchQueue, config.filters);
+            this.name = config.name;
+            this.formatters = config.formatters;
+            this.dispatchQueue = new DispatchQueue();
+            this.filters = config.filters;
+            return this;
         }
         return null;
     }
 
-    //TODO check method on custom  configurations
+
+    /**
+     *
+     * @param configuration
+     * @return
+     */
     public LogAppender configuration(HashMap<String, Object> configuration) {
-        String name;
-        ArrayList<LogFormatter> formatters;
-        ArrayList<LogFilter> filters;
-        name = (String)configuration.get(LogAppenderConstant.Name);
+       String name = (String)configuration.get(LogAppenderConstant.Name);
         if(name != null) {
             BaseLogAppender returnConfig = new BaseLogAppender();
             returnConfig.name = name;
@@ -74,8 +78,7 @@ public  class BaseLogAppender extends LogAppender {
 
             HashMap<String, Object> encodersConfig = (HashMap<String, Object>) configuration.get(LogAppenderConstant.Encoder);
             if (encodersConfig != null) {
-                //TODO chnage to PatternLogFormatterConstants.Pattern
-                ArrayList<String> patternConfig = (ArrayList<String>) encodersConfig.get(LogAppenderConstant.Encoder);
+                ArrayList<String> patternConfig = (ArrayList<String>) encodersConfig.get(PatternLogFormatterConstants.Pattern);
                 if (patternConfig != null) {
                     for (String pattern : patternConfig) {
                         if (pattern.isEmpty()) {
@@ -89,11 +92,11 @@ public  class BaseLogAppender extends LogAppender {
                 ArrayList<HashMap<String, Object>> customFormatterConfig = (ArrayList<HashMap<String, Object>>) encodersConfig.get(LogAppenderConstant.Formatters);
                 if (customFormatterConfig != null) {
                     for (HashMap<String, Object> formatterConfig : customFormatterConfig) {
-                        String className = (String) formatterConfig.get(LogFormatterConstant.class);
+                        String className = (String) formatterConfig.get(LogFormatterConstant.ClassName);
                         if (className != null) {
                             try {
                                 Class<?> c = Class.forName(className);
-                                Constructor<?> cons = c.getConstructor(String.class);
+                                Constructor<?> cons = c.getConstructors()[0];
                                 LogFormatter formatter = (LogFormatter) cons.newInstance();
                                 if (formatter != null) {
                                     formatter.init(formatterConfig);
@@ -109,19 +112,19 @@ public  class BaseLogAppender extends LogAppender {
                 returnConfig.formatters.add(new DefaultLogFormatter());
             }
 
+            returnConfig.filters = new ArrayList<>();
             //Appender filter
             ArrayList<HashMap<String, Object>> filtersConfig = (ArrayList<HashMap<String, Object>>) configuration.get(LogAppenderConstant.Filters);
             if (filtersConfig != null) {
                 for (HashMap<String, Object> filterConfig : filtersConfig) {
-                    String filterClassName = (String) filterConfig.get(LogFilterConstant.class);
+                    String filterClassName = (String) filterConfig.get(LogFilterConstant.className);
                     if (filterClassName != null) {
                         try {
                             Class<?> c = Class.forName(filterClassName);
-                            Constructor<?> cons = c.getConstructor(String.class);
+                            Constructor<?> cons = c.getConstructors()[0];
                             LogFilter filter = (LogFilter) cons.newInstance();
                             if (filter != null) {
-                                //TODO initialize formatter
-                                // formatter.init(formatterConfig);
+                                 filter.init(filterConfig);
                                 returnConfig.filters.add(filter);
                             }
                         } catch (Exception ex) {

@@ -5,9 +5,6 @@ import android.app.Application;
 import com.vascomouta.VMLogger.Log;
 import com.vascomouta.VMLogger.LogLevel;
 
-/**
- * Created by Sourabh Kapoor on 17/05/17.
- */
 
 public class VMLoggerApplication extends Application {
 
@@ -30,8 +27,8 @@ public class VMLoggerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppLogger.enable(LogLevel.VERBOSE, false);
-       // AppLogger.enableFromFile(getApplicationContext(), null);
+       // AppLogger.enable(LogLevel.VERBOSE, false);
+        AppLogger.enableFromFile(getApplicationContext(), null);
         applogger = new AppLogger().getLogger(VMLoggerApplication.class.getCanonicalName());
         applogger.verbose("Message from Application class");
     }

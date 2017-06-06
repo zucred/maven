@@ -27,38 +27,20 @@ public class LogReceptacle {
                     if ((logEntry.logLevel.getValue() >= config.effectiveLogLevel.getValue()) || (config.effectiveLogLevel.getValue() == LogLevel.OFF.getValue()
                             && !config.identifier.equals(logEntry.logger.identifier))) {
                         for (LogAppender appender : config.appenders) {
-                            ArrayList<LogFilter> filters = new ArrayList<>();
-                            filters.add(new MinimumLogLevelFilter(LogLevel.VERBOSE));
-                            ArrayList<LogFormatter> formatters = new ArrayList<>();
-                            formatters.add(new DefaultLogFormatter(true, true, true, true, true, true, true, true, true));
-                            formatters.add(new Base64LogFormatter());
-                             /* ArrayList<String> types = new ArrayList<>();
-                                types.add("Map");
-                                filters.add(new ValueTypeFilter(types));
-
-                                Set<String> fileSet = new HashSet<>();
-                                fileSet.add("MainActivity.java");
-                                filters.add(new FileNameFilter(fileSet, false, false));
-                                filters.add(new LogLevelFilter(LogLevel.DEBUG));
-                                filters.add(new LogLevelFilter(LogLevel.INFO));*/
-                                //TODO need to call dynamic filter
-                            //  if (logEntry(logEntry, appender.filters)) {
-                                if (logEntry(logEntry, filters)) {
-                                    //TODO log message into queue
-                                    //TODO need to call dynamic formatter
-                                    String formatted = BaseLogFormatter.stringRepresentationForPayload(logEntry);
-                                    String formattedMessage = formatted;
-                                    // for (LogFormatter formatter :  appender.formatters) {
-                                    for(LogFormatter formatter : formatters){
-                                        formattedMessage =  formatter.formatLogEntry(logEntry, formatted);
+                            if (logEntry(logEntry, appender.filters)) {
+                                dispatcherForQueue(appender.dispatchQueue, synchronous, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String formatted = BaseLogFormatter.stringRepresentationForPayload(logEntry);
+                                         String formattedMessage = formatted;
+                                        for (LogFormatter formatter : appender.formatters) {
+                                            formattedMessage = formatter.formatLogEntry(logEntry, formatted);
+                                        }
                                         appender.recordFormatterMessage(formattedMessage, logEntry, appender.dispatchQueue, synchronous);
+                                        //  appenderCount++;
                                     }
-
-                                    //   for(BaseLogFormatter formatter : appender.formatters){
-                                    //     formatted.fo
-                                    //   appender.recordFormatterMessage(formattedMessage, logEntry, synchronous);
-                                    appenderCount++;
-                                }
+                                });
+                            }
                         }
                         logger = config.parent;
                     } else if (!config.identifier.equals(logEntry.logger.identifier)) {
@@ -67,11 +49,12 @@ public class LogReceptacle {
                         logger = null;
                     }
 
-                }while (config.additivity && logger != null) ;
+                } while (config.additivity && logger != null);
             }
         });
 
     }
+
 
     private DispatchQueue getQueue(){
         if(mQueue == null){
@@ -82,13 +65,16 @@ public class LogReceptacle {
 
 
     private boolean logEntry(LogEntry entry, ArrayList<LogFilter> passesFilters ) {
-            for(LogFilter filter : passesFilters) {
-                if (!filter.shouldRecordLogEntry(entry)) {
-                    return false;
-                }
-           }
-            return true;
+        if(passesFilters == null){
+            return false;
         }
+        for(LogFilter filter : passesFilters) {
+            if (!filter.shouldRecordLogEntry(entry)) {
+                return false;
+            }
+       }
+            return true;
+    }
 
     private  void dispatcherForQueue(DispatchQueue dispatchQueue,  boolean  synchronous , Runnable thread) {
             if (synchronous) {

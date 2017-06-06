@@ -34,8 +34,8 @@ public enum LogLevel {
 
     public String getLogLevel(LogLevel level){
         switch (level){
-            case ALL:
-                return ALL.getLevel();
+            case OFF:
+                return OFF.getLevel();
             case VERBOSE:
                 return VERBOSE.getLevel();
             case DEBUG:
@@ -51,12 +51,12 @@ public enum LogLevel {
             case EVENT:
                 return EVENT.getLevel();
         }
-        return OFF.getLevel();
+        return ALL.getLevel();
     }
 
     public static int getLogLevelValue(LogLevel level){
         switch (level){
-            case ALL:
+            case OFF:
                 return ALL.getValue();
             case VERBOSE:
                 return VERBOSE.getValue();
@@ -73,12 +73,12 @@ public enum LogLevel {
             case EVENT:
                 return EVENT.getValue();
         }
-        return OFF.getValue();
+        return ALL.getValue();
     }
 
     public String description() {
         switch (this) {
-            case ALL:
+            case OFF:
                 return ALL.getLevel();
             case VERBOSE:
                 return VERBOSE.getLevel();
@@ -95,12 +95,12 @@ public enum LogLevel {
             case EVENT:
                 return EVENT.getLevel();
         }
-        return OFF.getLevel();
+        return ALL.getLevel();
     }
 
     public static LogLevel getLogLevel(String level){
-        if(level.equals(ALL.getLevel())){
-            return ALL;
+        if(level.equals(OFF.getLevel())){
+            return OFF;
         }else if(level.equals(VERBOSE.getLevel())){
             return VERBOSE;
         }else if(level.equals(DEBUG.getLevel())){
@@ -116,7 +116,7 @@ public enum LogLevel {
         }else if(level.equals(EVENT.getLevel())){
             return EVENT;
         }
-        return OFF;
+        return ALL;
     }
 
     public static ArrayList<LogLevel> getAllLevel(){

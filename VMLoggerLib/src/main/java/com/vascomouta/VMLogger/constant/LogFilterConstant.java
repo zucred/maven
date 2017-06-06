@@ -2,5 +2,5 @@ package com.vascomouta.VMLogger.constant;
 
 public class LogFilterConstant {
 
-        static String Class = "class";
+      public  static String className = "class";
 }

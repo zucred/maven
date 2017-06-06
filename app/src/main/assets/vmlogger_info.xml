@@ -3,7 +3,7 @@
     <map>
         <key>APPENDERS</key>
         <array>
-            <map>
+           <!-- <map>
                 <key>name</key>
                 <string>server</string>
                 <key>class</key>
@@ -28,7 +28,7 @@
                         </array>
                     </map>
                 </array>
-            </map>
+            </map> -->
             <map>
                 <key>name</key>
                 <string>console</string>
@@ -36,10 +36,10 @@
                 <string>com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender</string>
                 <key>encoder</key>
                 <map>
-                    <key>pattern</key>
+                    <!--<key>pattern</key>
                     <array>
                         <string>%.30d [%thread][%Caller] %-7p %-20.-20c - %m</string>
-                    </array>
+                    </array>-->
                     <key>formatters</key>
                     <array>
                         <map>
@@ -47,7 +47,18 @@
                             <string>com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter</string>
                         </map>
                     </array>
-                </map>
+                    </map>
+               <!-- <key>filters</key>
+                <array>
+                    <map>
+                        <key>class</key>
+                        <string>com.vascomouta.VMLogger.implementation.filter.ValueTypeFilter</string>
+                        <key>types</key>
+                        <array>
+                            <string>com.vascomouta.VMLogger_example.MainActivity</string>
+                        </array>
+                    </map>
+                </array>-->
             </map>
             <map>
                 <key>encoder</key>
@@ -87,12 +98,23 @@
             <map>
                 <key>appenders</key>
                 <array>
-                    <string>file</string>
+                    <string>console</string>
                 </array>
                 <key>level</key>
                 <string>info</string>
                 <key>additivity</key>
-                <string>false<string/>
+                <string>false</string>
+            </map>
+            <key>com.vascomouta.VMLogger_example.MainActivity</key>
+            <map>
+                <key>appenders</key>
+                <array>
+                    <string>console</string>
+                </array>
+                <key>level</key>
+                <string>info</string>
+                <key>additivity</key>
+                <string>false</string>
             </map>
         </map>
         <key>LOGGER_APPENDERS</key>

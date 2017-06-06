@@ -5,8 +5,10 @@ import android.os.Environment;
 
 import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogConfigConstant;
+import com.vascomouta.VMLogger.implementation.BaseLogConfiguration;
 import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
 import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
+import com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter;
 import com.vascomouta.VMLogger.utils.XMLParser;
 import java.io.BufferedReader;
 import java.io.File;
@@ -80,16 +82,17 @@ public class Log extends RootLogConfiguration {
      */
     public static HashMap<Object, Object> enableFromMainBundleFile(Context context){
         HashMap<Object, Object> config = XMLParser.readConfigurationFromXml(context);
-       if(config != null){
-          enable(config);
+       if(config != null) {
+            enable(config);
+           return config;
+       }
         if (BuildConfig.DEBUG) {
             enable(LogLevel.DEBUG, false);
         } else {
             enable(LogLevel.VERBOSE, false);
         }
-        }else {
-            printError("Log configuration file not found: " + "fileName");
-        }
+        printError("Log configuration file not found: " + "fileName");
+
         return config;
 
     }
@@ -138,14 +141,14 @@ public class Log extends RootLogConfiguration {
             String className = (String) appender.get(LogAppenderConstant.Class);
             try {
                 Class<?> c = Class.forName(className);
-                Constructor<?> cons = c.getConstructor(String.class);
+                Constructor<?> cons = c.getConstructors()[0];
                 LogAppender logAppender = (LogAppender) cons.newInstance();
                 if (logAppender != null) {
                     LogAppender appender1 = logAppender.init(appender);
                     appenders.put(appender1.name, appender1);
                 }
             } catch (Exception ex) {
-               printError(ex.getMessage());
+              android.util.Log.v("Error","Error on add appenders" +  ex.getMessage());
             }
         }
 
@@ -154,8 +157,7 @@ public class Log extends RootLogConfiguration {
         if (rootAppenderConfig != null) {
             for (String rootAppender : rootAppenderConfig) {
                 if (appenders.get(rootAppender) != null) {
-                   // rootAppenders.add(appenders.get(rootAppender));
-                    rootAppenders.add(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER));
+                    rootAppenders.add(appenders.get(rootAppender));
                 }
             }
         }else if(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER) != null){
@@ -172,16 +174,16 @@ public class Log extends RootLogConfiguration {
          if(values.containsKey(LoggerConfig)) {
              rootChildren = (HashMap<String, HashMap<String, Object>>) values.get(LoggerConfig);
          }
-        RootLogConfiguration root = new RootLogConfiguration(rootLevel, rootAppenders, synchronousMode);
+        RootLogConfiguration root = new RootLogConfiguration(rootLevel, rootAppenders, rootSynchronous);
         for (Object o : rootChildren.entrySet()) {
             Map.Entry child = (Map.Entry) o;
             HashMap<String, Object> configuration = (HashMap<String, Object>) child.getValue();
             if (configuration != null) {
                 LogConfiguration currentChild = root.getChildren((String) child.getKey(), getInstance());
                 if (currentChild != null && currentChild.parent != null) {
-                    LogConfiguration newChild = new Log(currentChild.identifier, parent, appenders, configuration);
+                    LogConfiguration newChild = new Log(currentChild.identifier, currentChild.parent, appenders, configuration);
                     if (newChild != null) {
-                        parent.addChildren(newChild, true);
+                        currentChild.parent.addChildren(newChild, true);
                     }
                 } else {
                     printWarning("Trying to configure ROOT logger in logger children configuration. Reserved word, children ignored");
@@ -191,7 +193,7 @@ public class Log extends RootLogConfiguration {
             }
         }
         enable(root, rootLevel);
-        printVerbose("Log Configuration:\n" + values.toString());
+      //  printVerbose("Log Configuration:\n" + values.toString());
 
     }
 
@@ -254,9 +256,39 @@ public class Log extends RootLogConfiguration {
     }
 
     public Log(String identifier, LogConfiguration parent, Map<String, LogAppender> allAppenders, HashMap<String, Object> configuration) {
-            super(identifier, (LogLevel) configuration.get(LogConfigConstant.Level), null, (ArrayList<LogAppender>)configuration.get(LogConfigConstant.Appenders),
-                    (boolean)configuration.get(LogConfigConstant.Synchronous), (boolean)configuration.get(LogConfigConstant.Additivity));
+        boolean additivity = false;
+        LogLevel logLevel = LogLevel.VERBOSE;
+        ArrayList<LogAppender> appenders = new ArrayList<>();
+        boolean synchronous = false;
+
+        /// Log level
+        String level = (String)configuration.get(LogConfigConstant.Level);
+        if(level != null){
+            logLevel = LogLevel.getLogLevel(level);
+        }
+
+        if(configuration.get(LogConfigConstant.Additivity) != null){
+            additivity = Boolean.valueOf((String)configuration.get(LogConfigConstant.Additivity));
+        }
+
+        String logSynchronous = (String)configuration.get(LogConfigConstant.Synchronous);
+        if(logSynchronous != null){
+            synchronous = Boolean.valueOf(logSynchronous);
+        }
+
+        ArrayList<String> config = (ArrayList<String>) configuration.get(LogConfigConstant.Appenders);
+        if(config != null){
+            for(String appenderName : config){
+                LogAppender appender = allAppenders.get(appenderName);
+                if(appender != null){
+                    appenders.add(appender);
+                }
+            }
+        }
+
+        new Log(identifier, logLevel, null, appenders,synchronous, additivity);
     }
+
 
     public  Log(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
                      boolean synchronousMode, boolean additivity) {

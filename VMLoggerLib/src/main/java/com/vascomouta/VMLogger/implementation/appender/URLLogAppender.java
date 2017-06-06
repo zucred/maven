@@ -23,7 +23,9 @@ public class URLLogAppender extends BaseLogAppender {
 
     public String parameter;
 
+    public URLLogAppender(){
 
+    }
 
     /**
      * Attempts to initialize a new `FileLogRecorder` instance to use the

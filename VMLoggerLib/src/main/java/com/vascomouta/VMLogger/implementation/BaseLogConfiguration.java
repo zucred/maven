@@ -55,7 +55,7 @@ public class BaseLogConfiguration extends LogConfiguration {
         childConfiguration.setParent(this);
         childMap.put(childConfiguration.identifier, childConfiguration);
         LogConfiguration oldConfiguration = childMap.get(childConfiguration.identifier);
-        if(oldConfiguration != null && copyGrandChildren){
+        if(oldConfiguration != null && copyGrandChildren && oldConfiguration.children != null){
              for(LogConfiguration grandChildren : oldConfiguration.children){
                 childConfiguration.addChildren(grandChildren, copyGrandChildren);
              }
