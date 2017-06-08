@@ -3,6 +3,7 @@ package com.vascomouta.VMLogger.implementation.filter;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFilter;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +20,8 @@ public class FileNameFilter implements LogFilter {
 
     // Internal list of fileNames to match against
     private Set<String> fileNamesToMatch = new HashSet<>();
+
+    FileNameFilter(){}
 
 
     /**

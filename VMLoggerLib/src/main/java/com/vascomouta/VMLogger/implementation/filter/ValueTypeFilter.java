@@ -18,6 +18,10 @@ public class ValueTypeFilter implements LogFilter {
      */
     public ArrayList<String> type;
 
+    public ValueTypeFilter(){
+
+    }
+
 
     /**
      * Initializes a new `LogSeverityFilter` instance.

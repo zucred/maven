@@ -3,7 +3,7 @@
     <map>
         <key>APPENDERS</key>
         <array>
-           <!-- <map>
+            <map>
                 <key>name</key>
                 <string>server</string>
                 <key>class</key>
@@ -28,7 +28,7 @@
                         </array>
                     </map>
                 </array>
-            </map> -->
+            </map>
             <map>
                 <key>name</key>
                 <string>console</string>
@@ -45,6 +45,14 @@
                         <map>
                             <key>class</key>
                             <string>com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter</string>
+                        </map>
+                        <map>
+                            <key>class</key>
+                            <string>com.vascomouta.VMLogger.implementation.formatter.PrePostFixLogFormatter</string>
+                        </map>
+                        <map>
+                            <key>class</key>
+                            <string>com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter</string>
                         </map>
                     </array>
                     </map>
@@ -67,13 +75,17 @@
                     <array>
                         <string>%.30d [%thread][%Caller] %-7p %-20.-20c - %m</string>
                     </array>
-                    <!--<key>formatters</key>
+                    <key>formatters</key>
                     <array>
                         <map>
                             <key>class</key>
-                            <string>ANSIColorLogFormatter</string>
+                            <string>com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter</string>
                         </map>
-                    </array>-->
+                        <map>
+                            <key>class</key>
+                            <string>com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter</string>
+                        </map>
+                    </array>
                 </map>
                 <key>name</key>
                 <string>file</string>
@@ -119,10 +131,7 @@
         </map>
         <key>LOGGER_APPENDERS</key>
         <array>
-            <string>console</string>
+            <string>server</string>
         </array>
     </map>
-
-
-
 </root>

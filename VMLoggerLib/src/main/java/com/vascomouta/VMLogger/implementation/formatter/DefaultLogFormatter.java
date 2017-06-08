@@ -53,10 +53,10 @@ public class DefaultLogFormatter extends BaseLogFormatter {
     }
 
 
-
+//TODO add fatal error
     @Override
     public void init(Map<String, Object> configuration) {
-        Log.printError("init(configuration:) has not been implemented");
+      //  Log.printError("init(configuration:) has not been implemented");
     }
 
     @Override

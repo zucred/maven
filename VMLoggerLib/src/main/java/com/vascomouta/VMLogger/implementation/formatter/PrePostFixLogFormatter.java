@@ -72,7 +72,15 @@ public class PrePostFixLogFormatter extends BaseLogFormatter {
      */
     @Override
     public String formatLogEntry(LogEntry logEntry, String message) {
-        return  "(" + prefixStrings.get(logEntry.logLevel) + message + postfixStrings.get(logEntry.logLevel) +  ")";
+        return  "(" + getPrefixString(logEntry.logLevel) + message + getPostfixString(logEntry.logLevel) +  ")";
+    }
+
+    private String getPrefixString(LogLevel logLevel){
+       return  prefixStrings.get(logLevel) != null ? prefixStrings.get(logLevel) : "";
+    }
+
+    private String getPostfixString(LogLevel logLevel){
+        return  postfixStrings.get(logLevel) != null ? prefixStrings.get(logLevel) : "";
     }
 
     //TODO change

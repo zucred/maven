@@ -10,6 +10,8 @@ import com.vascomouta.VMLogger.LogLevel;
  */
 public class MaximumLogLevelFilter extends LogLevelFilter {
 
+    public MaximumLogLevelFilter(){}
+
      public MaximumLogLevelFilter(LogLevel logLevel){
          super(logLevel);
      }

@@ -133,7 +133,7 @@ public class URLLogAppender extends BaseLogAppender {
      * associated with the receiver returned a non-`nil` string.
      * @param message message The message to record.
      * @param logEntry  entry The `LogEntry` for which `message` was created.
-     * @param dispatchQueue urrentQueue The GCD queue on which the function is being  executed.
+     * @param dispatchQueue currentQueue The GCD queue on which the function is being  executed.
      * @param synchronousMode synchronousMode If `true`, the receiver should record the
      * log entry synchronously. Synchronous mode is used during
      * debugging to help ensure that logs reflect the latest state
@@ -141,9 +141,8 @@ public class URLLogAppender extends BaseLogAppender {
      */
     @Override
     public void recordFormatterMessage(String message, LogEntry logEntry, DispatchQueue dispatchQueue, boolean synchronousMode) {
-
-
         String url = (this.method == "GET" ? this.url : this.url);
+        System.out.println(message + "from URLLogAppender");
         //ToDO Api calling
     }
 

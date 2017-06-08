@@ -6,6 +6,8 @@ import com.vascomouta.VMLogger.LogLevel;
 
 public class MinimumLogLevelFilter extends LogLevelFilter{
 
+    public MinimumLogLevelFilter(){}
+
     public MinimumLogLevelFilter(LogLevel logLevel){
         super(logLevel);
     }

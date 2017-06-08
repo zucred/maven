@@ -35,8 +35,8 @@ public class LogReceptacle {
                                          String formattedMessage = formatted;
                                         for (LogFormatter formatter : appender.formatters) {
                                             formattedMessage = formatter.formatLogEntry(logEntry, formatted);
+                                            appender.recordFormatterMessage(formattedMessage, logEntry, appender.dispatchQueue, synchronous);
                                         }
-                                        appender.recordFormatterMessage(formattedMessage, logEntry, appender.dispatchQueue, synchronous);
                                         //  appenderCount++;
                                     }
                                 });

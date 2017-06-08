@@ -133,7 +133,7 @@ public class PatternLogFormatter  extends BaseLogFormatter{
             }
             }
         }*/
-       return null;
+       return "";
 
     }
 
