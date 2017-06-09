@@ -5,11 +5,11 @@ import android.os.Environment;
 
 import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogConfigConstant;
-import com.vascomouta.VMLogger.implementation.BaseLogConfiguration;
 import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
 import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
-import com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter;
 import com.vascomouta.VMLogger.utils.XMLParser;
+import com.vascomouta.VMLogger.webservice.ConnectivityController;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,6 +56,8 @@ public class Log extends RootLogConfiguration {
      * @return
      */
     public static HashMap<Object, Object> enableFromFile(Context context, String fileName){
+        boolean isNetworkAvailable = ConnectivityController.isNetworkAvailable(context);
+
         if(fileName == null){
             fileName = Log.LoggerInfoFile;
         }

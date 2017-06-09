@@ -36,134 +36,47 @@ public static final String TAG = HttpUrlConnectionUtil.class.getName();
 	
 	public static final String HEADER_ACCEPT = "Accept";
 	public static final String CONTENT_TYPE = "Content-type";
-	public static final String PUT = "PUT";
-	public static final String POST = "POST";
-	public static final String GET = "GET";
 	public static final int TIME_OUT = 2 * 60 * 1000;
 	private static final int _4KB = 4 * 1024;
 	
 	
 	/**
-	 * Request to server using POST method
+	 * Request to server
 	 * @param urlString
 	 * @param body
-	 * @param contentType
-	 * @param acceptType
 	 * @param httpParams :can be null
 	 * @return
 	 */
-	public static Response post(String urlString, String body, String contentType, String acceptType, HashMap httpParams) {
-		return post(urlString, body, contentType, acceptType, httpParams, true);
+	public static Response request(String urlString, String body, String method, HashMap<String, String> httpParams) {
+		return request(urlString, body, method, httpParams, true);
 	}
 	
-	private static Response post(String urlString, String body, String contentType,
-			String acceptType, HashMap<String, String> httpParams, boolean retryOnEOF) {
-		
-		HttpURLConnection conn = null;
-		try {
-			URL url = new URL(urlString);
-			System.setProperty("http.keepAlive", "false");	
-			if(checkHTTPS(urlString)){
-				// create a self-signed certificate
-				createSelfSignedCertificate();
-				// connect to https
-				conn = (HttpsURLConnection) url.openConnection();
-			} else{
-				conn = (HttpURLConnection) url.openConnection();
-			}
-			conn.setReadTimeout(TIME_OUT);
-			conn.setConnectTimeout(TIME_OUT);
-			conn.setRequestMethod(POST);
-			conn.setRequestProperty(CONTENT_TYPE,contentType);  
-			conn.setRequestProperty(HEADER_ACCEPT,acceptType); 
-			if(httpParams != null && httpParams.size() >0){
-				for(HashMap.Entry<String, String> entry : httpParams.entrySet()){
-					conn.setRequestProperty(entry.getKey(), entry.getValue());
-				}
-			}
-			if ( Build.VERSION.SDK_INT > 13) {
-				conn.setRequestProperty("Connection", "close");
-			 }
-			conn.setDoInput(true);
-			conn.setDoOutput(true);
-			body = (body != null) ? body : "";
-			byte[] outputInBytes = body.getBytes("UTF-8");
-			OutputStream os = conn.getOutputStream();
-			os.write(outputInBytes);
-			BufferedWriter writer = new BufferedWriter(
-			        new OutputStreamWriter(os, "UTF-8"));
-			
-			writer.flush();
-			writer.close();
-			os.close();
-			conn.connect();
-			int statusCode = conn.getResponseCode();
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			String response = "";
-	        switch (statusCode) {
-	            case HttpURLConnection.HTTP_OK:
-	            	response = new String(readFullyBytes(conn.getInputStream(), 2 * _4KB));
-					return new Response(statusCode, response, headerFields);
-				case HttpURLConnection.HTTP_PAYMENT_REQUIRED:
-					response = new String(readFullyBytes(conn.getErrorStream(), 2 * _4KB));
-	            default:
-					return new Response(statusCode, response, headerFields);
-	            		
-	        }
-		} catch (Exception e) {
-			Log.e(TAG, "Error in getting response" + e);
-			if(retryOnEOF) {
-				Log.e(TAG, "EOF Exception while making request. Retrying ..");
-				return post(urlString, body, contentType, acceptType, httpParams, false);
-			} else {
-				Log.e(TAG, "EOF Exception while making request." + e);
-			}
-		} finally {
-			if(conn!=null)
-				conn.disconnect();
-		}
-		return null; 
-	}
-	
-	/**
-	 * Request to server using PUT method
-	 * @param urlString
-	 * @param body
-	 * @param contentType
-	 * @param acceptType
-	 * @param httpParams :can be null
-	 * @return
-	 */
-	public static Response put(String urlString, String body, String contentType, String acceptType, HashMap httpParams) {
-		return put(urlString, body, contentType, acceptType, httpParams, true);
-	}
-	private static Response put(String urlString, String body, String contentType,
-								  String acceptType, HashMap<String, String> httpParams, boolean retryOnEOF) {
+	static Response request(String urlString, String body, String method, HashMap<String, String> httpParams, boolean retryOnEOF) {
 		HttpURLConnection conn = null;
 		try {
 			URL url = new URL(urlString);
 			System.setProperty("http.keepAlive", "false");
-			if(checkHTTPS(urlString)){
+			if (checkHTTPS(urlString)) {
 				// create a self-signed certificate
 				createSelfSignedCertificate();
 				// connect to https
 				conn = (HttpsURLConnection) url.openConnection();
-			} else{
+			} else {
 				conn = (HttpURLConnection) url.openConnection();
 			}
 			conn.setReadTimeout(TIME_OUT);
 			conn.setConnectTimeout(TIME_OUT);
-			conn.setRequestMethod(PUT);
-			conn.setRequestProperty(CONTENT_TYPE,contentType);  
-			conn.setRequestProperty(HEADER_ACCEPT,acceptType);  
-			if(httpParams != null && httpParams.size() >0){
-				for(HashMap.Entry<String, String> entry : httpParams.entrySet()){
+			conn.setRequestMethod(method);
+			conn.setRequestProperty(CONTENT_TYPE, "application/json");
+			conn.setRequestProperty(HEADER_ACCEPT, "application/json");
+			if (httpParams != null && httpParams.size() > 0) {
+				for (HashMap.Entry<String, String> entry : httpParams.entrySet()) {
 					conn.setRequestProperty(entry.getKey(), entry.getValue());
 				}
 			}
-			if ( Build.VERSION.SDK_INT > 13) {
+			if (Build.VERSION.SDK_INT > 13) {
 				conn.setRequestProperty("Connection", "close");
-			 }
+			}
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			body = (body != null) ? body : "";
@@ -177,23 +90,25 @@ public static final String TAG = HttpUrlConnectionUtil.class.getName();
 			conn.connect();
 			int statusCode = conn.getResponseCode();
 			Map<String, List<String>> headerFields = conn.getHeaderFields();
-	        switch (statusCode) {
-	            case HttpURLConnection.HTTP_OK:
-	            	String response = new String(readFullyBytes(conn.getInputStream(), 2 * _4KB));
-					Log.d(TAG, "Response String is : " + response);
-	            	return new Response(statusCode, response, headerFields);
-
-	            default:
-	            	return new Response(statusCode, "", headerFields);
-	        }
-		
-		}catch (Exception e) {
+			String response = "";
+			switch (statusCode) {
+				case HttpURLConnection.HTTP_OK:
+					response = new String(readFullyBytes(conn.getInputStream(), 2 * _4KB));
+					return new Response(statusCode, response, headerFields);
+				case HttpURLConnection.HTTP_PAYMENT_REQUIRED:
+					response = new String(readFullyBytes(conn.getErrorStream(), 2 * _4KB));
+				default:
+					return new Response(statusCode, response, headerFields);
+			}
+		}catch (IOException ex){
+			Log.e(TAG, "Error in getting response" + ex);
+		} catch (Exception e) {
 			Log.e(TAG, "Error in getting response" + e);
 			if(retryOnEOF) {
 				Log.e(TAG, "EOF Exception while making request. Retrying ..");
-				return put(urlString, body, contentType, acceptType, httpParams, false);
+				return request(urlString, body,method, httpParams, false);
 			} else {
-				Log.e(TAG, "EOF Exception while making request.", e);
+				Log.e(TAG, "EOF Exception while making request." + e);
 			}
 		} finally {
 			if(conn!=null)

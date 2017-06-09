@@ -1,5 +1,7 @@
 package com.vascomouta.VMLogger.implementation.appender;
 
+import android.util.Log;
+
 import com.vascomouta.VMLogger.LogAppender;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFilter;
@@ -7,6 +9,9 @@ import com.vascomouta.VMLogger.LogFormatter;
 import com.vascomouta.VMLogger.constant.URLLogAppendContants;
 import com.vascomouta.VMLogger.implementation.BaseLogAppender;
 import com.vascomouta.VMLogger.utils.DispatchQueue;
+import com.vascomouta.VMLogger.webservice.ConnectivityController;
+import com.vascomouta.VMLogger.webservice.HttpUrlConnectionUtil;
+import com.vascomouta.VMLogger.webservice.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,9 +31,8 @@ public class URLLogAppender extends BaseLogAppender {
     public URLLogAppender(){
 
     }
-
     /**
-     * Attempts to initialize a new `FileLogRecorder` instance to use the
+     * Attempts to initialize a new `UrlLogAppender` instance to use the
      * given file path and log formatters. This will fail if `filePath` could
      * not be opened for writing.
      * @param url
@@ -64,13 +68,15 @@ public class URLLogAppender extends BaseLogAppender {
 
     }
 
-    public  URLLogAppender( HashMap<String, Object> configuration) {
+    @Override
+    public LogAppender init(HashMap<String, Object> configuration) {
         URLLogConfiguration config =  URLLogConfiguration(configuration);
         if(config == null){
-            return;
+            return null;
         }
-        new URLLogAppender(config.name, config.url, config.method, config.parameter, config.headers, config.formatters,config.filters);
+      return  new URLLogAppender(config.name, config.url, config.method, config.parameter, config.headers, config.formatters,config.filters);
     }
+
 
 
     public URLLogConfiguration URLLogConfiguration(HashMap<String, Object> configuration){
@@ -81,24 +87,20 @@ public class URLLogAppender extends BaseLogAppender {
         }
 
         String url = (String)configuration.get(URLLogAppendContants.ServerUrl);
-        if(url == null){
-            return null;
-        }
-
 
         HashMap<String, String> headers = (HashMap<String, String>) configuration.get(URLLogAppendContants.Headers);
         if(headers == null){
-            return null;
+            headers = new HashMap<>();
         }
 
         String method = (String) configuration.get(URLLogAppendContants.Method);
         if(method == null){
-            return null;
+            method = "POST";
         }
 
         String parameter = (String) configuration.get(URLLogAppendContants.Parameter);
         if(parameter == null){
-            return null;
+            parameter = "";
         }
 
         return new URLLogConfiguration(config.name, url, method, parameter, headers, config.formatters, config.filters);
@@ -141,9 +143,16 @@ public class URLLogAppender extends BaseLogAppender {
      */
     @Override
     public void recordFormatterMessage(String message, LogEntry logEntry, DispatchQueue dispatchQueue, boolean synchronousMode) {
-        String url = (this.method == "GET" ? this.url : this.url);
-        System.out.println(message + "from URLLogAppender");
-        //ToDO Api calling
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Response response = HttpUrlConnectionUtil.request("http://192.168.1.126:8080/UMS/sendLog",message, method, headers);
+                if(response != null){
+                    Log.d("URLLogAppender", "Log post to server sucessfully");
+                }
+            }
+        }).start();
+
     }
 
     public void setRequestHeaders () {

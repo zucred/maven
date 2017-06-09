@@ -9,15 +9,10 @@
                 <key>class</key>
                 <string>com.vascomouta.VMLogger.implementation.appender.URLLogAppender</string>
                 <key>url</key>
-                <string>https://testserver.something/log</string>
+                <string>http://192.168.1.126:8080/UMS/sendLog</string>
                 <key>method</key>
                 <string>POST</string>
-                <key>headers</key>
-                <map>
-                    <key>apikey</key>
-                    <string>mykey</string>
-                </map>
-                <key>filters</key>
+               <!-- <key>filters</key>
                 <array>
                     <map>
                         <key>class</key>
@@ -27,7 +22,7 @@
                             <string>MainActivity</string>
                         </array>
                     </map>
-                </array>
+                </array>-->
             </map>
             <map>
                 <key>name</key>
@@ -36,10 +31,10 @@
                 <string>com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender</string>
                 <key>encoder</key>
                 <map>
-                    <!--<key>pattern</key>
+                    <key>pattern</key>
                     <array>
                         <string>%.30d [%thread][%Caller] %-7p %-20.-20c - %m</string>
-                    </array>-->
+                    </array>
                     <key>formatters</key>
                     <array>
                         <map>
@@ -121,7 +116,7 @@
             <map>
                 <key>appenders</key>
                 <array>
-                    <string>console</string>
+                    <string>server</string>
                 </array>
                 <key>level</key>
                 <string>info</string>
@@ -131,7 +126,7 @@
         </map>
         <key>LOGGER_APPENDERS</key>
         <array>
-            <string>server</string>
+            <string>console</string>
         </array>
     </map>
 </root>

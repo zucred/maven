@@ -22,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logger.verbose("print Console Message");
-                logger.info();
                 ArrayList<User> users = new ArrayList<>();
                 users.add(new User("Test", "value"));
                 users.add(new User("Test2", "value1"));
+                logger.verbose(users);
+                /*logger.info();
+
                 HashMap<String, User> map = new HashMap<>();
                 map.put("item1", new User("Test", "value"));
                 map.put("item2", new User("Test2", "value2"));
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 logger.event(new User("testEvent", "test"));
                 logger2.verbose("Grand Child relationship");
 
-                AppLogger.printVerbose("Static call");
+                AppLogger.printVerbose("Static call");*/
             }
         });
 

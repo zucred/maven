@@ -1,9 +1,6 @@
 package com.vascomouta.VMLogger;
 
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
-import com.vascomouta.VMLogger.implementation.filter.MinimumLogLevelFilter;
-import com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter;
-import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.utils.DispatchQueue;
 
 import java.util.ArrayList;

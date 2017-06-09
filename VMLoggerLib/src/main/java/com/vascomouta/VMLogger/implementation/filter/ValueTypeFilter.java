@@ -2,6 +2,7 @@ package com.vascomouta.VMLogger.implementation.filter;
 
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFilter;
+import com.vascomouta.VMLogger.constant.ValueTypeFilterConstant;
 import com.vascomouta.VMLogger.utils.ObjectType;
 
 import java.util.ArrayList;
@@ -37,6 +38,10 @@ public class ValueTypeFilter implements LogFilter {
 
     @Override
     public LogFilter init(HashMap<String, Object> configuration) {
+            ArrayList<String> types = (ArrayList<String>) configuration.get(ValueTypeFilterConstant.Types);
+            if(types != null){
+             return   new ValueTypeFilter(types);
+            }
         return null;
     }
 
