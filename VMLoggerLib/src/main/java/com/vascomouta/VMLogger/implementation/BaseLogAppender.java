@@ -167,5 +167,8 @@ public  class BaseLogAppender extends LogAppender {
         //precondition(false, "Must override this")
     }
 
-
+    @Override
+    public String toString() {
+        return  this.getClass().getSimpleName()  ;
+    }
 }

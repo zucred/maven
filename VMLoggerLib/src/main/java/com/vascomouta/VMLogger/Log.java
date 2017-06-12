@@ -56,8 +56,6 @@ public class Log extends RootLogConfiguration {
      * @return
      */
     public static HashMap<Object, Object> enableFromFile(Context context, String fileName){
-        boolean isNetworkAvailable = ConnectivityController.isNetworkAvailable(context);
-
         if(fileName == null){
             fileName = Log.LoggerInfoFile;
         }
@@ -487,7 +485,7 @@ public class Log extends RootLogConfiguration {
         value(this, LogLevel.EVENT,value, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
     }
 
-    public void printEvent(Object value){
+    public static void printEvent(Object value){
         StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
         value(mLogInstance,LogLevel.SEVERE, value, stackTraceElement.getFileName(), stackTraceElement.getMethodName(),  stackTraceElement.getLineNumber());
     }
@@ -528,4 +526,61 @@ public class Log extends RootLogConfiguration {
          return (Log)getInstance().getChildren(identifier, this);
     }
 
+    public static void dumpLog(){
+        dumpLog(getInstance(), LogLevel.INFO);
+    }
+
+    public static void dumpLog(LogConfiguration log,LogLevel severity) {
+        if(log == null) {
+            log = getInstance();
+        }
+        if(severity == null) {
+            severity = LogLevel.INFO;
+        }
+
+        String description = "assigned: ";
+        String assignedLevel = log.assignedLogLevel.description();
+        if(assignedLevel != null) {
+            description = description + assignedLevel.substring(0, 1);
+        }else {
+            description = description + "-";
+        }
+        description = description + " | effective: " + log.effectiveLogLevel.description().substring(0, 1);
+        description = description + " | synchronousMode: " + log.synchronousMode;
+        description = description + " | additivity: " + log.additivity;
+        description = description + " | appenders: " + log.appenders;
+        description = description + " | name: " + log.fullName();
+        description = description + " | classType: " + log.getClass().getSimpleName();
+        switch (severity) {
+            case VERBOSE:
+                Log.printVerbose(description);
+                break;
+            case DEBUG:
+                Log.printDebug(description);
+                break;
+            case INFO:
+                Log.printInfo(description);
+                break;
+            case WARNING:
+                Log.printWarning(description);
+                break;
+            case ERROR:
+                Log.printError(description);
+                break;
+            case SEVERE:
+                Log.printSevere(description);
+                break;
+            case EVENT:
+                Log.printEvent(description);
+                break;
+            default:
+                break;
+        }
+        if(log.children != null) {
+            for (LogConfiguration child : log.children) {
+                Log.dumpLog(child, severity);
+            }
+        }
+    }
 }
+

@@ -9,7 +9,7 @@ import com.vascomouta.VMLogger.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Log logger = new AppLogger().getLogger(MainActivity.class.getCanonicalName());
     Log logger2 = new AppLogger().getLogger("com.vascomouta.VMLogger_example.MainActivity.GrandChildren");
@@ -18,9 +18,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.print_log).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        findViewById(R.id.dump_log).setOnClickListener(this);
+        findViewById(R.id.print_log).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.print_log:
                 logger.verbose("print Console Message");
                 ArrayList<User> users = new ArrayList<>();
                 users.add(new User("Test", "value"));
@@ -41,8 +52,11 @@ public class MainActivity extends AppCompatActivity {
                 logger2.verbose("Grand Child relationship");
 
                 AppLogger.printVerbose("Static call");*/
-            }
-        });
 
+                break;
+            case R.id.dump_log:
+                AppLogger.dumpLog();
+                break;
+        }
     }
 }

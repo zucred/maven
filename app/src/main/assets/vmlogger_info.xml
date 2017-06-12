@@ -127,6 +127,7 @@
         <key>LOGGER_APPENDERS</key>
         <array>
             <string>console</string>
+            <string>file</string>
         </array>
     </map>
 </root>
