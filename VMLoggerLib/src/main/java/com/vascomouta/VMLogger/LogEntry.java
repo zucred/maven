@@ -28,7 +28,7 @@ public class LogEntry {
 
     /** A numeric identifier for the calling thread. Note that thread IDs are
      recycled over time. */
-    public int callingThreadID;
+    public long callingThreadID;
 
     /** The time at which the `LogEntry` was created. */
     public Date timestamp;

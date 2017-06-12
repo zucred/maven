@@ -148,11 +148,11 @@ public class BaseLogFormatter implements LogFormatter {
         if(isUiThread) {
              return  "[main] ";
         }else {
-            String threadName =  Thread.currentThread().getName();
-            if(!threadName.equals("")) {
+            long threadName =  Thread.currentThread().getId();
+            if(threadName != 0) {
                 return "[" + threadName + "] ";
             }else {
-                return "[" + String.format("%p", Thread.currentThread() + "] ");
+                return "[" + String.format("%p", Thread.currentThread().getId() + "] ");
             }
         }
     }
@@ -270,7 +270,7 @@ public class BaseLogFormatter implements LogFormatter {
 
      :returns:   The string representation of `threadID`.
      */
-    public  static String stringRepresentationOfThreadID(int threadID){
+    public  static String stringRepresentationOfThreadID(long threadID){
         return String.format("%08X", threadID);
     }
 

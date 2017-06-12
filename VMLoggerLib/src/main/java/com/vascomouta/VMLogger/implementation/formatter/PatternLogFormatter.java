@@ -256,10 +256,7 @@ public class PatternLogFormatter  extends BaseLogFormatter{
                 }else if(patternExpression.equals(PatternLogFormatter.message)){
                     replacement = message;
                 }else if(patternExpression.equals(PatternLogFormatter.thread)){
-                    int threadID = 0;
-                    //TODO
-                    // pthread_threadid_np(nil, &threadID)
-                    replacement = String.valueOf(threadID);
+                    replacement = String.valueOf(Thread.currentThread().getId());
                 }else if(patternExpression.equals(PatternLogFormatter.caller)){
                     replacement = String.valueOf(entry.callingThreadID);
                 }else if(patternExpression.equals(PatternLogFormatter.function)){

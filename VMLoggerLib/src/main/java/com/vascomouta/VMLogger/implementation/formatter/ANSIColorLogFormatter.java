@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Asma on 05/06/17.
- */
 
 public class ANSIColorLogFormatter extends BaseLogFormatter {
 

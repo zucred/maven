@@ -28,6 +28,7 @@ public class LogReceptacle {
                                 dispatcherForQueue(appender.dispatchQueue, synchronous, new Runnable() {
                                     @Override
                                     public void run() {
+                                        logEntry.callingThreadID = Thread.currentThread().getId();
                                         String formatted = BaseLogFormatter.stringRepresentationForPayload(logEntry);
                                          String formattedMessage = formatted;
                                         for (LogFormatter formatter : appender.formatters) {

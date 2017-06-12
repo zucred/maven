@@ -35,27 +35,18 @@ public class LogChannel {
 
 
     public void trace(LogConfiguration logger, String fileName, String methodName, int lineNumber) {
-        //TODO threadId
-        int threadID = 0;
-        //pthread_threadid_np(nil, &threadID)
-        LogEntry logEntry = new LogEntry(logger, Payload.TRACE , severity,new HashMap<String, Object>(), fileName, methodName, lineNumber, threadID, new Date(), "", null);
+        LogEntry logEntry = new LogEntry(logger, Payload.TRACE , severity,new HashMap<>(), fileName, methodName, lineNumber, 0, new Date(), "", null);
         receptacle.log(logEntry);
     }
 
     public void message(LogConfiguration logger, String message, String fileName, String methodName, int lineNumber) {
-        //TODO threadId
-        int threadID = 0;
-        //pthread_threadid_np(nil, &threadID)
-        LogEntry logEntry = new LogEntry(logger, Payload.MESSAGE , severity,new HashMap<String, Object>(), fileName, methodName, lineNumber, threadID, new Date(), message, null);
+        LogEntry logEntry = new LogEntry(logger, Payload.MESSAGE , severity,new HashMap<>(), fileName, methodName, lineNumber, 0, new Date(), message, null);
         receptacle.log(logEntry);
     }
 
     public void value(LogConfiguration logger, Object value, String fileName, String methodName, int lineNumber)
     {
-        //TODO threadId
-        int threadID = 0;
-        //pthread_threadid_np(nil, &threadID)
-        LogEntry logEntry = new LogEntry(logger, Payload.VALUE , severity,new HashMap<String, Object>(), fileName, methodName, lineNumber, threadID, new Date(), "", value);
+        LogEntry logEntry = new LogEntry(logger, Payload.VALUE , severity,new HashMap<>(), fileName, methodName, lineNumber, 0, new Date(), "", value);
         receptacle.log(logEntry);
     }
 
