@@ -1,10 +1,13 @@
 package com.vascomouta.VMLogger;
 
+import android.os.Environment;
+
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
+import com.vascomouta.VMLogger.implementation.appender.DailyRotatingLogFileAppender;
+import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.utils.DispatchQueue;
 
 import java.util.ArrayList;
-
 
 public class LogReceptacle {
 

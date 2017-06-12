@@ -1,8 +1,9 @@
 package com.vascomouta.VMLogger.implementation.formatter;
 
-import com.vascomouta.VMLogger.Log;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
+
+import junit.framework.Assert;
 
 import java.util.Map;
 
@@ -53,10 +54,9 @@ public class DefaultLogFormatter extends BaseLogFormatter {
     }
 
 
-//TODO add fatal error
     @Override
     public void init(Map<String, Object> configuration) {
-      //  Log.printError("init(configuration:) has not been implemented");
+     //   Assert.assertNull("init(configuration:) has not been implemented");
     }
 
     @Override

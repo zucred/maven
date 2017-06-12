@@ -14,10 +14,11 @@ import java.util.Map;
 public class ANSIColorLogFormatter extends BaseLogFormatter {
 
     /// ANSI Escape code
-    public static int escape = Color.BLACK;
+    public static String escape = "[";
 
     /// ANSI Reset colours code
-    public static int reset = escape;
+    public static String reset = escape + "m";
+
 
     public enum ANSIColor{
         BLACK(30, 40, "Black"),
@@ -98,22 +99,23 @@ public class ANSIColorLogFormatter extends BaseLogFormatter {
 
 
     public void colorize(LogLevel level, ANSIColor foregroundColor,ANSIColor backgroundColor, ArrayList<ANSIOptions> options) {
-        StringBuilder codes = new StringBuilder(String.valueOf(foregroundColor.getForeground()) +String.valueOf(backgroundColor.getBackground()));
+        StringBuilder codes = new StringBuilder(String.valueOf(foregroundColor.getForeground()) + ";"+String.valueOf(backgroundColor.getBackground()));
         String description = foregroundColor +  "on" +  backgroundColor;
 
         for (ANSIOptions option : options) {
+            codes.append(";");
             codes.append(option.value);
             description += option;
         }
-        //TODO add color code
-        formatStrings.put(level, ANSIColorLogFormatter.escape + "" );
+        formatStrings.put(level, ANSIColorLogFormatter.escape + codes + "m" );
         descriptionStrings.put(level, description);
     }
+
 
     public void colorize(LogLevel level , String custom) {
         if (custom.startsWith(String.valueOf(ANSIColorLogFormatter.escape))) {
             formatStrings.put(level, custom);
-           // descriptionStrings.put(level, "Custom: \(custom.substring(from: custom.index(custom.startIndex, offsetBy: 2)))");
+            descriptionStrings.put(level, "Custom: " + custom.substring(0 , 2));
         } else {
             formatStrings.put(level, ANSIColorLogFormatter.escape + custom);
             descriptionStrings.put(level, "Custom: " + custom);
@@ -151,7 +153,7 @@ public class ANSIColorLogFormatter extends BaseLogFormatter {
 
     @Override
     public String formatLogEntry(LogEntry logEntry, String message) {
-        return formatString(logEntry.logLevel) + message + ANSIColorLogFormatter.reset;
+        return formatString(logEntry.logLevel) + " " + message + " " + ANSIColorLogFormatter.reset;
 
     }
 }

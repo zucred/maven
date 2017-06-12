@@ -1,11 +1,15 @@
 package com.vascomouta.VMLogger.implementation.appender;
 
+import android.os.Environment;
+
 import com.vascomouta.VMLogger.Log;
 import com.vascomouta.VMLogger.LogAppender;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFormatter;
 import com.vascomouta.VMLogger.implementation.BaseLogAppender;
 import com.vascomouta.VMLogger.utils.DispatchQueue;
+
+import junit.framework.Assert;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +27,7 @@ import java.util.Set;
 /**
  * A `LogRecorder` implementation that maintains a set of daily rotating log
  *files, kept for a user-specified number of days.
- **Important:**
+ *                 *Important:**
  * The `DailyRotatingLogFileRecorder` is expected to have full
  * control over the `directoryPath` with which it was instantiated. Any file not
  * explicitly known to be an active log file may be removed during the pruning
@@ -50,31 +54,23 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
 
 
     private static DateFormat fileNameFormatter() {
-        return new SimpleDateFormat("yyyy-MM-dd'.log'");
+        return new SimpleDateFormat("yyyy-MM-dd'.txt'");
     }
 
     public DailyRotatingLogFileAppender(int daysToKeep, String directoryPath, ArrayList<LogFormatter> formatters) {
-       // super("DailyRotatingLogFileRecorder/directoryPath", formatters);
+        super("DailyRotatingLogFileRecorder[" + directoryPath +"]", formatters, new ArrayList<>());
         this.daysToKeep = daysToKeep;
         this.directoryPath = directoryPath;
-        try {
-            // try to create the directory that will contain the log files
-            String url = new URL(directoryPath).getPath();
-            File file = new File(url);
-            file.createNewFile();
-        }catch (MalformedURLException ex){
-
-        }catch (IOException e){
-
-        }
+        // try to create the directory that will contain the log files
+        File file = new File(directoryPath);
+        file.mkdir();
     }
 
 
     @Override
     public LogAppender init(HashMap<String, Object> configuration) {
-        // fatalError("init(configuration:) has not been implemented")
-        return super.init(configuration);
-
+        Assert.fail("init(configuration:) has not been implemented");
+        return null;
     }
 
     /**
@@ -89,9 +85,10 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
 
     private FileLogAppender fileLogRecordedForDate(Date date, String directoryPath, ArrayList<LogFormatter> formatters){
             String fileName = logFilenameForDate(date);
-            String filePath = directoryPath.concat(fileName);
-        return new FileLogAppender(filePath, formatters);
+            String filePath =  "logs/" + fileName;
+        return new FileLogAppender(filePath, filePath, formatters, new ArrayList<>());
     }
+
 
     private FileLogAppender fileLogRecorderForDate(Date date) {
         return fileLogRecordedForDate(date, directoryPath,  formatters);
@@ -103,10 +100,10 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
         return firstDateStr.equals(secondDateStr);
     }
 
-
     /**
      * Called by the `LogReceptacle` to record the specified log message.
-     **Note:** This function is only called if one of the `formatters`
+     *    *Note:**
+     * This function is only called if one of the `formatters`
      * associated with the receiver returned a non-`nil` string.
      * @param message message The message to record.
      * @param logEntry entry The `LogEntry` for which `message` was created.
@@ -127,7 +124,6 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
         currentFileRecorder.recordFormatterMessage(message, logEntry, dispatchQueue, synchronousMode);
     }
 
-
     /**
      *
      */
@@ -140,21 +136,18 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
         for (int i = 0; i < daysToKeep; i++) {
             String fileName = logFilenameForDate(date);
             filesToKeep.add(fileName);
-           // date = (cal as NSCalendar).date(byAdding: .day, value: -1, to: date, options: .wrapComponents)!
-        }
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+          }
 
-        do {
             File file = new File(directoryPath);
-            for(File filename : file.listFiles()){
-
-
-              //  let pathsToRemove = filenames
-           //             .filter { return !$0.hasPrefix(".") }
-           //     .filter { return !filesToKeep.contains($0) }
-           //     .map { return (self.directoryPath as NSString).appendingPathComponent($0) }
-
+            ArrayList<File> pathToRemove = new ArrayList<>();
+            for(File filename : file.listFiles()) {
+                if (!file.getPath().startsWith("/.")) {
+                    if (!filesToKeep.contains(filename)) {
+                        pathToRemove.add(filename);
+                    }
+                }
             }
-            File[] pathToRemove = file.listFiles();
             for (File removeFile : pathToRemove) {
                 try {
                     removeFile.delete();
@@ -163,11 +156,7 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
                 }
             }
 
-
-        }while (true);
-
     }
-
 
 
 }

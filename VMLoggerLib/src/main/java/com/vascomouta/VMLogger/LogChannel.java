@@ -24,8 +24,7 @@ public class LogChannel {
     /**
      * Initializes a new `LogChannel` instance using the specified parameters.
      * @param severity severity The `LogSeverity` to use for log entries written to the receiving channel.
-     * @param receptacle receptacle A `LogFormatter` instance to use for formatting log
-    entries.
+     * @param receptacle receptacle A `LogFormatter` instance to use for formatting log entries.
      */
     public LogChannel(LogLevel severity ,LogReceptacle receptacle )
     {

@@ -90,6 +90,8 @@ public class FileLogAppender extends BaseLogAppender {
             bufferedWriter.close();
         }catch (IOException ex){
             Log.printError("Error on write logs on file" + ex.getMessage());
+        }catch (Exception ex){
+            Log.printError("Error on write logs on file" + ex.getMessage());
         }
     }
 }

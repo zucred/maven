@@ -7,8 +7,9 @@ import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogConfigConstant;
 import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
 import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
+import com.vascomouta.VMLogger.implementation.appender.DailyRotatingLogFileAppender;
+import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.utils.XMLParser;
-import com.vascomouta.VMLogger.webservice.ConnectivityController;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -61,7 +62,7 @@ public class Log extends RootLogConfiguration {
         }
         File directory = Environment.getExternalStorageDirectory();
         if(directory != null){
-            String filePath = directory.getPath().concat(fileName);
+            String filePath = directory.getPath()+ "/" + fileName;
             File file = new File(filePath);
             if(filePath != null && file.exists()){
                HashMap<Object, Object> configuration = readConfigurationFromFile(filePath);
@@ -122,9 +123,6 @@ public class Log extends RootLogConfiguration {
     }
 
 
-
-
-    //TODO check code on custom configurations
     private static void enable(HashMap<Object, Object> values){
         LogLevel rootLevel;
         if(BuildConfig.DEBUG){
@@ -163,6 +161,10 @@ public class Log extends RootLogConfiguration {
         }else if(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER) != null){
             rootAppenders.add(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER));
         }
+        ArrayList<LogFormatter> formatter = new ArrayList<>();
+        formatter.add(new DefaultLogFormatter());
+        DailyRotatingLogFileAppender dailyRotatingLogFileAppender = new DailyRotatingLogFileAppender(2, Environment.getExternalStorageDirectory().getPath() +"/logs", formatter);
+        rootAppenders.add( dailyRotatingLogFileAppender);
 
          if(values.containsKey(LoggerLevel)) {
              String rootLogLevel = (String)values.get(LoggerLevel);

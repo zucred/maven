@@ -39,16 +39,20 @@
                     <array>
                         <map>
                             <key>class</key>
-                            <string>com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter</string>
+                            <string>com.vascomouta.VMLogger.implementation.formatter.ANSIColorLogFormatter</string>
                         </map>
                         <map>
+                            <key>class</key>
+                            <string>com.vascomouta.VMLogger.implementation.formatter.Base64LogFormatter</string>
+                        </map>
+                       <!-- <map>
                             <key>class</key>
                             <string>com.vascomouta.VMLogger.implementation.formatter.PrePostFixLogFormatter</string>
                         </map>
                         <map>
                             <key>class</key>
                             <string>com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter</string>
-                        </map>
+                        </map>-->
                     </array>
                     </map>
                <!-- <key>filters</key>
@@ -126,7 +130,6 @@
         </map>
         <key>LOGGER_APPENDERS</key>
         <array>
-            <string>console</string>
             <string>file</string>
         </array>
     </map>

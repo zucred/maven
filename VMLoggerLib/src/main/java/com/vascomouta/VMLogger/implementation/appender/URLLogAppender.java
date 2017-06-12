@@ -155,9 +155,4 @@ public class URLLogAppender extends BaseLogAppender {
 
     }
 
-    public void setRequestHeaders () {
-        //TODO add headers on reqest
-
-    }
-
 }
