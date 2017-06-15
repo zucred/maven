@@ -3,8 +3,6 @@ package com.vascomouta.VMLogger.implementation.formatter;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
 
-import junit.framework.Assert;
-
 import java.util.Map;
 
 

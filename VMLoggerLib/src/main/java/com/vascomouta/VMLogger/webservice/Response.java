@@ -3,7 +3,6 @@ package com.vascomouta.VMLogger.webservice;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 public class Response {
 
@@ -22,6 +21,5 @@ public class Response {
         this.responseString = responseString;
         this.headerParams = headerParams;
     }
-
 
 }

@@ -1,6 +1,6 @@
 package com.vascomouta.VMLogger.constant;
 
-public class URLLogAppendContants {
+public class URLLogAppendConstants {
 
     public static final String ServerUrl = "url";
     public static final String Headers = "headers";

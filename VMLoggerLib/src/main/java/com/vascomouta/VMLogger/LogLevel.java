@@ -32,7 +32,7 @@ public enum LogLevel {
         return value;
     }
 
-    public String getLogLevel(LogLevel level){
+    public static String getLogLevel(LogLevel level){
         switch (level){
             case OFF:
                 return OFF.getLevel();
@@ -75,6 +75,29 @@ public enum LogLevel {
         }
         return ALL.getValue();
     }
+
+
+    public static int getLogLevelValue(String level){
+        if(level.equals(OFF.getLevel())){
+            return OFF.getValue();
+        }else if(level.equals(VERBOSE.getLevel())){
+            return VERBOSE.getValue();
+        }else if(level.equals(DEBUG.getLevel())){
+            return DEBUG.getValue();
+        }else if(level.equals(INFO.getLevel())){
+            return  INFO.getValue();
+        }else if(level.equals(WARNING.getLevel())){
+            return WARNING.getValue();
+        }else if(level.equals(ERROR.getLevel())){
+            return ERROR.getValue();
+        }else if(level.equals(SEVERE.getLevel())){
+            return SEVERE.getValue();
+        }else if(level.equals(EVENT.getLevel())){
+            return EVENT.getValue();
+        }
+        return ALL.getValue();
+    }
+
 
     public String description() {
         switch (this) {

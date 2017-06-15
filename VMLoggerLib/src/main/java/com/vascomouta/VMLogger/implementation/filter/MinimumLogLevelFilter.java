@@ -15,8 +15,7 @@ public class MinimumLogLevelFilter extends LogLevelFilter{
     /**
      * Called to determine whether the given `LogEntry` should be recorded.
      * @param logEntry The `LogEntry` to be evaluated by the filter.
-     * @return `true` if `entry.severity` is as or more severe than the
-    receiver's `severity` property; `false` otherwise.
+     * @return `true` if `entry.severity` is as or more severe than the receiver's `severity` property; `false` otherwise.
      */
     @Override
     public boolean shouldRecordLogEntry(LogEntry logEntry) {

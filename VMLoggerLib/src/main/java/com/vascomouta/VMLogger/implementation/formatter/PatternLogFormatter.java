@@ -18,25 +18,25 @@ public class PatternLogFormatter  extends BaseLogFormatter{
 
     public static  String defaultLogFormat = "%.30d [%thread] %-7p %-20.-20c - %m";
 
-    public static String lengthPattern = "([-]?\\d{1,2}[.][-]?\\d{1,2}|[.][-]?\\d{1,2}|[-]?\\d{1,2})";
+    private static final String lengthPattern = "([-]?\\d{1,2}[.][-]?\\d{1,2}|[.][-]?\\d{1,2}|[-]?\\d{1,2})";
 
-    public static String MDC = "%" + lengthPattern + "?" + "(X)";
-    public static String identifier = "%" + lengthPattern + "?" + "(logger|lo|c)";
-    public static String level = "%" + lengthPattern + "?" + "(level|le|p)";
-    public static String date = "%" + lengthPattern + "?" + "(date|d)";
-    public static String message = "%" + lengthPattern + "?" + "(message|msg|m)";
+    private static final String MDC = "%" + lengthPattern + "?" + "(X)";
+    private static final String identifier = "%" + lengthPattern + "?" + "(logger|lo|c)";
+    private static final String level = "%" + lengthPattern + "?" + "(level|le|p)";
+    private static final String date = "%" + lengthPattern + "?" + "(date|d)";
+    private static final String message = "%" + lengthPattern + "?" + "(message|msg|m)";
 
-    public static String thread = "%" + lengthPattern + "?" + "(thread|t)";
+    private static final String thread = "%" + lengthPattern + "?" + "(thread|t)";
 
-    public static String caller = "%" + lengthPattern + "?" + "(Caller)";
-    public static String function = "%" + lengthPattern + "?" + "(M|Method)";
-    public static String file = "%" + lengthPattern + "?" + "(F|file)";
-    public static String line = "%" + lengthPattern + "?" + "(L|line)";
-    public static String lineSeparator = "%n";
+    private static final String caller = "%" + lengthPattern + "?" + "(Caller)";
+    private static final String function = "%" + lengthPattern + "?" + "(M|Method)";
+    private static final String file = "%" + lengthPattern + "?" + "(F|file)";
+    private static final String line = "%" + lengthPattern + "?" + "(L|line)";
+    private static final String lineSeparator = "%n";
 
-    public static String grouping = "%" + lengthPattern + "[(].{1,}[)]";
+    private static final String grouping = "%" + lengthPattern + "[(].{1,}[)]";
 
-    private static String[] patterns = {MDC,identifier,level,date,message,thread,caller,function,file,line,lineSeparator};
+    private static final String[] patterns = {MDC,identifier,level,date,message,thread,caller,function,file,line,lineSeparator};
     //private static let patterns: [String] = [date]
 
     String pattern;

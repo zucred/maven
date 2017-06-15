@@ -3,7 +3,6 @@ package com.vascomouta.VMLogger.implementation.filter;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFilter;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -89,9 +88,26 @@ public class FileNameFilter implements LogFilter {
         fileNamesToMatch.clear();
     }
 
-    //TODO need to change description
+
     @Override
     public String toString() {
-        return super.toString();
+        String description = this.getClass().getSimpleName() + ":" + (inverse ? "Including only matches for :" :
+                "Excluding matches for : ");
+        if(fileNamesToMatch.size() > 5){
+            description += "\n\t- " + getFileName("\n\t-");
+        }else{
+            description += getFileName(", ");
+        }
+
+        return description;
     }
+
+    private String getFileName (String separator){
+        String value = "";
+        for(String file : fileNamesToMatch){
+            value = file + separator;
+        }
+        return value;
+    }
+
 }

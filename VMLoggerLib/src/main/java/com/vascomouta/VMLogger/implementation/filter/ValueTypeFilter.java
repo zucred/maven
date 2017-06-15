@@ -17,7 +17,7 @@ public class ValueTypeFilter implements LogFilter {
     /**
      * Returns the `LogSeverity` associated with the receiver.
      */
-    public ArrayList<String> type;
+    private ArrayList<String> type;
 
     public ValueTypeFilter(){
 

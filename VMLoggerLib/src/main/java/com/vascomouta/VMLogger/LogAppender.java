@@ -32,7 +32,7 @@ public abstract class LogAppender {
      */
     public DispatchQueue dispatchQueue;
 
-    public abstract void recordFormatterMessage(String message, LogEntry logEntry, DispatchQueue dispatchQueue , boolean sychronousMode);
+    public abstract void recordFormatterMessage(String message, LogEntry logEntry, DispatchQueue dispatchQueue , boolean synchronousMode);
 
     public abstract LogAppender init(HashMap<String,Object> configuration);
 

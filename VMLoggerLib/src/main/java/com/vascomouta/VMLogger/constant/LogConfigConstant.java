@@ -3,10 +3,10 @@ package com.vascomouta.VMLogger.constant;
 
 public class LogConfigConstant {
 
-    public static String Appenders = "appenders";
-    public static String Level = "level";
-    public static String Synchronous = "synchronous";
-    public static String Additivity = "additivity";
+    public static final String Appenders = "appenders";
+    public static final String Level = "level";
+    public static final String Synchronous = "synchronous";
+    public static final String Additivity = "additivity";
 
 
 }

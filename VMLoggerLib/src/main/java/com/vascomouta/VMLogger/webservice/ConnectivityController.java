@@ -5,13 +5,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-/**
- * Created by craterzone on 29/9/16.
- */
-
 public class ConnectivityController {
 
     public static final String TAG = ConnectivityController.class.getName();
+
     /**
      * Checking is connected to Internet
      * @param context

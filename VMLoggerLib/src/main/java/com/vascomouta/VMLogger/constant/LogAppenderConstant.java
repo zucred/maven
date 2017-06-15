@@ -3,10 +3,10 @@ package com.vascomouta.VMLogger.constant;
 
 public class LogAppenderConstant {
 
-    public static String Name = "name";
-    public static String Encoder = "encoder";
-    public static String Filters = "filters";
-    public static String Class = "class";
-    public static String Formatters = "formatters";
+    public static final String Name = "name";
+    public static final String Encoder = "encoder";
+    public static final String Filters = "filters";
+    public static final String Class = "class";
+    public static final String Formatters = "formatters";
 
 }

@@ -5,6 +5,11 @@ import java.util.Map;
 
 public class ObjectType {
 
+    /**
+     * This implementation return type of an Object for description.
+     * @param object
+     * @return
+     */
     public static String getType(Object object){
         if(object == null){
             return "Class";

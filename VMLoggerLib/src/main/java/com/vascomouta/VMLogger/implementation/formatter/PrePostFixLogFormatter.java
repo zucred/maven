@@ -27,7 +27,7 @@ public class PrePostFixLogFormatter extends BaseLogFormatter {
     /**
      * Set the prefix/postfix strings for a specific log level.
      * @param prefix A string to prepend to log messages.
-     * @param postfix A string to postpend to log messages.
+     * @param postfix A string to portend to log messages.
      * @param level The log level.
      */
     public void apply(String prefix,String postfix, LogLevel level) {
@@ -83,10 +83,18 @@ public class PrePostFixLogFormatter extends BaseLogFormatter {
         return  postfixStrings.get(logLevel) != null ? prefixStrings.get(logLevel) : "";
     }
 
-    //TODO change
+
     @Override
     public String toString() {
-        return super.toString();
+        String description = this.getClass().getSimpleName() + ":" + dateFormate + ", " + severityTagLength
+                + ", " + identityTagLength ;
+        for(LogLevel level : LogLevel.getAllLevel()){
+            description += "\n\t- " + LogLevel.getLogLevel(level) + (prefixStrings.get(level) != null  ? prefixStrings.get(level) : "None") +
+                    " | " + (postfixStrings.get(level) != null ? postfixStrings.get(level) : "None");
+        }
+        return description;
     }
+
+
 }
 

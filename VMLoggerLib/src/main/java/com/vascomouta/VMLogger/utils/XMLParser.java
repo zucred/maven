@@ -3,9 +3,7 @@ package com.vascomouta.VMLogger.utils;
 
 import android.content.Context;
 import android.util.Xml;
-
 import com.vascomouta.VMLogger.Log;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -14,19 +12,24 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class is implement for parse Log Configuration from XML File.
+ */
 public class XMLParser {
 
+    private static final String TAG = XMLParser.class.getSimpleName();
+
     /**
+     * This implementation for read logger configuration from xml file from Assests folder.
      *
      * @param context
-     * @return
+     * @return return configuration map
      */
     public static HashMap<Object, Object> readConfigurationFromXml(Context context){
         try {
             final String ns = null;
-            InputStream is = context.getAssets().open("vmlogger_info.xml");
+            InputStream is = context.getAssets().open(Log.LoggerInfoFile + ".xml");
             XmlPullParser parser = Xml.newPullParser();
-            // XmlPullParser parser = context.getResources().getXml(R.xml.vmlogger_info);
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(is, null);
             parser.nextTag();
@@ -44,17 +47,17 @@ public class XMLParser {
             }
 
         }catch (XmlPullParserException ex){
-          //  Log.printError(ex.getMessage());
+            android.util.Log.e(TAG, ex.getMessage());
         }catch (IOException e){
-          //  Log.printError(e.getMessage());
+            android.util.Log.e(TAG, e.getMessage());
         }
         return null;
     }
 
     /**
-     *
+     * This implementation parse 'map' from xml.
      * @param parser
-     * @return
+     * @return return Map of custom key and Values
      */
     private static HashMap<Object, Object> readMap(XmlPullParser parser){
         HashMap<Object, Object> map = new HashMap<>();
@@ -81,18 +84,18 @@ public class XMLParser {
             }
 
         }catch (XmlPullParserException ex){
-        //    Log.printError(ex.getMessage());
+            android.util.Log.e(TAG, ex.getMessage());
         }catch (IOException e){
-        //    Log.printError(e.getMessage());
+            android.util.Log.e(TAG, e.getMessage());
         }
         return map;
     }
 
 
     /**
-     *
+     * This implemetation parse 'key' from xml file
      * @param parser
-     * @return
+     * @return return String values of key
      */
     private static String readKey(XmlPullParser parser){
         try {
@@ -101,17 +104,17 @@ public class XMLParser {
             parser.require(XmlPullParser.END_TAG, null, "key");
             return title;
         }catch (XmlPullParserException ex){
-            Log.printError(ex.getMessage());
+            android.util.Log.e(TAG, ex.getMessage());
         }catch (IOException e){
-            Log.printError(e.getMessage());
+            android.util.Log.e(TAG, e.getMessage());
         }
         return null;
     }
 
     /**
-     *
+     * This implementation parse 'array' from Xml file
      * @param parser
-     * @return
+     * @return return Array of Custom Objects
      */
     private static ArrayList<Object> readArray(XmlPullParser parser){
         ArrayList<Object> list = new ArrayList<>();
@@ -134,13 +137,20 @@ public class XMLParser {
             }
 
         }catch (XmlPullParserException ex){
-            Log.printError(ex.getMessage());
+            android.util.Log.e(TAG, ex.getMessage());
         }catch (IOException e){
-            Log.printError(e.getMessage());
+            android.util.Log.e(TAG, e.getMessage());
         }
         return list;
     }
 
+    /**
+     * This implementation parse 'string' values from Xml file
+     * @param parser
+     * @return
+     * @throws IOException
+     * @throws XmlPullParserException
+     */
     private static String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
         String result = "";
         if (parser.next() == XmlPullParser.TEXT) {

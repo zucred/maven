@@ -1,6 +1,9 @@
 package com.vascomouta.VMLogger.webservice;
 
 
+import android.os.Build;
+import android.util.Log;
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,12 +25,9 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import android.os.Build;
-import android.util.Log;
 
 /**
  * This class handle server request and response.
- *
  */
 public class HttpUrlConnectionUtil {
 	
@@ -118,7 +118,7 @@ public static final String TAG = HttpUrlConnectionUtil.class.getName();
 	}
 
 	/**
-	 * Check wheather request is http or https
+	 * Check whether request is http or https
 	 * @param url
 	 * @return
 	 */
@@ -126,7 +126,7 @@ public static final String TAG = HttpUrlConnectionUtil.class.getName();
 		return url.contains("https");
 	}
 	
-	  /**
+	/**
      * Read bytes from InputStream efficiently. All data will be read from
      * stream. This method return the bytes or null. This method will not close
      * the stream.
@@ -135,7 +135,7 @@ public static final String TAG = HttpUrlConnectionUtil.class.getName();
         byte[] bytes = null;
         if (is != null) {
             try {
-                int readed = 0;
+                int readed;
                 byte[] buffer = new byte[blockSize];
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 while ((readed = is.read(buffer)) >= 0) {

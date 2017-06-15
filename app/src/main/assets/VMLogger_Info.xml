@@ -120,7 +120,7 @@
             <map>
                 <key>appenders</key>
                 <array>
-                    <string>server</string>
+                    <string>console</string>
                 </array>
                 <key>level</key>
                 <string>info</string>
@@ -130,7 +130,7 @@
         </map>
         <key>LOGGER_APPENDERS</key>
         <array>
-            <string>file</string>
+            <string>console</string>
         </array>
     </map>
 </root>

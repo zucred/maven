@@ -7,8 +7,6 @@ import com.vascomouta.VMLogger.constant.LogAppenderConstant;
 import com.vascomouta.VMLogger.constant.LogConfigConstant;
 import com.vascomouta.VMLogger.implementation.RootLogConfiguration;
 import com.vascomouta.VMLogger.implementation.appender.ConsoleLogAppender;
-import com.vascomouta.VMLogger.implementation.appender.DailyRotatingLogFileAppender;
-import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.utils.XMLParser;
 
 import java.io.BufferedReader;
@@ -24,7 +22,9 @@ import java.util.Map;
 
 public class Log extends RootLogConfiguration {
 
-    private static String LoggerInfoFile = "VMLogger-Info";
+    public static final String TAG = Log.class.getSimpleName();
+
+    public static String LoggerInfoFile = "VMLogger_Info";
     private static String LoggerConfig  = "LOGGER_CONFIG";
     private static String LoggerAppenders = "LOGGER_APPENDERS";
     private static String LoggerLevel = "LOGGER_LEVEL";
@@ -81,7 +81,7 @@ public class Log extends RootLogConfiguration {
      * @param context
      * @return
      */
-    public static HashMap<Object, Object> enableFromMainBundleFile(Context context){
+    private static HashMap<Object, Object> enableFromMainBundleFile(Context context){
         HashMap<Object, Object> config = XMLParser.readConfigurationFromXml(context);
        if(config != null) {
             enable(config);
@@ -92,8 +92,7 @@ public class Log extends RootLogConfiguration {
         } else {
             enable(LogLevel.VERBOSE, false);
         }
-        printError("Log configuration file not found: " + "fileName");
-
+        android.util.Log.e(TAG, "Log configuration file not found: " + "fileName");
         return config;
 
     }
@@ -107,7 +106,7 @@ public class Log extends RootLogConfiguration {
         try {
             HashMap<Object, Object> map = new HashMap<>();
             BufferedReader in = new BufferedReader(new FileReader(filePath));
-            String line = "";
+            String line;
             while ((line = in.readLine()) != null) {
                 String parts[] = line.split("\t");
                 map.put(parts[0], parts[1]);
@@ -115,14 +114,18 @@ public class Log extends RootLogConfiguration {
             in.close();
             return map;
         }catch (FileNotFoundException ex){
-            printError("Configurations file not exist");
+            android.util.Log.e(TAG, "Configurations file not exist");
         }catch (IOException e){
-            printError("Error on read data from file");
+            android.util.Log.e(TAG,"Error on read data from file");
         }
         return null;
     }
 
 
+    /**
+     * This implementation enable log configuration to root config.
+     * @param values
+     */
     private static void enable(HashMap<Object, Object> values){
         LogLevel rootLevel;
         if(BuildConfig.DEBUG){
@@ -146,7 +149,7 @@ public class Log extends RootLogConfiguration {
                     appenders.put(appender1.name, appender1);
                 }
             } catch (Exception ex) {
-              android.util.Log.v("Error","Error on add appenders" +  ex.getMessage());
+              android.util.Log.e(TAG,"Error on add appenders" +  ex.getMessage());
             }
         }
 
@@ -161,11 +164,6 @@ public class Log extends RootLogConfiguration {
         }else if(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER) != null){
             rootAppenders.add(appenders.get(ConsoleLogAppender.CONSOLE_IDENTIFIER));
         }
-        ArrayList<LogFormatter> formatter = new ArrayList<>();
-        formatter.add(new DefaultLogFormatter());
-        DailyRotatingLogFileAppender dailyRotatingLogFileAppender = new DailyRotatingLogFileAppender(2, Environment.getExternalStorageDirectory().getPath() +"/logs", formatter);
-        rootAppenders.add( dailyRotatingLogFileAppender);
-
          if(values.containsKey(LoggerLevel)) {
              String rootLogLevel = (String)values.get(LoggerLevel);
              rootLevel =  LogLevel.getLogLevel(rootLogLevel);
@@ -188,26 +186,26 @@ public class Log extends RootLogConfiguration {
                         currentChild.parent.addChildren(newChild, true);
                     }
                 } else {
-                    printWarning("Trying to configure ROOT logger in logger children configuration. Reserved word, children ignored");
+                    android.util.Log.e(TAG,"Trying to configure ROOT logger in logger children configuration. Reserved word, children ignored");
                 }
             } else {
-                printError("Log configuration for (logName) is not valid. HashMap<String, Object> is required");
+                android.util.Log.e(TAG,"Log configuration for (logName) is not valid. HashMap<String, Object> is required");
             }
         }
         enable(root, rootLevel);
-      //  printVerbose("Log Configuration:\n" + values.toString());
+        android.util.Log.e(TAG,"Log Configuration:\n" + values.toString());
 
     }
 
     /**
-     *
+     * This method enable default log configuration
      * @param assignedLevel
-     * @param sychrounousMode
+     * @param synchronousMode
      */
-    public static void enable(LogLevel assignedLevel,  boolean sychrounousMode){
+    public static void enable(LogLevel assignedLevel,  boolean synchronousMode){
         ArrayList<LogAppender> appenders = new ArrayList<>();
         appenders.add(new ConsoleLogAppender());
-        RootLogConfiguration root = new RootLogConfiguration(RootLogConfiguration.ROOT_IDENTIFIER, assignedLevel, null, appenders, sychrounousMode, false);
+        RootLogConfiguration root = new RootLogConfiguration(RootLogConfiguration.ROOT_IDENTIFIER, assignedLevel, null, appenders, synchronousMode, false);
         enable(root, LogLevel.VERBOSE);
     }
 
@@ -257,27 +255,30 @@ public class Log extends RootLogConfiguration {
 
     }
 
-    public Log(String identifier, LogConfiguration parent, Map<String, LogAppender> allAppenders, HashMap<String, Object> configuration) {
-        boolean additivity = false;
-        LogLevel logLevel = LogLevel.VERBOSE;
-        ArrayList<LogAppender> appenders = new ArrayList<>();
+    private Log(String identifier, LogConfiguration parent, Map<String, LogAppender> allAppenders, HashMap<String, Object> configuration) {
+        super(identifier,(configuration.get(LogConfigConstant.Level) != null) ? LogLevel.getLogLevel((String)configuration.get(LogConfigConstant.Level)) : LogLevel.VERBOSE,
+                null, getAppender(configuration, allAppenders),getSynchrounousMode(configuration), getAdditivity(configuration));
+    }
+
+    private static boolean getSynchrounousMode(HashMap<String, Object> configuration){
         boolean synchronous = false;
-
-        /// Log level
-        String level = (String)configuration.get(LogConfigConstant.Level);
-        if(level != null){
-            logLevel = LogLevel.getLogLevel(level);
-        }
-
-        if(configuration.get(LogConfigConstant.Additivity) != null){
-            additivity = Boolean.valueOf((String)configuration.get(LogConfigConstant.Additivity));
-        }
-
         String logSynchronous = (String)configuration.get(LogConfigConstant.Synchronous);
         if(logSynchronous != null){
             synchronous = Boolean.valueOf(logSynchronous);
         }
+        return synchronous;
+    }
 
+    private static boolean getAdditivity(HashMap<String, Object> configuration){
+        boolean additivity = false;
+        if(configuration.get(LogConfigConstant.Additivity) != null){
+            additivity = Boolean.valueOf((String)configuration.get(LogConfigConstant.Additivity));
+        }
+        return additivity;
+    }
+
+    private static ArrayList<LogAppender> getAppender(HashMap<String, Object> configuration, Map<String, LogAppender> allAppenders){
+        ArrayList<LogAppender> appenders = new ArrayList<>();
         ArrayList<String> config = (ArrayList<String>) configuration.get(LogConfigConstant.Appenders);
         if(config != null){
             for(String appenderName : config){
@@ -287,12 +288,11 @@ public class Log extends RootLogConfiguration {
                 }
             }
         }
-
-        new Log(identifier, logLevel, null, appenders,synchronous, additivity);
+        return appenders;
     }
 
 
-    public  Log(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
+    private  Log(String identifier, LogLevel assignedLevel, LogConfiguration parent , ArrayList<LogAppender> logAppender,
                      boolean synchronousMode, boolean additivity) {
         super(identifier, assignedLevel, parent, logAppender, synchronousMode, additivity);
 
@@ -532,6 +532,12 @@ public class Log extends RootLogConfiguration {
         dumpLog(getInstance(), LogLevel.INFO);
     }
 
+
+    /**
+     * This implementation print dump log of given configuration
+     * @param log
+     * @param severity
+     */
     public static void dumpLog(LogConfiguration log,LogLevel severity) {
         if(log == null) {
             log = getInstance();

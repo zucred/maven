@@ -1,11 +1,14 @@
 package com.vascomouta.VMLogger_example;
 
-import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 
 public class AppLoggerEvent {
 
-
+    public static final String TAG = AppLoggerEvent.class.getSimpleName();
 
     public static String GROUP =  "Group";
     public static String TYPE = "Type";
@@ -16,8 +19,8 @@ public class AppLoggerEvent {
     public static String EVENT = "Event";
     public static String LOG = "Log";
     public static String UI = "UI";
-    public static String UI_SCREENDISPLAY = "Display";
-    public static String UI_SCREENDISPLAYDURATION = "DisplayDuration";
+    public static String UI_SCREEN_DISPLAY = "Display";
+    public static String UI_SCREEN_DISPLAY_DURATION = "DisplayDuration";
 
     public static String NAME = "name";
     public static String LABEL = "label";
@@ -29,21 +32,21 @@ public class AppLoggerEvent {
     private HashMap<String, Object> requestValues = new HashMap<>();
 
     public static AppLoggerEvent createViewEvent(String name){
-        return createEvent(AppLoggerEvent.UI, UI_SCREENDISPLAY,  name, null);
+        return createEvent(AppLoggerEvent.UI, UI_SCREEN_DISPLAY,  name, null);
     }
 
     public static AppLoggerEvent createViewEvent(String name, HashMap<String, Object> params) {
-        AppLoggerEvent appEvent = createEvent(AppLoggerEvent.UI,  UI_SCREENDISPLAY, params);
+        AppLoggerEvent appEvent = createEvent(AppLoggerEvent.UI,  UI_SCREEN_DISPLAY, params);
         appEvent.set(name, AppLoggerEvent.LABEL);
         return appEvent;
     }
 
     public static AppLoggerEvent createViewDurationEvent(String name,double duration) {
-        return createEvent(AppLoggerEvent.UI,  UI_SCREENDISPLAYDURATION,  name, String.valueOf(duration));
+        return createEvent(AppLoggerEvent.UI,  UI_SCREEN_DISPLAY_DURATION,  name, String.valueOf(duration));
     }
 
     public static AppLoggerEvent createViewDurationEvent(String name, double duration,HashMap<String, Object> params) {
-        AppLoggerEvent appEvent = createEvent(AppLoggerEvent.UI, UI_SCREENDISPLAYDURATION, params);
+        AppLoggerEvent appEvent = createEvent(AppLoggerEvent.UI, UI_SCREEN_DISPLAY_DURATION, params);
         appEvent.set(name, AppLoggerEvent.LABEL);
         appEvent.set(String.valueOf(duration) , AppLoggerEvent.VALUE);
         return appEvent;
@@ -78,14 +81,13 @@ public class AppLoggerEvent {
         setAllParams(params);
     }
 
-    public AppLoggerEvent(String category,String action, String label,@NonNull String value) {
+    public AppLoggerEvent(String category,String action, String label, String value) {
         super();
         requestValues.put(AppLoggerEvent.GROUP, category);
         requestValues.put(AppLoggerEvent.TYPE, action);
         if(label != null){
             set(label,  AppLoggerEvent.LABEL);
         }
-
         if(value != null) {
             set(value,  AppLoggerEvent.VALUE);
         }
@@ -96,7 +98,7 @@ public class AppLoggerEvent {
         HashMap<String, Object> paramDic = (HashMap<String, Object>) requestValues.get(AppLoggerEvent.PARAMS);
 
         if(paramDic == null){
-            return null;
+            paramDic = new HashMap<>();
         }
         paramDic.put(forKey, value);
         setAllParams(paramDic);
@@ -135,11 +137,11 @@ public class AppLoggerEvent {
             if(paramDic == null){
                 return null;
             }
-            String paramvalue = (String)paramDic.get(paramName);
-            if(paramvalue == null){
+            String paramValue = (String)paramDic.get(paramName);
+            if(paramValue == null){
                 return  null;
             }
-            return paramvalue;
+            return paramValue;
         }
         return value;
     }
@@ -151,9 +153,20 @@ public class AppLoggerEvent {
         return requestValues;
     }
 
+    @Override
+    public String toString() {
+        String jsonString = toJson(this);
+        return (jsonString != null ? ("\n" +  jsonString) : "wrong json format: " + build());
 
+    }
 
-
-
-
+    public static String toJson(Object object) {
+        try {
+            Gson gson = new Gson();
+            return gson.toJson(object);
+        } catch (Exception e) {
+            Log.e(TAG, "Error in Converting Object to Json", e);
+        }
+        return null;
+    }
 }

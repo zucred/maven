@@ -4,5 +4,5 @@ package com.vascomouta.VMLogger.constant;
 
 public class ValueTypeFilterConstant {
 
-    public static String Types = "types";
+    public static final String Types = "types";
 }

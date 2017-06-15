@@ -1,7 +1,8 @@
 package com.vascomouta.VMLogger_example;
 
+import android.os.Handler;
+
 import com.vascomouta.VMLogger.Log;
-import com.vascomouta.VMLogger.LogConfiguration;
 import com.vascomouta.VMLogger_example.utils.DateUtil;
 
 import java.util.Date;
@@ -10,77 +11,59 @@ import java.util.Date;
 public class AppLogger extends Log {
 
     static String AppLoggerUI = "TrackUI";
-    private static String ForgroundDuration = "ForgroundDuration";
+    private static String ForegroundDuration = "ForegroundDuration";
     private static String BackgroundDuration = "BackgroundDuration";
-    private static String Teriminated = "Terminated";
+    private static String Terminated = "Terminated";
 
     private static String AppLoggerInfoFile = "AppLogger-Info";
 
     private static Date startDate = new Date();
     private static Date eventDate = startDate;
-
-
+    static Handler handler = new Handler();
 
     public Log getLogger(String identifier){
         return super.getLogger(identifier);
     }
 
 
-    public void onCreate(){
-        AppLogger.printVerbose("onCreate");
-        Date endDate = new Date();
-        long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
-        AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, ForgroundDuration, String.valueOf(timeInterval), null));
-        eventDate = new Date();
+    public static void appMovedToBackground(){
+        handler.post(() -> {
+            AppLogger.printVerbose("appMovedToBackground");
+            Date endDate = new Date();
+            long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
+            AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, ForegroundDuration, String.valueOf(timeInterval), null));
+            eventDate = new Date();
+        });
     }
 
-    public void onStart(){
-       AppLogger.printVerbose("onStart");
-        Date endDate = new Date();
-        long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
-        AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, ForgroundDuration, String.valueOf(timeInterval), null));
-        eventDate = new Date();
+    public static void appMovedToForeground(){
+        handler.post(() -> {
+            AppLogger.printVerbose("appMovedToForeground");
+            Date endDate = new Date();
+            long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
+            AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, BackgroundDuration, String.valueOf(timeInterval), null));
+            eventDate = new Date();
+        });
+
     }
 
-    public void onResume(){
-        AppLogger.printVerbose("onResume");
-        Date endDate = new Date();
-        long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
-        AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, ForgroundDuration, String.valueOf(timeInterval), null));
-        eventDate = new Date();
+    public static void appTerminate(){
+        handler.post(() -> {
+            AppLogger.printVerbose("appTerminate");
+            Date endDate = new Date();
+            long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
+            AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, Terminated, String.valueOf(timeInterval), null));
+        });
     }
 
-    public void onPause(){
-        AppLogger.printVerbose("onPause");
-        Date endDate = new Date();
-        long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
-        AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, ForgroundDuration, String.valueOf(timeInterval), null));
-        eventDate = new Date();
+
+    public static void appResignActive(){
+        handler.post(() -> AppLogger.printVerbose("appResignActive"));
     }
 
-    public void onStop(){
-        AppLogger.printVerbose("onStop");
-        Date endDate = new Date();
-        long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
-        AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, ForgroundDuration, String.valueOf(timeInterval), null));
-        eventDate = new Date();
-    }
+    public static void appBecomeActive(){
+        handler.post(() -> AppLogger.printVerbose("appBecomeActive"));
 
-    public void onRestart(){
-        AppLogger.printVerbose("onRestart");
-        Date endDate = new Date();
-        long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
-        AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, ForgroundDuration, String.valueOf(timeInterval), null));
-        eventDate = new Date();
     }
-
-    public void onDestroy(){
-        AppLogger.printVerbose("onDestroy");
-        Date endDate = new Date();
-        long timeInterval = DateUtil.getTimeInterval(eventDate, endDate);
-        AppLogger.printEvent(AppLoggerEvent.createEvent(AppLoggerEvent.UI, ForgroundDuration, String.valueOf(timeInterval), null));
-        eventDate = new Date();
-    }
-
 
 }

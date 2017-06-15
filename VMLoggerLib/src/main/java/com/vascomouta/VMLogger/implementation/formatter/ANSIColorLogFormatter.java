@@ -1,7 +1,5 @@
 package com.vascomouta.VMLogger.implementation.formatter;
 
-import android.graphics.Color;
-
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogLevel;
 import com.vascomouta.VMLogger.implementation.BaseLogFormatter;
@@ -14,10 +12,10 @@ import java.util.Map;
 public class ANSIColorLogFormatter extends BaseLogFormatter {
 
     /// ANSI Escape code
-    public static String escape = "[";
+    private static  final String escape = "[";
 
     /// ANSI Reset colours code
-    public static String reset = escape + "m";
+    private static final String reset = escape + "m";
 
 
     public enum ANSIColor{
@@ -28,18 +26,17 @@ public class ANSIColorLogFormatter extends BaseLogFormatter {
         BLUE(34, 44, "Blue"),
         MAGENTA(35, 45, "Magenta"),
         CYAN(36, 46, "Cyan"),
-        LIGHTGREY(37, 47, "LightGrey"),
-        DARKGREY(90, 100, "DarkGrey"),
-        LIGHTRED(91, 101, "LightRed"),
-        LIGHTGREEN(92,102, "LightGreen"),
-        LIGHTYELLOW(93, 103, "LightYellow"),
-        LIGHTBLUE(94, 104, "LightBlue"),
-        LIGHTMAGENTA(95, 105, "LightMagenta"),
-        LIGHTCYAN(96, 106, "LightCyan"),
+        LIGHT_GREY(37, 47, "LightGrey"),
+        DARK_GREY(90, 100, "DarkGrey"),
+        LIGHT_RED(91, 101, "LightRed"),
+        LIGHT_GREEN(92,102, "LightGreen"),
+        LIGHT_YELLOW(93, 103, "LightYellow"),
+        LIGHT_BLUE(94, 104, "LightBlue"),
+        LIGHT_MAGENTA(95, 105, "LightMagenta"),
+        LIGHT_CYAN(96, 106, "LightCyan"),
         WHITE(97, 107, "White"),
         DEFAULT(39, 49, "Default");
-//        RGB(""),
-//        COLORINDEX("");
+
 
         public int foreground;
         public int background;
@@ -66,8 +63,8 @@ public class ANSIColorLogFormatter extends BaseLogFormatter {
          ITALIC(3, "Italic"),
          UNDERLINE(4, "Underline"),
          BLINK(5 , "Blink"),
-         BLINKFAST(6, "BlinkFast"),
-         STRIKETHROUGH(9, "StrikeThrough");
+         BLINK_FAST(6, "BlinkFast"),
+         STRIKE_THROUGH(9, "StrikeThrough");
 
         public int value;
         public  String label;
@@ -98,7 +95,7 @@ public class ANSIColorLogFormatter extends BaseLogFormatter {
 
 
 
-    public void colorize(LogLevel level, ANSIColor foregroundColor,ANSIColor backgroundColor, ArrayList<ANSIOptions> options) {
+    private void colorize(LogLevel level, ANSIColor foregroundColor,ANSIColor backgroundColor, ArrayList<ANSIOptions> options) {
         StringBuilder codes = new StringBuilder(String.valueOf(foregroundColor.getForeground()) + ";"+String.valueOf(backgroundColor.getBackground()));
         String description = foregroundColor +  "on" +  backgroundColor;
 
@@ -126,7 +123,7 @@ public class ANSIColorLogFormatter extends BaseLogFormatter {
         return (formatStrings.get(level) != null) ? formatStrings.get(level) : String.valueOf(ANSIColorLogFormatter.reset);
     }
 
-    public void resetFormatting() {
+    private void resetFormatting() {
         ArrayList<ANSIOptions> options = new ArrayList<>();
         options.add(ANSIOptions.BOLD);
         colorize(LogLevel.VERBOSE, ANSIColor.WHITE, ANSIColor.DEFAULT, options);

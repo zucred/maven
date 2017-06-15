@@ -3,6 +3,6 @@ package com.vascomouta.VMLogger.constant;
 
 public class LogFormatterConstant {
 
-   public static String ClassName = "class";
+   public static final String ClassName = "class";
 
 }

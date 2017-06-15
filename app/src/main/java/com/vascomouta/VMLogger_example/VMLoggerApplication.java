@@ -27,9 +27,14 @@ public class VMLoggerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-       // AppLogger.enable(LogLevel.VERBOSE, false);
-        AppLogger.enableFromFile(getApplicationContext(), null);
+         AppLogger.enable(LogLevel.VERBOSE, false);
+        //AppLogger.enableFromFile(getApplicationContext(), null);
+        ApplicationLifecycleHandler handler = new ApplicationLifecycleHandler();
+        registerActivityLifecycleCallbacks(handler);
+
         applogger = new AppLogger().getLogger(VMLoggerApplication.class.getCanonicalName());
         applogger.verbose("Message from Application class");
     }
+
+
 }

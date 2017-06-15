@@ -1,7 +1,5 @@
 package com.vascomouta.VMLogger.implementation.appender;
 
-import android.os.Environment;
-
 import com.vascomouta.VMLogger.Log;
 import com.vascomouta.VMLogger.LogAppender;
 import com.vascomouta.VMLogger.LogEntry;
@@ -12,9 +10,6 @@ import com.vascomouta.VMLogger.utils.DispatchQueue;
 import junit.framework.Assert;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -41,20 +37,20 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
      * The number of days for which the receiver will retain log files
      * before they're eligible for pruning.
      */
-    public int daysToKeep;
+    private int daysToKeep;
 
     /**
      * The filesystem path to a directory where the log files will be
      * stored.
      */
-    public String directoryPath;
+    private String directoryPath;
 
     private Date mostRecentLogTime;
     private FileLogAppender currentFileRecorder;
 
 
     private static DateFormat fileNameFormatter() {
-        return new SimpleDateFormat("yyyy-MM-dd'.txt'");
+        return new SimpleDateFormat("yyyy-MM-dd'.txt'", Locale.US);
     }
 
     public DailyRotatingLogFileAppender(int daysToKeep, String directoryPath, ArrayList<LogFormatter> formatters) {
@@ -79,7 +75,7 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
      * @param date date The `NSDate` for which the log file name is desired.
      * @return The filename.
      */
-    public String logFilenameForDate(Date date){
+    private String logFilenameForDate(Date date){
         return fileNameFormatter().format(date);
     }
 
@@ -125,11 +121,9 @@ public class DailyRotatingLogFileAppender extends BaseLogAppender {
     }
 
     /**
-     *
+     * figure out what files we'd want to keep, then nuke everything else
      */
-    public void  prune()
-    {
-        // figure out what files we'd want to keep, then nuke everything else
+    private void  prune() {
         Calendar cal = Calendar.getInstance();
         Date date = new Date();
         Set<String> filesToKeep = new HashSet<>();

@@ -6,10 +6,9 @@ import com.vascomouta.VMLogger.LogAppender;
 import com.vascomouta.VMLogger.LogEntry;
 import com.vascomouta.VMLogger.LogFilter;
 import com.vascomouta.VMLogger.LogFormatter;
-import com.vascomouta.VMLogger.constant.URLLogAppendContants;
+import com.vascomouta.VMLogger.constant.URLLogAppendConstants;
 import com.vascomouta.VMLogger.implementation.BaseLogAppender;
 import com.vascomouta.VMLogger.utils.DispatchQueue;
-import com.vascomouta.VMLogger.webservice.ConnectivityController;
 import com.vascomouta.VMLogger.webservice.HttpUrlConnectionUtil;
 import com.vascomouta.VMLogger.webservice.Response;
 
@@ -20,13 +19,10 @@ import java.util.HashMap;
 public class URLLogAppender extends BaseLogAppender {
 
 
-    public String url;
-
-    public HashMap<String, String> headers;
-
-    public String method;
-
-    public String parameter;
+    private String url;
+    private HashMap<String, String> headers;
+    private String method;
+    private String parameter;
 
     public URLLogAppender(){
 
@@ -86,19 +82,19 @@ public class URLLogAppender extends BaseLogAppender {
             return null;
         }
 
-        String url = (String)configuration.get(URLLogAppendContants.ServerUrl);
+        String url = (String)configuration.get(URLLogAppendConstants.ServerUrl);
 
-        HashMap<String, String> headers = (HashMap<String, String>) configuration.get(URLLogAppendContants.Headers);
+        HashMap<String, String> headers = (HashMap<String, String>) configuration.get(URLLogAppendConstants.Headers);
         if(headers == null){
             headers = new HashMap<>();
         }
 
-        String method = (String) configuration.get(URLLogAppendContants.Method);
+        String method = (String) configuration.get(URLLogAppendConstants.Method);
         if(method == null){
             method = "POST";
         }
 
-        String parameter = (String) configuration.get(URLLogAppendContants.Parameter);
+        String parameter = (String) configuration.get(URLLogAppendConstants.Parameter);
         if(parameter == null){
             parameter = "";
         }
@@ -128,10 +124,8 @@ public class URLLogAppender extends BaseLogAppender {
 
 
     /**
-     * /**
-     Called by the `LogReceptacle` to record the specified log message.
-
-     **Note:** This function is only called if one of the `formatters`
+     * Called by the `LogReceptacle` to record the specified log message.
+     * *Note:** This function is only called if one of the `formatters`
      * associated with the receiver returned a non-`nil` string.
      * @param message message The message to record.
      * @param logEntry  entry The `LogEntry` for which `message` was created.

@@ -3,25 +3,35 @@ package com.vascomouta.VMLogger.utils;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class DispatchQueue {
 
-    private ExecutorService syncExecuterService;
-    private ExecutorService asyncExecuterService;
+    private ExecutorService syncExecutorService;
+    private ExecutorService asyncExecutorService;
 
 
+    /**
+     * This implementation execute single thread in thread pool.
+     * @param runnable
+     */
      public void sync(Runnable runnable){
-         if(syncExecuterService == null) {
-             syncExecuterService = Executors.newSingleThreadExecutor();
+         if(syncExecutorService == null) {
+             syncExecutorService = Executors.newSingleThreadExecutor();
          }
-         syncExecuterService.submit(runnable);
+         syncExecutorService.submit(runnable);
+
      }
 
 
+    /**
+     * This implementation execute 8 thread in parallel in thread pool
+     * @param runnable
+     */
      public void async(Runnable runnable){
-        if(asyncExecuterService == null){
-            asyncExecuterService = Executors.newFixedThreadPool(8);
+        if(asyncExecutorService == null){
+            asyncExecutorService = Executors.newFixedThreadPool(8);
         }
-        asyncExecuterService.submit(runnable);
+        asyncExecutorService.submit(runnable);
      }
 
 

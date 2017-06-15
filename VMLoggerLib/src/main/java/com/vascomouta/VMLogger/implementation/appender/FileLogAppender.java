@@ -28,7 +28,7 @@ import java.util.HashMap;
 public class FileLogAppender extends BaseLogAppender {
 
     /** The path of the file to which log messages will be written. */
-    public String  filePath;
+    private String  filePath;
 
     private File file;
     private String newlineCharset;
@@ -40,7 +40,7 @@ public class FileLogAppender extends BaseLogAppender {
     /**
      * Attempts to initialize a new `FileLogRecorder` instance to use the
      * given file path and log formatters. This will fail if `filePath` could
-     *not be opened for writing.
+     * not be opened for writing.
      * @param filePath filePath The path of the file to be written. The containing
      * directory must exist and be writable by the process. If the
      * file does not yet exist, it will be created; if it does exist,
@@ -79,7 +79,7 @@ public class FileLogAppender extends BaseLogAppender {
     }
 
     @Override
-    public void recordFormatterMessage(String message, LogEntry logEntry, DispatchQueue dispatchQueue, boolean sychronousMode) {
+    public void recordFormatterMessage(String message, LogEntry logEntry, DispatchQueue dispatchQueue, boolean synchronousMode) {
         try {
             if(!file.exists()){
                file.createNewFile();

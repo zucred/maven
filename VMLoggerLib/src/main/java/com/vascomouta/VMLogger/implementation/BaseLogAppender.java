@@ -13,6 +13,8 @@ import com.vascomouta.VMLogger.implementation.formatter.DefaultLogFormatter;
 import com.vascomouta.VMLogger.implementation.formatter.PatternLogFormatter;
 import com.vascomouta.VMLogger.utils.DispatchQueue;
 
+import junit.framework.Assert;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,26 +27,27 @@ public  class BaseLogAppender extends LogAppender {
 
     }
 
-    protected BaseLogAppender(String name){
-      this.name = name;
-
-    }
-
     /**
      * Initialize a new `LogRecorderBase` instance to use the given parameters.
      * @param name The name of the log recorder, which must be unique.
-     * @param formatters formatters The `LogFormatter`s to use for the recorder.
+     * @param formatters formatter The `LogFormatter`s to use for the recorder.
      */
-    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, ArrayList<LogFilter> filters){
+    protected BaseLogAppender(String name, ArrayList<LogFormatter> formatters, ArrayList<LogFilter> filters){
         this.name = name;
+        if(formatters.size() == 0){
+            formatters.add(new DefaultLogFormatter());
+        }
         this.formatters = formatters;
         this.dispatchQueue = new DispatchQueue();
         this.filters = filters;
     }
 
 
-    public BaseLogAppender(String name, ArrayList<LogFormatter> formatters, DispatchQueue dispatchQueue, ArrayList<LogFilter> filters) {
+    protected BaseLogAppender(String name, ArrayList<LogFormatter> formatters) {
         this.name = name;
+        if(formatters.size() == 0){
+            formatters.add(new DefaultLogFormatter());
+        }
         this.formatters = formatters;
         this.dispatchQueue = new DispatchQueue();
         this.filters = new ArrayList<>();
@@ -140,31 +143,20 @@ public  class BaseLogAppender extends LogAppender {
     }
 
 
-
     /**
-     This implementation does nothing. Subclasses must override this function
-     to provide actual log recording functionality.
-
-     **Note:** This function is only called if one of the `formatters`
-     associated with the receiver returned a non-`nil` string.
-
-     :param:     message The message to record.
-
-     :param:     entry The `LogEntry` for which `message` was created.
-
-     :param:     currentQueue The GCD queue on which the function is being
-     executed.
-
-     :param:     synchronousMode If `true`, the receiver should record the
-     log entry synchronously. Synchronous mode is used during
-     debugging to help ensure that logs reflect the latest state
-     when debug breakpoints are hit. It is not recommended for
-     production code.
+     * This implementation does nothing. Subclasses must override this function to provide actual log recording functionality.
+     * **Note:** This function is only called if one of the `formatters` associated with the receiver returned a non-`nil` string.
+     *
+     * @param message  message The message to record.
+     * @param logEntry  entry The `LogEntry` for which `message` was created.
+     * @param dispatchQueue currentQueue The GCD queue on which the function is being executed.
+     * @param synchronousMode synchronousMode If `true`, the receiver should record the log entry synchronously. Synchronous mode is used during
+     *                        debugging to help ensure that logs reflect the latest state when debug breakpoints are hit. It is not recommended for
+     *                         production code.
      */
     @Override
     public void recordFormatterMessage(String message, LogEntry logEntry, DispatchQueue dispatchQueue, boolean synchronousMode) {
-       //TODO
-        //precondition(false, "Must override this")
+        Assert.fail("Must Override this");
     }
 
     @Override

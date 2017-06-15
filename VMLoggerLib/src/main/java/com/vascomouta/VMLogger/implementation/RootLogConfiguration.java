@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class RootLogConfiguration extends BaseLogConfiguration {
 
 
-    public static String ROOT_IDENTIFIER = "root";
-    public static String DOT = ".";
+    public static final String ROOT_IDENTIFIER = "root";
+    public static final String DOT = ".";
 
     public RootLogConfiguration() {
         super(RootLogConfiguration.ROOT_IDENTIFIER, LogLevel.INFO, null, new ArrayList<LogAppender>(), false);

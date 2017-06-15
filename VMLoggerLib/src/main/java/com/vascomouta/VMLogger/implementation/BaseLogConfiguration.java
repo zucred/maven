@@ -84,12 +84,12 @@ public class BaseLogConfiguration extends LogConfiguration {
         if(assigned != null) {
             details = details + assigned.description() + " - " + effectiveLogLevel.description() + "-"
                     + fullName();
-        }else{
+        } else {
             details = details + "null - " + effectiveLogLevel.description() + " - " + fullName();
         }
-       /* for (_, child) in self.childrenDic {
-            details += child.details()
-        }*/
+        for(LogConfiguration child : childMap.values()){
+            details += child.details();
+        }
         return details;
     }
 }
