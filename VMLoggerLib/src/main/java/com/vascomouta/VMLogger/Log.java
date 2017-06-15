@@ -206,7 +206,7 @@ public class Log extends RootLogConfiguration {
         ArrayList<LogAppender> appenders = new ArrayList<>();
         appenders.add(new ConsoleLogAppender());
         RootLogConfiguration root = new RootLogConfiguration(RootLogConfiguration.ROOT_IDENTIFIER, assignedLevel, null, appenders, synchronousMode, false);
-        enable(root, LogLevel.VERBOSE);
+        enable(root, LogLevel.INFO);
     }
 
     private static void enable(RootLogConfiguration root, LogLevel minimumSeverity){
@@ -214,7 +214,7 @@ public class Log extends RootLogConfiguration {
     }
 
     private  static void  start(RootLogConfiguration root, LogReceptacle logReceptacle ) {
-        start(root, logReceptacle, LogLevel.VERBOSE);
+        start(root, logReceptacle, LogLevel.INFO);
     }
 
     private static void start(RootLogConfiguration root, LogReceptacle logReceptacle, LogLevel minimumSeverity) {
@@ -256,11 +256,11 @@ public class Log extends RootLogConfiguration {
     }
 
     private Log(String identifier, LogConfiguration parent, Map<String, LogAppender> allAppenders, HashMap<String, Object> configuration) {
-        super(identifier,(configuration.get(LogConfigConstant.Level) != null) ? LogLevel.getLogLevel((String)configuration.get(LogConfigConstant.Level)) : LogLevel.VERBOSE,
-                null, getAppender(configuration, allAppenders),getSynchrounousMode(configuration), getAdditivity(configuration));
+        super(identifier,(configuration.get(LogConfigConstant.Level) != null) ? LogLevel.getLogLevel((String)configuration.get(LogConfigConstant.Level)) : LogLevel.INFO,
+                null, getAppender(configuration, allAppenders),getSynchronousMode(configuration), getAdditivity(configuration));
     }
 
-    private static boolean getSynchrounousMode(HashMap<String, Object> configuration){
+    private static boolean getSynchronousMode(HashMap<String, Object> configuration){
         boolean synchronous = false;
         String logSynchronous = (String)configuration.get(LogConfigConstant.Synchronous);
         if(logSynchronous != null){
@@ -493,17 +493,26 @@ public class Log extends RootLogConfiguration {
     }
 
     private static void trace(LogConfiguration logger, LogLevel severity , String fileName, String methodName, int lineNumber){
-        channelForSeverity(severity).trace(logger,fileName, methodName,lineNumber);
+        LogChannel logChannel = channelForSeverity(severity);
+        if(logChannel != null) {
+            logChannel.trace(logger, fileName, methodName, lineNumber);
+        }
     }
 
 
     private static void message(LogConfiguration logger, LogLevel severity , String message, String fileName, String methodName, int lineNumber) {
-        channelForSeverity(severity).message(logger,message, fileName, methodName, lineNumber);
+        LogChannel logChannel = channelForSeverity(severity);
+        if(logChannel != null) {
+             logChannel.message(logger, message, fileName, methodName, lineNumber);
+        }
     }
 
 
     private static void value(LogConfiguration logger, LogLevel severity, Object value, String fileName, String methodName, int lineNumber) {
-        channelForSeverity(severity).value(logger, value, fileName, methodName, lineNumber);
+        LogChannel logChannel = channelForSeverity(severity);
+        if(logChannel != null) {
+            logChannel.value(logger, value, fileName, methodName, lineNumber);
+        }
     }
 
     private static LogChannel channelForSeverity(LogLevel severity) {

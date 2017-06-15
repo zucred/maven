@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 users.add(new User("Test", "value"));
                 users.add(new User("Test2", "value1"));
                 logger.verbose(users);
-                /*logger.info();
+                logger.info();
+                /*
 
                 HashMap<String, User> map = new HashMap<>();
                 map.put("item1", new User("Test", "value"));
